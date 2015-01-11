@@ -8,7 +8,6 @@ EventBox is written in PHP(V 5.3.0), HTML5,CSS3, BOOTSTRAP (V 3.3) , JAVASCRIPT 
 Let us help build together a new era of ERS. :)
 
 # Current Features
- Features
 - Create Event
 - Create Registration Form
 - Invite Participant
