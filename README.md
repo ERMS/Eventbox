@@ -50,7 +50,7 @@ Read more @ https://guides.github.com/activities/contributing-to-open-source/ ab
 #Community
 
 Feel free to post questions, suggestions, recommendation and issues regarding to the project.
-
+Google Group: https://groups.google.com/forum/?hl=en#!forum/eventbox-community
 #Creators
 
 Enrique M. Lacambra III & Alkino T. Ko
