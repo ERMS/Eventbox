@@ -21,7 +21,7 @@ issue page: https://github.com/110392/Eventbox/issues
 Eventbox's documentation is found in project's directory docs.
 
 #Contribution
-##Issues
+#####Issues
 
 FOUND BUUUUUUUGs? CREATE ISSUE NOW!!!
 But be sure to:
@@ -33,7 +33,7 @@ Please be precise in the problem. As much as possible, provide scenario of the p
 
 Read more @ https://guides.github.com/features/issues/ about creating issue on projects.
 
-##Patch Bugs & Feature Request
+#####Patch Bugs & Feature Request
 
 Are you able to PATCH A BUG or CREATED NEW FEATURE for the project?
 MAKE A PULL REQUEST!!!
@@ -50,14 +50,15 @@ Read more @ https://guides.github.com/activities/contributing-to-open-source/ ab
 #Community
 
 Feel free to post questions, suggestions, recommendation and issues regarding to the project.
-Google Group: https://groups.google.com/forum/?hl=en#!forum/eventbox-community
+- Google Group: https://groups.google.com/forum/?hl=en#!forum/eventbox-community
+
 #Creators
 
-Enrique M. Lacambra III & Alkino T. Ko
+- Enrique M. Lacambra III & Alkino T. Ko
 
 #Copyright and License
 
-Eventbox (c) Copyright 2015. Licensed under GNU V. 3.0.
+- Eventbox (c) Copyright 2015. Licensed under GNU Version 3.0.
 
 
-Let us help build together a new era of ERS. :)
+###Let us help build together a new era of ERS. :)
