@@ -18,6 +18,7 @@ Let us help build together a new era of ERS. :)
 - Certificate Gallery
 - Registration Form Recommendation
 - Registration Form Collection
+- Registration Form Recommendations
 
 #Required Skill
 - Basic HTML5
