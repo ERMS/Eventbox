@@ -11,7 +11,7 @@ EventBox is written in PHP(V 5.3.0), HTML5, CSS3, BOOTSTRAP (V 3.2.0) , JAVASCRI
 * Download the project file on the right side button DOWNLOAD ZIP.
 * Clone the repo: _git clone_ https://github.com/enricksIII/Eventbox.git
 * How to use: https://github.com/enricksIII/Eventbox/wiki/Using-EventBox
-* 
+
 #Bugs and Feature Request
 
 Any Bug and Feature request will be entertained in Eventbox 
