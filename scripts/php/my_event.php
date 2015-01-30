@@ -424,7 +424,7 @@
 						?>
                 </div>
 				
-                <div class="col-md-2">
+                <div class="col-md-2 col-md-offset-4">
                     <a href="create_event.php" class="event btn btn-default pull-right"> Create Your Own Event </a>
 					<a onclick="editProfile()" href="#" class="event pull-right" data-toggle="modal" data-target=".bs-edit-profile"> Edit Profile </a>
                 </div>
