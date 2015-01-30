@@ -2,19 +2,20 @@
 
 EventBox is an Open Source Event Registration System(ERS) originally written and designed by Enrique M. Lacambra III and Alkino T. Ko.
 
-There are lots of ERS that is existing now but what EventBox wants to make is to change the perpective of how people see in registering thier events and make it more useful, effective, and interactive.
+There are lots of ERS that is existing now but what EventBox wants to make is to change the perpective in registering people's events and make it more useful, effective, and interactive.
 
-EventBox is written in PHP(V 5.3.0), HTML5,CSS3, BOOTSTRAP (V 3.3) , JAVASCRIPT and uses MySQL (V 5.6) as query language.
+EventBox is written in PHP(V 5.3.0), HTML5, CSS3, BOOTSTRAP (V 3.2.0) , JAVASCRIPT and uses MySQL (V 5.6) as query language.
 
 #Quick Start
 
 * Download the project file on the right side button DOWNLOAD ZIP.
-* Clone the repo: _git clone_ https://github.com/110392/Eventbox.git
-
+* Clone the repo: _git clone_ https://github.com/enricksIII/Eventbox.git
+* How to use: https://github.com/enricksIII/Eventbox/wiki/Using-EventBox
+* 
 #Bugs and Feature Request
 
 Any Bug and Feature request will be entertained in Eventbox 
-issue page: https://github.com/110392/Eventbox/issues
+issue page: https://github.com/enricksIII/Eventbox/issues
 
 #Documentation
 
@@ -61,4 +62,4 @@ Feel free to post questions, suggestions, recommendation and issues regarding to
 - Eventbox (c) Copyright 2015. Licensed under GNU Version 3.0.
 
 
-###Let us help build together a new era of ERS. :)
+Let us help build together a new era of ERS. :)
