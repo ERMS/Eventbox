@@ -19,8 +19,8 @@ session_start();
 </head>
 <body>
     
-  <!-- start navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- /navigation -->
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -31,7 +31,7 @@ session_start();
                 <a class="navbar-brand" href="../../index.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
             </div>
             <?php
-            if(isset($_SESSION['user']))
+            if(isset($_SESSION['user']))                                // header on home changes depending if a user is logged in or not
             {
              echo "
              <div class='collapse navbar-collapse'>
@@ -68,15 +68,11 @@ session_start();
             }
             ?>
         </div>
-    </nav>
-	<!-- /navigation--> 
-	
-	<!-- search container-->
-    <section class="container event">
+    </nav><!-- /navigation--> 
+    <section class="container event"><!-- search -->
         <div class="event">
             <div class="row">
                 <div class="col-md-8 ">
-					<!-- search form -->
                     <form class="form event" method="get" action="home.php" role="search"><!--Form search-->
                         <div class="form-group">
                             <label for="search" class="sr-only">SEARCH</label>
@@ -92,12 +88,11 @@ session_start();
                                 </span>                                        
                             </div><!-- /input-group -->
                         </div>
-                    </form>
-					<!-- end search form -->                
+                    </form><!--/form search-->                
                 </div>
                 <div class="col-md-2 col-md-offset-2">
                 <?php
-                    if(isset($_SESSION['user']))
+                    if(isset($_SESSION['user']))                    //  only logged in users can crate an event
                     {
                         echo "<a href='create_event.php' class='event btn btn-default btn-block'> Create Event </a>";
                     }
@@ -105,11 +100,8 @@ session_start();
                 </div>
             </div> 
         </div>
-    </section>
-	<!-- end search container -->
-	
+    </section><!-- /search -->
     <section class="container">
-		
         <div class="row">
             <div class="col-md-5 ">
                 <hr>
@@ -121,16 +113,16 @@ session_start();
                 <hr>
             </div>
         </div>
-        
+                 
         <?php
         $srchstr="SELECT * FROM `event`";
-        if(isset($_GET['search']))
+        if(isset($_GET['search']))               //  search event by event's title or the event host's name
         {
             $srch=$_GET['search'];
             $srchstr="SELECT * FROM `event` WHERE `Event_Title`='$srch' OR `User_ID`=(SELECT `User_ID` FROM `user` WHERE `User_FirstName`='$srch' OR `User_LastName`='$srch' OR CONCAT(`User_FirstName`,' ',`User_LastName`)='$srch')";
         }
         $search=mysqli_query ($con,$srchstr);
-        if (mysqli_num_rows($search)>0)
+        if (mysqli_num_rows($search)>0)          //  displays all the available events 
         {
             echo "
                 <div class='event table-responsive'>
@@ -163,8 +155,10 @@ session_start();
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Description']." </td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_State'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." </td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>
-                                <td class='text-center hidden-sm hidden-xs'>".mysqli_num_rows($search)."</td>
+                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>";
+                                $eventid=$data['Event_ID'];
+                                $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid'");
+                        echo"   <td class='text-center hidden-sm hidden-xs'>".mysqli_num_rows($partsnum)."</td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Slot']." </td>";
                                 $date1 = date("Y")."-".date("m")."-".date("d");
                                 $date2 = $data['Event_StartYear'].date('m', strtotime($data['Event_StartMonth']))."-".$data['Event_StartDay'];
@@ -186,7 +180,12 @@ session_start();
             echo "No Data Found!";
         }
         ?>
-
+        <nav>
+          <ul class="pager">
+            <li><a href="#">Previous</a></li>
+            <li><a href="#">Next</a></li>
+          </ul>
+        </nav>
         <hr>
     </section>
 </body>
