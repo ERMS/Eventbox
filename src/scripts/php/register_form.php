@@ -3,16 +3,19 @@ include "connectdb.php";
 $con=connectdb();
 $query=mysqli_query($con,"SELECT `User_Email` FROM `user`");
 $v=0;
-while($data=mysqli_fetch_array($query))
+while($data=mysqli_fetch_array($query))                           // stores all the currently registered emails
 {
     $values[$v]=$data['User_Email'];
     $v++;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+	<!--[if lt IE 9]>
+  	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  	<![endif]-->
 	<title>Eventbox</title>
     <meta charset="utf-8"> 
     <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
@@ -21,42 +24,39 @@ while($data=mysqli_fetch_array($query))
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="../js/function.js"></script>
 </head>
-	
-	<script>
-		
-		var email='<?php echo json_encode($values); ?>';
-
-			function checkmail(mail) // function for checking email if email is laready registered in the database or not
-			{
-				json=JSON.parse(email);
-				for(var i=0;json.length;i++)
-				{
-					if(mail==json[i])
-					{
-						alert("This E-mail is already Registered!!");
-						return false;
-					}
-				}
-			}
-		
-			function confirmpassword() // function for verifying password
-			{   
-				var mail = document.forms["register"]["email"].value;
-				var password = document.forms["register"]["password"].value;
-				var password2 = document.forms["register"]["password_confirmation"].value;
-				return checkmail(mail);
-				if(password != password2)
-				{
-					alert("Password Does not match!");
-					return false;
-				}
-			}
-		
-	</script>
-	
+<script>
+var email='<?php echo json_encode($values); ?>';
+function checkmail(mail)                                        //  checks whether the email is already in use 
+{
+    json=JSON.parse(email);
+    for(var i=0;i<json.length;i++)
+    {
+        if(mail==json[i])
+        {
+            alert("This E-mail is already Registered!!");
+            return false;
+        }
+    }
+}
+function confirmpassword()                                     //  assurance of the password inputed 
+{   
+    var mail = document.forms["register"]["email"].value;
+    var password = document.forms["register"]["password"].value;
+    var password2 = document.forms["register"]["password_confirmation"].value;
+    if(checkmail(mail)==false)
+    {
+        return false;
+    }
+    if(password != password2)
+    {
+        alert("Password Does not match!");
+        return false;
+    }
+}
+</script>
 <body>
     
-    <!-- Start-Navigation -->
+    
     <nav class="navbar navbar-inverse navbar-fixed-top" style="height:100px;" role="navigation">
      <div class="navbar-inner">
             <div class="nav-center navbar-fixed-bottom">
@@ -64,11 +64,10 @@ while($data=mysqli_fetch_array($query))
             </div>
         </div>
     </nav>
-    <!-- End Navigation -->
+    
 
-	<!-- Section Register -->
     <section id="login">
-        <div class="container"> 
+        <div class="container">
             <div class="form-wrap">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
@@ -76,8 +75,6 @@ while($data=mysqli_fetch_array($query))
                             <div class="panel-body">
                                 <h1>Sign Up</h1>
 			                    <hr>
-									
-								<!-- Start Registraton Form -->
                                     <form name="register" role="form" action="registration.php" method="post" onsubmit="return confirmpassword()">
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-6 col-md-6">
@@ -130,7 +127,6 @@ while($data=mysqli_fetch_array($query))
                                             </div>
                                         </div>
                                     </form>
-									<!-- End Registraton Form -->
                                     </div>
                                 </div>
                             </div>
@@ -138,9 +134,23 @@ while($data=mysqli_fetch_array($query))
                     </div>
                 </div>
             </div>
+        </div> <!-- /.container -->
+</section>
+        <!-- test later 
+    <footer id="footer" class="navbar-fixed-bottom">
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-8">
+                    <p>Copyright © Ateneo de Zamboanga University. All Right Reserve.</p>
+                </div>
+                <div class="col-xs-4">
+                    <p> Home . Privacy . About Us . Company. License . Contact Us</p>
+                </div>
+            </div>
         </div>
-	</section>
-	<!-- end Section Register -->
+    </footer>
+      -->  
         
 </body>
 </html>
