@@ -1,55 +1,85 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <!--  PHP session  -->
 <?php
-include "connectdb.php";
-$con = connectdb();
-session_start();
-if(isset($_GET['data']))
-{
-    $_SESSION['mail']=$_GET['data'];
-    $_SESSION['id']=$_GET['id'];
-    $mail=$_SESSION['mail'];
-    $check=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
-    if(mysqli_num_rows($check)<=0)
+    include "connectdb.php";
+
+    $con = connectdb();
+
+    session_start();
+
+    if(isset($_GET['data']))
     {
-        header("location:register_form.php");
-    }
-}
-if (isset($_SESSION['user']))
-{
-    $id=$_SESSION['id'];
-    $mail=$_SESSION['mail'];
-    $query=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
-    $data=mysqli_fetch_array($query);
-    if(isset($_SESSION['id']))
-    {
-        if($_SESSION['user']['id']==$data['User_ID'])
+        $_SESSION['mail']=$_GET['data'];
+        $_SESSION['id']=$_GET['id'];
+        $mail=$_SESSION['mail'];
+        
+        $check=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
+        if(mysqli_num_rows($check)<=0)
         {
-            header("location:my_event.php?invite=invited");
+            header("location:register_form.php");
+        }
+    }
+
+    if (isset($_SESSION['user']))
+    {
+        $id=$_SESSION['id'];
+        $mail=$_SESSION['mail'];
+
+        $query=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
+        $data=mysqli_fetch_array($query);
+
+        if(isset($_SESSION['id']))
+        {
+            if($_SESSION['user']['id']==$data['User_ID'])
+            {
+                header("location:my_event.php?invite=invited");
+            }
+            else
+            {
+                unset($_SESSION['mail']);
+                unset($_SESSION['id']);
+                header("location:my_event.php");
+            }
         }
         else
         {
-            unset($_SESSION['mail']);
-            unset($_SESSION['id']);
             header("location:my_event.php");
         }
     }
-    else
-    {
-        header("location:my_event.php");
-    }
-}
 ?>
 <!--  PHP session End  -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Eventbox</title>
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
     <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../js/function.js"></script>
+
 </head>
 <body>
     
@@ -65,7 +95,7 @@ if (isset($_SESSION['user']))
 	
 	<!-- Login Content -->
     <section id="login">
-        <div class="container"> <!-- Start Session -->
+        <div class="container">
             <div class="form-wrap">
                 <div class="row">
                     <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
@@ -132,6 +162,11 @@ if (isset($_SESSION['user']))
         </div> <!-- end container -->
 	</section>
 	<!-- Login Content -->
-	
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="scripts/js/boostrap.min.js"></script>
+
 </body>
 </html>

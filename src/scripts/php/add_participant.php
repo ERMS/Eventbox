@@ -1,50 +1,54 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <?php
-include "class.php";
-session_start();
-if (!isset($_SESSION['user']))
-{
-    header("location:login_form.php");
-}
-$event=$_SESSION['eventobject'];
-$limit=$event->E_slot;
+
+    include "class.php";
+
+    session_start();
+
+    if (!isset($_SESSION['user']))
+    {
+        header("location:login_form.php");
+    }
+    
+    $event=$_SESSION['eventobject'];
+    $limit=$event->E_slot;
+
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
-	
+<html lang="en">	
 <head>
-    <meta charset="UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Eventbox</title>    
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
+    <title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
     <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../js/function.js"></script>
-</head>
-	
-<script>
-	
-	var counter = 1;
-	var limit = '<?php echo $limit; ?>';
-	
-	function addpart(divName)
-	{
-		if(limit!='')
-		{
-			if (counter == limit)  
-			{
-				alert("You have reached the limit of adding " + counter + " inputs");
-				return;
-			}
-		}
-		var newdiv = document.createElement('div');
-		newdiv.innerHTML = "<br><input type='text' placeholder='eventbox@eventbox.com' class='form-control' name='participants[]'>";
-		document.getElementById(divName).appendChild(newdiv);
-		counter++;
-	}
-</script>
-	
+
+</head>	
 <body>
+
     <!--navigation-->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -137,6 +141,34 @@ $limit=$event->E_slot;
             <hr>
         </div>
     </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/boostrap.min.js"></script>
+
+    <script>
+    
+        var counter = 1;
+        var limit = '<?php echo $limit; ?>';
+        
+        function addpart(divName)
+        {
+            if(limit!='')
+            {
+                if (counter == limit)  
+                {
+                    alert("You have reached the limit of adding " + counter + " inputs");
+                    return;
+                }
+            }
+            var newdiv = document.createElement('div');
+            newdiv.innerHTML = "<br><input type='text' placeholder='eventbox@eventbox.com' class='form-control' name='participants[]'>";
+            document.getElementById(divName).appendChild(newdiv);
+            counter++;
+        }
+
+    </script>
 
 </body>
 </html>

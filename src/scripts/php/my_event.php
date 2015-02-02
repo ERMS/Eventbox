@@ -1,6 +1,28 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
 <?php
+
 	include "class.php";
+
 	$con=connectdb();
+
 	session_start();
 	if(isset($_GET['log']))
 	{
@@ -9,6 +31,7 @@
 	if (!isset($_SESSION['user']))
 	{
 		session_destroy();
+
 		header("location:login_form.php");
 	}
 	if(isset($_GET['invite']))
@@ -20,6 +43,7 @@
 			$e_id=$_SESSION['id'];
 			$part=new attend;
 			$part->invite($u_id,$e_id);
+
 			header("location:my_event.php?tab=".$inv);
 		}
 	}
@@ -27,341 +51,30 @@
 	{
 		$_GET['tab']='host';
 	}
+
 	$id=$_SESSION['user']['id'];
+	
 	$edit_user=mysqli_query($con,"SELECT * FROM `user` WHERE `User_ID`='$id'");
 	$c_user=mysqli_fetch_array($edit_user);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
-	<title>Eventbox</title>    
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
     <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="../js/function.js"></script>
-	<script src="../js/boostrap.min.js"></script>
 	
 </head>
-	
-    <script>
-		
-		var selectedTab='hosted';
-		var form='';
-		var events='';
-		
-		window.onload = function() 
-		{
-			var inv='<?php echo $_GET['tab'];?>';
-			if(inv=='invited')
-			{
-				selectedTab='invited';
-				document.getElementById('invite').classList.add('active');
-				document.getElementById('tabinvi').classList.add('active');
-			}
-			else
-			{
-				document.getElementById('host').classList.add('active');
-				document.getElementById('tabhost').classList.add('active');
-			}
-		}
-		
-		var count=0;
-		var user=<?php echo json_encode($c_user); ?>;
-		
-		function editProfile()
-		{
-			document.forms["edituser"]["uid"].value=user['User_ID'];
-			document.forms["edituser"]["first_name"].value=user['User_FirstName'];
-			document.forms["edituser"]["last_name"].value=user['User_LastName'];
-			document.forms["edituser"]["email"].value=user['User_Email'];
-			document.forms["edituser"]["country"].value=user['User_Country'];
-			document.forms["edituser"]["city"].value=user['User_City'];
-		}
-		
-		function generateForm(divName,formElemID,labelName)
-		{
-			var newdiv = document.createElement('div');
-			count++;
-			switch(formElemID) {
-				  case 'name':
-					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='Last'></div></div></div>";
-					   break;
-				  case 'date':
-					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='mm'></div><div class='col-md-2'><input  id='"+formElemID+count+"' type='text' name='value[]' class='form-control' placeholder='dd'></div><div class='col-md-2'><input type='text' class='form-control' name='value[]' id='"+formElemID+count+"' placeholder='yyyy'></div></div></div>";
-					   break;
-				  case 'email':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
-					   break;
-				  case 'address':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='State'><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
-					   break;
-				  case 'text':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div>";
-					   break;
-				  case 'textarea':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'> <textarea id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
-					   break;
-				  case 'link':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' class='form-control' name='value[]' id='"+formElemID+count+"' placeholder='https://'></div></div></div>";
-					   break;
-			}
-			document.getElementById(divName).appendChild(newdiv);
-		}
-		
-		function participateForm()
-		{
-			var formorder=JSON.parse(form['Form_Order']);
-			for(var i=0;i<formorder.length;i++)
-			{
-				generateForm('form',formorder[i][2],formorder[i][0]);
-			}
-		}
-		
-		function checkPass()
-		{
-			if(document.getElementById("privacypass").value!=events['Event_Password'])
-			{
-				alert("invalid Password!");
-			}
-			else
-			{
-				$('#eventPassword').modal('hide'); 
-				participateForm();
-				$('#registrationForm').modal('show');
-			}
-		}
-		
-		function privatePassword(data)
-		{
-			var json=JSON.parse(data);
-			form=json[2];
-			events=json[1];
-			if(json[0]!='Approved')
-			{
-				if(events['Event_Privacy']!='private')
-				{
-					participateForm();
-					$('#registrationForm').modal('show');    
-				}
-				else
-				{
-					$('#eventPassword').modal('show'); 
-				}
-			}
-			else
-			{
-				alert("You already have registered!");
-			}
-		}
-		
-		function FormEventID()
-		{
-			var id=form['Form_ID'];
-			document.forms['formDatas']['formid'].value=id;
-		}
-		
-		function clearform(elementID)
-		{
-			document.getElementById(elementID).innerHTML = "";
-		}
-		
-		function tabVal(tab)
-		{
-			selectedTab=tab;
-			return selectedTab;
-		}
-		
-		function numberofparticipants(num)
-		{
-			if(num=="Any")
-			{
-				document.getElementById("number").style.visibility="Hidden";
-				document.getElementById("lnum").style.visibility="Hidden";
-				document.getElementById("number").disabled=true;
-			}
-			else
-			{
-				document.getElementById("number").style.visibility="Visible"; 
-				document.getElementById("lnum").style.visibility="Visible";   
-				document.getElementById("number").disabled=false;
-			}
-		}
-		
-		function deleteEvent()
-		{
-			var form=document.getElementById(selectedTab).elements;
-			var count=0;
-			var deleteEvent=[];
-			for(var i=0;i<form.length;i++)
-			{
-				if(form[i].checked)
-				{
-					var json=form[i].value;
-					var data=JSON.parse(json);
-					deleteEvent[count]=data.Event_ID;
-					count++;
-				}
-			}
-			if(count==0)
-			{
-				alert("No Item was selected!!");
-			}
-			else
-			{
-				if(confirm("Are your sure?"))
-				{
 
-					window.location.href = "delete_event.php?deleteEvent="+JSON.stringify(deleteEvent);
-				}
-				else
-				{
-					return false;
-				}
-			}
-		}
-		
-		function editEvent(data)
-		{
-			var json=data;
-			var editData=JSON.parse(json);
-			document.forms["editForm"]["id"].value=editData.Event_ID;
-			document.forms["editForm"]["title"].value=editData.Event_Title;
-			document.forms["editForm"]["logo"].value=editData.Event_Logo;
-			document.forms["editForm"]["s_month"].value=editData.Event_StartMonth;
-			document.forms["editForm"]["s_day"].value=editData.Event_StartDay;
-			document.forms["editForm"]["s_year"].value=editData.Event_StartYear;
-			document.forms["editForm"]["e_month"].value=editData.Event_EndMonth;
-			document.forms["editForm"]["e_day"].value=editData.Event_EndDay;
-			document.forms["editForm"]["e_year"].value=editData.Event_EndYear;
-			document.forms["editForm"]["s_hour"].value=editData.Event_StartHour;
-			document.forms["editForm"]["s_minute"].value=editData.Event_StartMinute;
-			document.forms["editForm"]["s_ch"].value=editData.Event_StartCH;
-			document.forms["editForm"]["e_hour"].value=editData.Event_EndHour;
-			document.forms["editForm"]["e_minute"].value=editData.Event_EndMinute;
-			document.forms["editForm"]["e_ch"].value=editData.Event_EndCH;
-			document.forms["editForm"]["description"].value=editData.Event_Description;
-			document.forms["editForm"]["country"].value=editData.Event_Country;
-			document.forms["editForm"]["state"].value=editData.Event_State;
-			document.forms["editForm"]["city"].value=editData.Event_City;
-			document.forms["editForm"]["street"].value=editData.Event_Street;
-			document.forms["editForm"]["deadline"].value=editData.Event_Deadline;
-			document.forms["editForm"]["number"].value=editData.Event_Slot;
-			document.forms["editForm"]["contact"].value=editData.Event_ContactNumber;
-			document.forms["editForm"]["file"].value=editData.Event_File;
-			document.forms["editForm"]["privacy"].value=editData.Event_Privacy;
-			document.forms["editForm"]["password"].value=editData.Event_Password;
-			document.forms["editForm"]["status"].value=editData.Event_Status;
-			var num='a';
-			if(editData.Event_Slot==0)
-			{
-				num='Any';
-			}
-			numberofparticipants(num);
-			privacypassword(editData.Event_Privacy);
-		}
-		
-		function checkAll(element,form) 
-		{
-			var checkboxes = form.elements;
-			 if (element.checked) 
-			 {
-				 for (var i = 0; i < checkboxes.length; i++) 
-				 {
-					 if (checkboxes[i].type == 'checkbox') 
-					 {
-						 checkboxes[i].checked = true;
-					 }
-				 }
-			 } 
-			 else 
-			 {
-				 for (var i = 0; i < checkboxes.length; i++) 
-				 {
-					 if (checkboxes[i].type == 'checkbox') 
-					 {
-						 checkboxes[i].checked = false;
-					 }
-				 }
-			 }
-		}
-		
-		function checkedCounter()
-		{
-			var form=document.getElementById(selectedTab).elements;
-			var count=0;
-			var editData;
-			for(var i=0;i<form.length;i++)
-			{
-				if(form[i].checked)
-				{
-					count++;
-					editData=form[i].value;
-				}
-			}
-			if(count!=1)
-			{
-				alert("check 1 only!");
-			}
-			else
-			{
-
-				$('#full-width').modal('show');
-				editEvent(editData);
-			}
-		}
-		
-		$(document).ready(function () {
-			$("input#editprofile").click(function(){
-				$.ajax({
-					type: "POST",
-					url: "edit_profile.php",
-					data: $('form#edituser').serialize(),
-					success: function(){
-						$("#static").modal('hide');
-						location.reload();
-					},
-					error: function(){
-						//alert("Failed to Edit! Try Again Later..");
-					}
-				});
-			});
-		});
-		$(document).ready(function () {
-			$("input#submit").click(function(){
-				$.ajax({
-					type: "POST",
-					url: "edit_event.php",
-					data: $('form#editForm').serialize(),
-					success: function(){
-						$("#full-width").modal('hide');
-						location.reload();
-					},
-					error: function(){
-						alert("Failed to Edit! Try Again Later..");
-					}
-				});
-			});
-		});
-	$(document).ready(function () {
-		$(".button").click(function(){
-			var t=this.id;
-			var v=this.value;
-			$.ajax({
-				type: "POST",
-				url: "status_update.php",
-				data: {status:v,respond:t},
-				success: function(){
-
-				},
-				error: function(){
-					alert("Failed to Edit! Try Again Later..");
-				}
-			});
-		});
-	});
-    </script>
 <body>
 	
 	<!-- Start Navigation -->
@@ -1042,6 +755,331 @@
 		</div>
 		</div>
 		<!-- modal for edit profile -->
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/boostrap.min.js"></script>
+
+    <script>
+		
+		var selectedTab='hosted';
+		var form='';
+		var events='';
+		
+		window.onload = function() 
+		{
+			var inv='<?php echo $_GET['tab'];?>';
+			if(inv=='invited')
+			{
+				selectedTab='invited';
+				document.getElementById('invite').classList.add('active');
+				document.getElementById('tabinvi').classList.add('active');
+			}
+			else
+			{
+				document.getElementById('host').classList.add('active');
+				document.getElementById('tabhost').classList.add('active');
+			}
+		}
+		
+		var count=0;
+		var user=<?php echo json_encode($c_user); ?>;
+		
+		function editProfile()
+		{
+			document.forms["edituser"]["uid"].value=user['User_ID'];
+			document.forms["edituser"]["first_name"].value=user['User_FirstName'];
+			document.forms["edituser"]["last_name"].value=user['User_LastName'];
+			document.forms["edituser"]["email"].value=user['User_Email'];
+			document.forms["edituser"]["country"].value=user['User_Country'];
+			document.forms["edituser"]["city"].value=user['User_City'];
+		}
+		
+		function generateForm(divName,formElemID,labelName)
+		{
+			var newdiv = document.createElement('div');
+			count++;
+			switch(formElemID) {
+				  case 'name':
+					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='Last'></div></div></div>";
+					   break;
+				  case 'date':
+					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='mm'></div><div class='col-md-2'><input  id='"+formElemID+count+"' type='text' name='value[]' class='form-control' placeholder='dd'></div><div class='col-md-2'><input type='text' class='form-control' name='value[]' id='"+formElemID+count+"' placeholder='yyyy'></div></div></div>";
+					   break;
+				  case 'email':
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
+					   break;
+				  case 'address':
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='State'><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
+					   break;
+				  case 'text':
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div>";
+					   break;
+				  case 'textarea':
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'> <textarea id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
+					   break;
+				  case 'link':
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' class='form-control' name='value[]' id='"+formElemID+count+"' placeholder='https://'></div></div></div>";
+					   break;
+			}
+			document.getElementById(divName).appendChild(newdiv);
+		}
+		
+		function participateForm()
+		{
+			var formorder=JSON.parse(form['Form_Order']);
+			for(var i=0;i<formorder.length;i++)
+			{
+				generateForm('form',formorder[i][2],formorder[i][0]);
+			}
+		}
+		
+		function checkPass()
+		{
+			if(document.getElementById("privacypass").value!=events['Event_Password'])
+			{
+				alert("invalid Password!");
+			}
+			else
+			{
+				$('#eventPassword').modal('hide'); 
+				participateForm();
+				$('#registrationForm').modal('show');
+			}
+		}
+		
+		function privatePassword(data)
+		{
+			var json=JSON.parse(data);
+			form=json[2];
+			events=json[1];
+			if(json[0]!='Approved')
+			{
+				if(events['Event_Privacy']!='private')
+				{
+					participateForm();
+					$('#registrationForm').modal('show');    
+				}
+				else
+				{
+					$('#eventPassword').modal('show'); 
+				}
+			}
+			else
+			{
+				alert("You already have registered!");
+			}
+		}
+		
+		function FormEventID()
+		{
+			var id=form['Form_ID'];
+			document.forms['formDatas']['formid'].value=id;
+		}
+		
+		function clearform(elementID)
+		{
+			document.getElementById(elementID).innerHTML = "";
+		}
+		
+		function tabVal(tab)
+		{
+			selectedTab=tab;
+			return selectedTab;
+		}
+		
+		function numberofparticipants(num)
+		{
+			if(num=="Any")
+			{
+				document.getElementById("number").style.visibility="Hidden";
+				document.getElementById("lnum").style.visibility="Hidden";
+				document.getElementById("number").disabled=true;
+			}
+			else
+			{
+				document.getElementById("number").style.visibility="Visible"; 
+				document.getElementById("lnum").style.visibility="Visible";   
+				document.getElementById("number").disabled=false;
+			}
+		}
+		
+		function deleteEvent()
+		{
+			var form=document.getElementById(selectedTab).elements;
+			var count=0;
+			var deleteEvent=[];
+			for(var i=0;i<form.length;i++)
+			{
+				if(form[i].checked)
+				{
+					var json=form[i].value;
+					var data=JSON.parse(json);
+					deleteEvent[count]=data.Event_ID;
+					count++;
+				}
+			}
+			if(count==0)
+			{
+				alert("No Item was selected!!");
+			}
+			else
+			{
+				if(confirm("Are your sure?"))
+				{
+
+					window.location.href = "delete_event.php?deleteEvent="+JSON.stringify(deleteEvent);
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+		
+		function editEvent(data)
+		{
+			var json=data;
+			var editData=JSON.parse(json);
+			document.forms["editForm"]["id"].value=editData.Event_ID;
+			document.forms["editForm"]["title"].value=editData.Event_Title;
+			document.forms["editForm"]["logo"].value=editData.Event_Logo;
+			document.forms["editForm"]["s_month"].value=editData.Event_StartMonth;
+			document.forms["editForm"]["s_day"].value=editData.Event_StartDay;
+			document.forms["editForm"]["s_year"].value=editData.Event_StartYear;
+			document.forms["editForm"]["e_month"].value=editData.Event_EndMonth;
+			document.forms["editForm"]["e_day"].value=editData.Event_EndDay;
+			document.forms["editForm"]["e_year"].value=editData.Event_EndYear;
+			document.forms["editForm"]["s_hour"].value=editData.Event_StartHour;
+			document.forms["editForm"]["s_minute"].value=editData.Event_StartMinute;
+			document.forms["editForm"]["s_ch"].value=editData.Event_StartCH;
+			document.forms["editForm"]["e_hour"].value=editData.Event_EndHour;
+			document.forms["editForm"]["e_minute"].value=editData.Event_EndMinute;
+			document.forms["editForm"]["e_ch"].value=editData.Event_EndCH;
+			document.forms["editForm"]["description"].value=editData.Event_Description;
+			document.forms["editForm"]["country"].value=editData.Event_Country;
+			document.forms["editForm"]["state"].value=editData.Event_State;
+			document.forms["editForm"]["city"].value=editData.Event_City;
+			document.forms["editForm"]["street"].value=editData.Event_Street;
+			document.forms["editForm"]["deadline"].value=editData.Event_Deadline;
+			document.forms["editForm"]["number"].value=editData.Event_Slot;
+			document.forms["editForm"]["contact"].value=editData.Event_ContactNumber;
+			document.forms["editForm"]["file"].value=editData.Event_File;
+			document.forms["editForm"]["privacy"].value=editData.Event_Privacy;
+			document.forms["editForm"]["password"].value=editData.Event_Password;
+			document.forms["editForm"]["status"].value=editData.Event_Status;
+			var num='a';
+			if(editData.Event_Slot==0)
+			{
+				num='Any';
+			}
+			numberofparticipants(num);
+			privacypassword(editData.Event_Privacy);
+		}
+		
+		function checkAll(element,form) 
+		{
+			var checkboxes = form.elements;
+			 if (element.checked) 
+			 {
+				 for (var i = 0; i < checkboxes.length; i++) 
+				 {
+					 if (checkboxes[i].type == 'checkbox') 
+					 {
+						 checkboxes[i].checked = true;
+					 }
+				 }
+			 } 
+			 else 
+			 {
+				 for (var i = 0; i < checkboxes.length; i++) 
+				 {
+					 if (checkboxes[i].type == 'checkbox') 
+					 {
+						 checkboxes[i].checked = false;
+					 }
+				 }
+			 }
+		}
+		
+		function checkedCounter()
+		{
+			var form=document.getElementById(selectedTab).elements;
+			var count=0;
+			var editData;
+			for(var i=0;i<form.length;i++)
+			{
+				if(form[i].checked)
+				{
+					count++;
+					editData=form[i].value;
+				}
+			}
+			if(count!=1)
+			{
+				alert("check 1 only!");
+			}
+			else
+			{
+
+				$('#full-width').modal('show');
+				editEvent(editData);
+			}
+		}
+		
+		$(document).ready(function () {
+			$("input#editprofile").click(function(){
+				$.ajax({
+					type: "POST",
+					url: "edit_profile.php",
+					data: $('form#edituser').serialize(),
+					success: function(){
+						$("#static").modal('hide');
+						location.reload();
+					},
+					error: function(){
+						//alert("Failed to Edit! Try Again Later..");
+					}
+				});
+			});
+		});
+		$(document).ready(function () {
+			$("input#submit").click(function(){
+				$.ajax({
+					type: "POST",
+					url: "edit_event.php",
+					data: $('form#editForm').serialize(),
+					success: function(){
+						$("#full-width").modal('hide');
+						location.reload();
+					},
+					error: function(){
+						alert("Failed to Edit! Try Again Later..");
+					}
+				});
+			});
+		});
+	$(document).ready(function () {
+		$(".button").click(function(){
+			var t=this.id;
+			var v=this.value;
+			$.ajax({
+				type: "POST",
+				url: "status_update.php",
+				data: {status:v,respond:t},
+				success: function(){
+
+				},
+				error: function(){
+					alert("Failed to Edit! Try Again Later..");
+				}
+			});
+		});
+	});
+
+    </script>
+
 </div>
 </body>
 </html>

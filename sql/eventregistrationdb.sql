@@ -1,3 +1,6 @@
+
+
+
 -- phpMyAdmin SQL Dump
 -- version 4.2.11
 -- http://www.phpmyadmin.net
@@ -7,6 +10,23 @@
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
+/*   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+*/
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -15,6 +35,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
+
+
 
 --
 -- Database: `eventregistrationdb`
