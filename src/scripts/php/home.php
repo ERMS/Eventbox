@@ -46,6 +46,10 @@
 </head>
 <body>   
     
+<<<<<<< HEAD
+=======
+    
+>>>>>>> origin/master
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- /navigation -->
         <div class="container">
             <div class="navbar-header">
