@@ -1,62 +1,51 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
 <?php
 include "connectdb.php";
 $con=connectdb();
 $query=mysqli_query($con,"SELECT `User_Email` FROM `user`");
 $v=0;
-while($data=mysqli_fetch_array($query))
+while($data=mysqli_fetch_array($query))                           // stores all the currently registered emails
 {
     $values[$v]=$data['User_Email'];
     $v++;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Eventbox</title>
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
-    <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../js/function.js"></script>
-</head>
 	
-	<script>
-		
-		var email='<?php echo json_encode($values); ?>';
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eventbox</title>
 
-			function checkmail(mail) // function for checking email if email is laready registered in the database or not
-			{
-				json=JSON.parse(email);
-				for(var i=0;json.length;i++)
-				{
-					if(mail==json[i])
-					{
-						alert("This E-mail is already Registered!!");
-						return false;
-					}
-				}
-			}
-		
-			function confirmpassword() // function for verifying password
-			{   
-				var mail = document.forms["register"]["email"].value;
-				var password = document.forms["register"]["password"].value;
-				var password2 = document.forms["register"]["password_confirmation"].value;
-				return checkmail(mail);
-				if(password != password2)
-				{
-					alert("Password Does not match!");
-					return false;
-				}
-			}
-		
-	</script>
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
+    <link rel="stylesheet" type="txt/css" href="../../css/style.css">
 	
+</head>
 <body>
     
-    <!-- Start-Navigation -->
+    
     <nav class="navbar navbar-inverse navbar-fixed-top" style="height:100px;" role="navigation">
      <div class="navbar-inner">
             <div class="nav-center navbar-fixed-bottom">
@@ -64,11 +53,10 @@ while($data=mysqli_fetch_array($query))
             </div>
         </div>
     </nav>
-    <!-- End Navigation -->
+    
 
-	<!-- Section Register -->
     <section id="login">
-        <div class="container"> 
+        <div class="container">
             <div class="form-wrap">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
@@ -76,8 +64,6 @@ while($data=mysqli_fetch_array($query))
                             <div class="panel-body">
                                 <h1>Sign Up</h1>
 			                    <hr>
-									
-								<!-- Start Registraton Form -->
                                     <form name="register" role="form" action="registration.php" method="post" onsubmit="return confirmpassword()">
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-6 col-md-6">
@@ -130,7 +116,6 @@ while($data=mysqli_fetch_array($query))
                                             </div>
                                         </div>
                                     </form>
-									<!-- End Registraton Form -->
                                     </div>
                                 </div>
                             </div>
@@ -138,9 +123,47 @@ while($data=mysqli_fetch_array($query))
                     </div>
                 </div>
             </div>
-        </div>
+        </div> <!-- /.container -->
 	</section>
-	<!-- end Section Register -->
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="src/scripts/js/boostrap.min.js"></script>
+
+	<script>
+		
+		var email='<?php echo json_encode($values); ?>';
+		
+		function checkmail(mail)                                        //  checks whether the email is already in use 
+		{
+			json=JSON.parse(email);
+			for(var i=0;i<json.length;i++)
+			{
+				if(mail==json[i])
+				{
+					alert("This E-mail is already Registered!!");
+					return false;
+				}
+			}
+		}
+		
+		function confirmpassword()                                     //  assurance of the password inputed 
+		{   
+			var mail = document.forms["register"]["email"].value;
+			var password = document.forms["register"]["password"].value;
+			var password2 = document.forms["register"]["password_confirmation"].value;
+			if(checkmail(mail)==false)
+			{
+				return false;
+			}
+			if(password != password2)
+			{
+				alert("Password Does not match!");
+				return false;
+			}
+		}
+		
+	</script>
         
 </body>
-</html>

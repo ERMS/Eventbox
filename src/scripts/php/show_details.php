@@ -1,70 +1,53 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <?php
-include "class.php";
-session_start();
-if (!isset($_SESSION['user']))
-{
-    header("location:login_form.php");
-}
-$event=$_SESSION['eventobject'];
-$forms=$_SESSION['formobject'];
-$parts=$_SESSION['participantslist'];
+
+    include "class.php";
+
+    session_start();
+
+    if (!isset($_SESSION['user']))
+    {
+        header("location:login_form.php");
+    }
+    
+    $event=$_SESSION['eventobject'];
+    $forms=$_SESSION['formobject'];
+    $parts=$_SESSION['participantslist'];
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Eventbox</title>    
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
+    <title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
     <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../js/function.js"></script>
+
 </head>
-	
-<script>
-	
-	var formorder=<?php echo $forms->F_order; ?>;
-	var count=0;
-	
-	function generateForm(divName,formElemID,labelName){
-		var newdiv = document.createElement('div');
-		count++;
-		switch(formElemID) {
-			  case 'name':
-				   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='Last'></div></div></div>";
-				   break;
-
-			  case 'date':
-				   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' disabled class='form-control' placeholder='mm'></div><div class='col-md-2'><input  id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='dd'></div><div class='col-md-2'><input type='text' disabled class='form-control'  id='"+formElemID+count+"' placeholder='yyyy'></div></div></div>";
-				   break;
-			  case 'email':
-				   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' disabled class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
-				   break;
-			  case 'address':
-				   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='State'><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div></div></div>";
-				   break;
-			  case 'text':
-				   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled id='"+formElemID+count+"' class='form-control' placeholder='"+labelName+"'></div></div></div>";
-				   break;
-			  case 'textarea':
-				   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'> <textarea disabled id='"+formElemID+count+"' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
-				   break;
-			  case 'link':
-				   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled class='form-control' id='"+formElemID+count+"' placeholder='https://'></div></div></div>";
-				   break;
-		}
-		document.getElementById(divName).appendChild(newdiv);
-	}
-	window.onload = function() {
-		for(var i=0;i<formorder.length;i++)
-		{
-			generateForm('form',formorder[i][2],formorder[i][0]);
-
-		}
-	};
-
-</script>
 <body>
     
     <!-- navigation -->
@@ -214,6 +197,55 @@ $parts=$_SESSION['participantslist'];
             <hr>
         </div>        
     </section>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/boostrap.min.js"></script>
+
+    <script>
+    
+        var formorder=<?php echo $forms->F_order; ?>;
+        var count=0;
+        
+        function generateForm(divName,formElemID,labelName){
+            var newdiv = document.createElement('div');
+            count++;
+            switch(formElemID) {
+                  case 'name':
+                       newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='Last'></div></div></div>";
+                       break;
+
+                  case 'date':
+                       newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' disabled class='form-control' placeholder='mm'></div><div class='col-md-2'><input  id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='dd'></div><div class='col-md-2'><input type='text' disabled class='form-control'  id='"+formElemID+count+"' placeholder='yyyy'></div></div></div>";
+                       break;
+                  case 'email':
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' disabled class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
+                       break;
+                  case 'address':
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='State'><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div></div></div>";
+                       break;
+                  case 'text':
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled id='"+formElemID+count+"' class='form-control' placeholder='"+labelName+"'></div></div></div>";
+                       break;
+                  case 'textarea':
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'> <textarea disabled id='"+formElemID+count+"' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
+                       break;
+                  case 'link':
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled class='form-control' id='"+formElemID+count+"' placeholder='https://'></div></div></div>";
+                       break;
+            }
+            document.getElementById(divName).appendChild(newdiv);
+        }
+        window.onload = function() {
+            for(var i=0;i<formorder.length;i++)
+            {
+                generateForm('form',formorder[i][2],formorder[i][0]);
+
+            }
+        };
+
+    </script>
 
 </body>
 </html>

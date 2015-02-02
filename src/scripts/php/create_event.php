@@ -1,80 +1,51 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <?php
-session_start();
-date_default_timezone_set('Asia/Manila');
-if (!isset($_SESSION['user']))
-{
-    header("location:login_form.php");
-}
+
+	session_start();
+
+	date_default_timezone_set('Asia/Manila');
+
+	if (!isset($_SESSION['user']))
+	{
+		header("location:login_form.php");
+	}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Eventbox</title>
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
     <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../js/function.js"></script>
-</head>
-	
-<script>
-	
-	function verify()
-	{
-		var pass = document.getElementById("password").value;
-		var vpass = document.getElementById("vpassword").value;
-		if(pass!=vpass)
-		{
-			alert("password does not match!");
-			return false;
-		}
-	}
-	
-	function numberofparticipants(num)
-	{
-		if(num=="Any")
-		{
-			document.getElementById("number").style.visibility="Hidden";
-			document.getElementById("lnum").style.visibility="Hidden";
-			document.getElementById("number").disabled=true;
-		}
-		else
-		{
-			document.getElementById("number").style.visibility="Visible"; 
-			document.getElementById("lnum").style.visibility="Visible";   
-			document.getElementById("number").disabled=false;
-		}
-	}
-	
-	function privacypassword(privacy)
-	{
-		if(privacy=="private")
-		{
-			document.getElementById("password").style.visibility="Visible";
-			document.getElementById("lpassword").style.visibility="Visible";
-			document.getElementById("vpassword").style.visibility="Visible";
-			document.getElementById("lvpassword").style.visibility="Visible";
-			document.getElementById("password").disabled=false;
-			document.getElementById("vpassword").disabled=false;
-		}
-		else
-		{
-			document.getElementById("password").style.visibility="Hidden";
-			document.getElementById("lpassword").style.visibility="Hidden";
-			document.getElementById("vpassword").style.visibility="Hidden";
-			document.getElementById("lvpassword").style.visibility="Hidden"; 
-			document.getElementById("password").disabled=true;
-			document.getElementById("vpassword").disabled=true;
-		}
-	}
-	window.onload = function() {
-	  numberofparticipants('Any');
-	  privacypassword('default');
-	};
-</script>
-	
+
+</head>	
 <body>
+
     <!-- start navigation -->
       <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- /navigation -->
         <div class="container">
@@ -102,10 +73,10 @@ if (!isset($_SESSION['user']))
                       </ul>
                     </li>
                   </ul>
-            </div><!--/.nav-collapse -->
+            </div>
         </div>
     </nav>
-  <!-- /navigation-->  
+    <!-- /navigation-->  
   
 	<section id="create">
     <div class="container">
@@ -121,11 +92,6 @@ if (!isset($_SESSION['user']))
         <!-- content body row -->
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-danger" role="alert">
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <span class="sr-only">Error:</span>
-                  Check Your Inputs
-                </div>
 				<!-- start create event form -->
                 <form role="form" action="store_event.php" method="post" onsubmit="return verify()"> 
                     <div class="panel panel-default">
@@ -133,7 +99,8 @@ if (!isset($_SESSION['user']))
                             <h4>Event Details</h4>
                         </div>
                         <div class="panel-body">
-                            <div class="row"> <!-- first row event details -->
+                            <div class="row"> 
+                                <!-- first row event details -->
                                 <div class="form-group">
                                     <div class="col-sm-8 col-md-6">
                                         <label for="title" class="" >Event Title</label>
@@ -364,8 +331,8 @@ if (!isset($_SESSION['user']))
                                             <label for="venue">Street</label>
                                             <input name="street" type="text" id="venue" class="form-control" placeholder="Street" required>
                                         </div>
-                                        <div class="col-sm-3 col-md-3">
-                                            <label for="venue">Additional Details</label>
+                                        <div class="col-sm-3 col-md-12">
+                                            <label for="venue">Venue Additional Details</label>
                                             <input name="addition" type="text" id="venue" class="form-control" placeholder="Additional Details" required>
                                         </div>   
                                     </div>
@@ -468,8 +435,68 @@ if (!isset($_SESSION['user']))
         </div><!--end content row -->                  
     </div>
     </section>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/boostrap.min.js"></script>
          
+    <script>
     
+        function verify()
+        {
+            var pass = document.getElementById("password").value;
+            var vpass = document.getElementById("vpassword").value;
+            if(pass!=vpass)
+            {
+                alert("password does not match!");
+                return false;
+            }
+        }
+        
+        function numberofparticipants(num)
+        {
+            if(num=="Any")
+            {
+                document.getElementById("number").style.visibility="Hidden";
+                document.getElementById("lnum").style.visibility="Hidden";
+                document.getElementById("number").disabled=true;
+            }
+            else
+            {
+                document.getElementById("number").style.visibility="Visible"; 
+                document.getElementById("lnum").style.visibility="Visible";   
+                document.getElementById("number").disabled=false;
+            }
+        }
+        
+        function privacypassword(privacy)
+        {
+            if(privacy=="private")
+            {
+                document.getElementById("password").style.visibility="Visible";
+                document.getElementById("lpassword").style.visibility="Visible";
+                document.getElementById("vpassword").style.visibility="Visible";
+                document.getElementById("lvpassword").style.visibility="Visible";
+                document.getElementById("password").disabled=false;
+                document.getElementById("vpassword").disabled=false;
+            }
+            else
+            {
+                document.getElementById("password").style.visibility="Hidden";
+                document.getElementById("lpassword").style.visibility="Hidden";
+                document.getElementById("vpassword").style.visibility="Hidden";
+                document.getElementById("lvpassword").style.visibility="Hidden"; 
+                document.getElementById("password").disabled=true;
+                document.getElementById("vpassword").disabled=true;
+            }
+        }
+        window.onload = function() {
+          numberofparticipants('Any');
+          privacypassword('default');
+        };
+
+    </script>
     
 </body>
 </html>
