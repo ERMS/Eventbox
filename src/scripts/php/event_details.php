@@ -109,10 +109,36 @@
                     </div>
                 </div>
 				<!-- user name -->
-				
-                <div class="col-md-2 col-md-offset-4">
-                    <p class="text-center event text-uppercase"> <strong>2 days more to go</strong> </p>
-                    <?php
+				<?php
+					echo "<div class='col-md-2 col-md-offset-4'>";
+					$date1 = date("Y")."-".date("m")."-".date("d");
+	                $date2 = $event['Event_StartYear'].date('m', strtotime($event['Event_StartMonth']))."-".$event['Event_StartDay'];
+	                $diff = abs(strtotime($date2) - strtotime($date1));
+	                $years = floor($diff / (365*60*60*24));
+	                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+	                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+					if($years==0)
+	                {
+	                    if($months==0)
+	                    {
+	                        if($days==0)
+	                        {
+	                            echo "<p class='text-center event text-uppercase'> <strong>Event is Going On!</strong> </p>";
+	                    	}
+	                    	else
+	                    	{
+	                        	echo "<p class='text-center event text-uppercase'> <strong>".$days."days more to go!</strong> </p>";
+	                    	}
+	                    }
+	                    else
+	                    {
+	                        echo "<p class='text-center event text-uppercase'> <strong>".$months."months, ".$days."days more to go!</strong> </p>";
+	                    }
+	                }
+	                else
+	                {
+	                	echo "<p class='text-center event text-uppercase'> <strong>".$years."years, ".$months."months, ".$days."days more to go!</strong> </p>";
+	                }
                     $cu=$_SESSION['user']['id'];
                     $u=mysqli_query($con,"SELECT `User_ID` FROM `event` WHERE `Event_ID`='$id'");
                     $h=mysqli_fetch_array($u);
@@ -177,11 +203,14 @@
 									echo "
 									<div class='panel-body'>
 										<p><strong> When : </strong> ".$event['Event_StartMonth']." ".$event['Event_StartDay'].", ".$event['Event_StartYear']." - ".$event['Event_EndMonth']." ".$event['Event_EndDay'].", ".$event['Event_EndYear']." @ ".$event['Event_StartHour'].":".$event['Event_StartMinute']." ".$event['Event_StartCH']." - ".$event['Event_EndHour'].":".$event['Event_EndMinute']." ".$event['Event_EndCH']."</p>
-										<p><strong> Where : </strong> ".$event['Event_Country'].", ".$event['Event_State'].", ".$event['Event_Street'].", ".$event['Event_City']." </p>
+										<p><strong> Where : </strong> ".$event['Event_Country'].", ".$event['Event_Street'].", ".$event['Event_City']." </p>
 										<p><strong> Decription : </strong> ".$event['Event_Description']."</p>
 										<p><strong> Deadline of Registration : </strong> ".$event['Event_Deadline']." day before the Event </p>
-										<p>
-											<strong> Number of participants : </strong>  <br>
+										<p>"; 
+										$event_id=$event['Event_ID'];
+                                        $num=mysqli_query($con,"SELECT * FROM `attendance` WHERE `Event_ID`='$event_id'");
+										echo "
+											<strong> Number of participants : ".mysqli_num_rows($num)."</strong>  <br>
 											<strong> Slot left : </strong> ".$event['Event_Slot']."
 										</p>";
 										$userid=$event['User_ID'];
@@ -199,7 +228,15 @@
 					<div role="tabpanel" class="tab-pane" id="profile">
 						<div class="event table-responsive">
 						<?php
-						$data1=mysqli_query($con,"SELECT * FROM `attendance` WHERE `Event_ID`='$id'");
+						if($_SESSION['user']['id']==$event['User_ID'])
+						{
+							$string="SELECT * FROM `attendance` WHERE `Event_ID`='$id'";
+						}
+						else
+						{
+							$string="SELECT * FROM `attendance` WHERE `Event_ID`='$id' AND `Status`='Approved'";
+						}
+						$data1=mysqli_query($con,$string);
 						if(mysqli_num_rows($data1)>0)
 						{
 
@@ -261,7 +298,10 @@
 										  <td class='hidden-sm hidden-xs'>".$attendee['User_Email']."</td>";
 									if($userdata['Status']=='Approved')
 									{
-										echo "<td>".$userdata['Status']."</td>";
+										if($hu==$cu)
+										{
+											echo "<td>".$userdata['Status']."</td>";
+										}
 									}
 									else
 									{
@@ -605,11 +645,7 @@
                                                     <div class="col-sm-3 col-md-3">
                                                         <label for="venue">Country</label>
                                                         <input type="text" id="venue" name="country" class="form-control" placeholder="Country" required>
-                                                    </div>
-                                                    <div class="col-sm-3 col-md-3">
-                                                        <label for="venue">State</label>
-                                                        <input type="text" id="venue" name="state" class="form-control" placeholder="State" required>
-                                                    </div>   
+                                                    </div>  
                                                     <div class="col-sm-3 col-md-3">
                                                         <label for="venue">City</label>
                                                         <input type="text" id="venue" name="city" class="form-control" placeholder="City" required>
@@ -757,7 +793,7 @@
 					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
 					   break;
 				  case 'address':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='State'><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
 					   break;
 				  case 'text':
 					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div>";
@@ -882,7 +918,6 @@
 			document.forms["editForm"]["e_ch"].value=editData.Event_EndCH;
 			document.forms["editForm"]["description"].value=editData.Event_Description;
 			document.forms["editForm"]["country"].value=editData.Event_Country;
-			document.forms["editForm"]["state"].value=editData.Event_State;
 			document.forms["editForm"]["city"].value=editData.Event_City;
 			document.forms["editForm"]["street"].value=editData.Event_Street;
 			document.forms["editForm"]["deadline"].value=editData.Event_Deadline;
