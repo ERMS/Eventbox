@@ -318,11 +318,7 @@
                                         <div class="col-sm-3 col-md-3">
                                             <label for="venue">Country</label>
                                             <input name="country" type="text" id="venue" class="form-control" placeholder="Country" required>
-                                        </div>
-                                        <div class="col-sm-3 col-md-3">
-                                            <label for="venue">State</label>
-                                            <input name="state" type="text" id="venue" class="form-control" placeholder="State" required>
-                                        </div>   
+                                        </div>  
                                         <div class="col-sm-3 col-md-3">
                                             <label for="venue">City</label>
                                             <input name="city" type="text" id="venue" class="form-control" placeholder="City" required>

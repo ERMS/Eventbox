@@ -26,7 +26,10 @@
     {
         header("location:login_form.php");
     }
-    
+    if(!isset($_SESSION['eventobject']))                                    // prevents user from going back after storing the event details
+    {
+        header("location:my_event.php");
+    }
     $event=$_SESSION['eventobject'];
     $forms=$_SESSION['formobject'];
     $parts=$_SESSION['participantslist'];
@@ -113,7 +116,7 @@
                                 <div class='col-md-7 text-justified'>
                                     <p><strong> When : </strong>  $event->E_startmonth $event->E_startday, $event->E_startyear - $event->E_endmonth $event->E_endday, $event->E_endyear@ $event->E_starthour:$event->E_startminute $event->E_startch - $event->E_endhour:$event->E_endminute $event->E_endch </p>
                                     
-                                    <p><strong> Where : </strong> $event->E_country, $event->E_state, $event->E_street, $event->E_city</p>
+                                    <p><strong> Where : </strong> $event->E_country, $event->E_street, $event->E_city</p>
                                     <p><strong> Decription : </strong>$event->E_description</p>
                                     <p><strong> Deadline of Registration : </strong> {how}</p>
                                 </div>
@@ -130,7 +133,7 @@
                                     $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
                                     $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
                                     echo "
-                                    <p><strong>$date2 Event Status: </strong> $years years, $months months, $days days more to go</p>
+                                    <p><strong>Event Status: </strong> $years years, $months months, $days days more to go</p>
                                 </div>";
                                 ?>
                         </div>
@@ -223,7 +226,7 @@
                        newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' disabled class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
                        break;
                   case 'address':
-                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='State'><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div></div></div>";
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div></div></div>";
                        break;
                   case 'text':
                        newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled id='"+formElemID+count+"' class='form-control' placeholder='"+labelName+"'></div></div></div>";
@@ -240,7 +243,7 @@
         window.onload = function() {
             for(var i=0;i<formorder.length;i++)
             {
-                generateForm('form',formorder[i][2],formorder[i][0]);
+                generateForm('form',formorder[i][2],formorder[i][1]);
 
             }
         };

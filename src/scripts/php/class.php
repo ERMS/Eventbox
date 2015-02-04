@@ -18,7 +18,7 @@
 
 <?php
 
-
+	error_reporting(0);
 	include "connectdb.php"; 													//connect to the database
 	require '../../../phpmailer/PHPMailer-master/PHPMailerAutoload.php';       //Third party mailing php functions
 	require_once('../../../phpmailer/PHPMailer-master/class.phpmailer.php');   //object of the third party function
@@ -60,7 +60,6 @@
 		public $E_deadline;
 		public $E_slot;
 		public $E_file;
-		public $E_state;
 		public $E_country;
 		public $E_city;
 		public $E_street;
@@ -116,8 +115,7 @@
 		public function createEvent($user)										// stores the data to the database
 		{
 			$con=connectdb();
-
-	    	mysqli_query($con,"INSERT INTO `event`(`User_ID`,`Event_Title`,`Event_Description`,`Event_ContactNumber`,`Event_Privacy`,`Event_Deadline`,`Event_Slot`,`Event_File`,`Event_State`,`Event_Country`,`Event_City`,`Event_Street`,`Event_Additional`,`Event_Logo`,`Event_Password`,`Event_StartHour`,`Event_StartMinute`,`Event_StartCH`,`Event_EndHour`,`Event_EndMinute`,`Event_EndCH`,`Event_StartDay`,`Event_StartMonth`,`Event_StartYear`,`Event_EndDay`,`Event_EndMonth`,`Event_EndYear`, `Event_Status`) VALUES ((SELECT `User_ID` FROM `user` WHERE `User_ID`='$user'), '$this->E_title', '$this->E_description','$this->E_contactnumber','$this->E_privacy','$this->E_deadline','$this->E_slot','$this->E_file','$this->E_state','$this->E_country','$this->E_city','$this->E_street','$this->additional','$this->E_logo','$this->E_password','$this->E_starthour','$this->E_startminute','$this->E_startch','$this->E_endhour','$this->E_endminute','$this->E_endch','$this->E_startday','$this->E_startmonth','$this->E_startyear','$this->E_endday','$this->E_endmonth','$this->E_endyear','$this->E_status')");
+	    	mysqli_query($con,"INSERT INTO `event`(`User_ID`,`Event_Title`,`Event_Description`,`Event_ContactNumber`,`Event_Privacy`,`Event_Deadline`,`Event_Slot`,`Event_File`,`Event_Country`,`Event_City`,`Event_Street`,`Event_Additional`,`Event_Logo`,`Event_Password`,`Event_StartHour`,`Event_StartMinute`,`Event_StartCH`,`Event_EndHour`,`Event_EndMinute`,`Event_EndCH`,`Event_StartDay`,`Event_StartMonth`,`Event_StartYear`,`Event_EndDay`,`Event_EndMonth`,`Event_EndYear`, `Event_Status`) VALUES ((SELECT `User_ID` FROM `user` WHERE `User_ID`='$user'), '$this->E_title', '$this->E_description','$this->E_contactnumber','$this->E_privacy','$this->E_deadline','$this->E_slot','$this->E_file','$this->E_country','$this->E_city','$this->E_street','$this->E_additional','$this->E_logo','$this->E_password','$this->E_starthour','$this->E_startminute','$this->E_startch','$this->E_endhour','$this->E_endminute','$this->E_endch','$this->E_startday','$this->E_startmonth','$this->E_startyear','$this->E_endday','$this->E_endmonth','$this->E_endyear','$this->E_status')");
 		    mysqli_close($con);
 		}
 

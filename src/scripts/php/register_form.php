@@ -130,7 +130,6 @@
                 </div>
             </div>
         </div> <!-- /.container -->
-<<<<<<< HEAD
 	</section>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
