@@ -46,10 +46,6 @@
 </head>
 <body>   
     
-<<<<<<< HEAD
-=======
-    
->>>>>>> origin/master
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- /navigation -->
         <div class="container">
             <div class="navbar-header">
@@ -110,11 +106,6 @@
                             <label for="search" class="sr-only">SEARCH</label>
                             <div class="input-group"><!--input-group -->
                                 <input type="text" name="search" class="form-control" placeholder="Search Events">
-                                <div class="input-group-btn">
-                                    
-                                    <ul class="dropdown-menu pull-right" width="250px" role="menu">
-                                    </ul>
-                                </div><!-- /btn-group -->
                                 <span class="input-group-btn">
                                     <input type="submit" class="btn btn-default" type="submit" value="Search"></input>
                                 </span>                                        
@@ -182,25 +173,51 @@
                                 $O_ID=$data['User_ID'];
                                 $O_user= mysqli_query($con, "SELECT * FROM `user` WHERE `User_ID`='$O_ID'");
                                 $ouser=mysqli_fetch_array($O_user);
-                                echo "
-                                <td class='text-center hidden-sm hidden-xs'> ".$ouser['User_FirstName']." ".$ouser['User_LastName']."</td>
+                        echo "  <td class='text-center hidden-sm hidden-xs'> ".$ouser['User_FirstName']." ".$ouser['User_LastName']."</td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Description']." </td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_State'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." </td>
+                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>
+                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." - ".$data['Event_EndMonth']."/".$data['Event_EndDay']."/".$data['Event_EndYear']." </td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>";
                                 $eventid=$data['Event_ID'];
-                                $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid'");
+                                $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid' AND `Status`='Approved'");
                         echo"   <td class='text-center hidden-sm hidden-xs'>".mysqli_num_rows($partsnum)."</td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Slot']." </td>";
                                 $date1 = date("Y")."-".date("m")."-".date("d");
-                                $date2 = $data['Event_StartYear'].date('m', strtotime($data['Event_StartMonth']))."-".$data['Event_StartDay'];
-                                $diff = abs(strtotime($date2) - strtotime($date1));
-                                $years = floor($diff / (365*60*60*24));
-                                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-                                echo "<td class='text-center hidden-sm hidden-xs'>".$years."years, ".$months."months, ".$days."days more to go</td>
-                            </tr>
-                            ";
+                                $date2 = $data['Event_StartYear']."-".date('m', strtotime($data['Event_StartMonth']))."-".$data['Event_StartDay'];
+                                $diff = strtotime($date2) - strtotime($date1);                      // gets the # of seconds till the event
+                                $years = floor($diff / (365*60*60*24));                                           // difference in years
+                                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));                 // difference in months
+                                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24)); // difference in days
+                                if($diff>0)
+                                {
+                                    if($years==0)
+                                    {
+                                        if($months==0)
+                                        {
+                                            if($days==0)
+                                            {
+                                                echo "<td class='text-center hidden-sm hidden-xs'>Event is Going On!</td>";
+                                            }
+                                            else
+                                            {
+                                                echo "<td class='text-center hidden-sm hidden-xs'>".$days."days more to go!</td>";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            echo "<td class='text-center hidden-sm hidden-xs'>".$months."months, ".$days."days more to go!</td>";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        echo "<td class='text-center hidden-sm hidden-xs'>".$years."years, ".$months."months, ".$days."days more to go!</td>";
+                                    }
+                                }
+                                else
+                                {
+                                    echo "<td class='text-center hidden-sm hidden-xs'>Event has Ended!</td>";
+                                }
+                        echo "</tr>";
             }
                             echo"</form>
                         </tbody>
