@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 
 <!--   
     This file is part of Eventbox.
@@ -36,28 +36,6 @@
 <body>
     
     <!-- Navigation -->
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-	<!--[if lt IE 9]>
-  	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  	<![endif]-->
-	<title>Eventbox</title>
-    <meta charset="utf-8">
-    <link href="css\bootstrap.css" rel="stylesheet">
-    <link href="css\bootstrap-responsive.css" rel="stylesheet">
-    <link rel="stylesheet" type="txt/css" href="bootstrap/css/bootstrap.css"></link>
-    <link rel="stylesheet" type="txt/css" href="bootstrap/css/bootstrap.min.css">   
-    <link rel="stylesheet" type="txt/css" href="css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-</head>
-<body>
-    
-    
->>>>>>> origin/master
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
@@ -77,17 +55,10 @@
                         <p class="navbar-text"><a href="scripts/php/register_form.php" class="navbar-link">Sign Up For Free!</a></p>
                     </li>
                 </ul>
-<<<<<<< HEAD
             </div>
         </div>
     </nav>
     <!-- End Navigation -->
-=======
-            </div><!--/.nav-collapse -->
-        </div>
-    </nav>
-    
->>>>>>> origin/master
     
     <section role="content">
         <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="4000" id="bs-carousel">
@@ -111,11 +82,6 @@
                     </hgroup>
                     <a href="scripts/php/home.php" class="btn btn-hero btn-lg" role="button">Search Events!</a>
                 </div>
-<<<<<<< HEAD
-
-                <!-- slide images -->
-=======
->>>>>>> origin/master
                 <div class="item slides active">
                     <div class="slide-1">
 
@@ -134,14 +100,11 @@
            </div> 
         </div>
     </section>
-<<<<<<< HEAD
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="scripts/js/boostrap.min.js"></script>
 
-=======
->>>>>>> origin/master
 </body>
 </html>
