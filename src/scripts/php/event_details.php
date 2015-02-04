@@ -794,10 +794,14 @@
 					   break;
 				  case 'address':
 <<<<<<< HEAD
+<<<<<<< HEAD
 					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
 =======
 					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='State'><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
 >>>>>>> origin/master
+=======
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
+>>>>>>> 9457ec78c95ce73280961f74e25e64df19f35f46
 					   break;
 				  case 'text':
 					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div>";
@@ -923,9 +927,12 @@
 			document.forms["editForm"]["description"].value=editData.Event_Description;
 			document.forms["editForm"]["country"].value=editData.Event_Country;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 			document.forms["editForm"]["state"].value=editData.Event_State;
 >>>>>>> origin/master
+=======
+>>>>>>> 9457ec78c95ce73280961f74e25e64df19f35f46
 			document.forms["editForm"]["city"].value=editData.Event_City;
 			document.forms["editForm"]["street"].value=editData.Event_Street;
 			document.forms["editForm"]["deadline"].value=editData.Event_Deadline;
