@@ -18,7 +18,11 @@
 
 <?php
 
+<<<<<<< HEAD
 	error_reporting(0);
+=======
+
+>>>>>>> origin/master
 	include "connectdb.php"; 													//connect to the database
 	require '../../../phpmailer/PHPMailer-master/PHPMailerAutoload.php';       //Third party mailing php functions
 	require_once('../../../phpmailer/PHPMailer-master/class.phpmailer.php');   //object of the third party function
@@ -60,6 +64,10 @@
 		public $E_deadline;
 		public $E_slot;
 		public $E_file;
+<<<<<<< HEAD
+=======
+		public $E_state;
+>>>>>>> origin/master
 		public $E_country;
 		public $E_city;
 		public $E_street;
@@ -115,7 +123,12 @@
 		public function createEvent($user)										// stores the data to the database
 		{
 			$con=connectdb();
+<<<<<<< HEAD
 	    	mysqli_query($con,"INSERT INTO `event`(`User_ID`,`Event_Title`,`Event_Description`,`Event_ContactNumber`,`Event_Privacy`,`Event_Deadline`,`Event_Slot`,`Event_File`,`Event_Country`,`Event_City`,`Event_Street`,`Event_Additional`,`Event_Logo`,`Event_Password`,`Event_StartHour`,`Event_StartMinute`,`Event_StartCH`,`Event_EndHour`,`Event_EndMinute`,`Event_EndCH`,`Event_StartDay`,`Event_StartMonth`,`Event_StartYear`,`Event_EndDay`,`Event_EndMonth`,`Event_EndYear`, `Event_Status`) VALUES ((SELECT `User_ID` FROM `user` WHERE `User_ID`='$user'), '$this->E_title', '$this->E_description','$this->E_contactnumber','$this->E_privacy','$this->E_deadline','$this->E_slot','$this->E_file','$this->E_country','$this->E_city','$this->E_street','$this->E_additional','$this->E_logo','$this->E_password','$this->E_starthour','$this->E_startminute','$this->E_startch','$this->E_endhour','$this->E_endminute','$this->E_endch','$this->E_startday','$this->E_startmonth','$this->E_startyear','$this->E_endday','$this->E_endmonth','$this->E_endyear','$this->E_status')");
+=======
+
+	    	mysqli_query($con,"INSERT INTO `event`(`User_ID`,`Event_Title`,`Event_Description`,`Event_ContactNumber`,`Event_Privacy`,`Event_Deadline`,`Event_Slot`,`Event_File`,`Event_State`,`Event_Country`,`Event_City`,`Event_Street`,`Event_Additional`,`Event_Logo`,`Event_Password`,`Event_StartHour`,`Event_StartMinute`,`Event_StartCH`,`Event_EndHour`,`Event_EndMinute`,`Event_EndCH`,`Event_StartDay`,`Event_StartMonth`,`Event_StartYear`,`Event_EndDay`,`Event_EndMonth`,`Event_EndYear`, `Event_Status`) VALUES ((SELECT `User_ID` FROM `user` WHERE `User_ID`='$user'), '$this->E_title', '$this->E_description','$this->E_contactnumber','$this->E_privacy','$this->E_deadline','$this->E_slot','$this->E_file','$this->E_state','$this->E_country','$this->E_city','$this->E_street','$this->additional','$this->E_logo','$this->E_password','$this->E_starthour','$this->E_startminute','$this->E_startch','$this->E_endhour','$this->E_endminute','$this->E_endch','$this->E_startday','$this->E_startmonth','$this->E_startyear','$this->E_endday','$this->E_endmonth','$this->E_endyear','$this->E_status')");
+>>>>>>> origin/master
 		    mysqli_close($con);
 		}
 
@@ -179,6 +192,7 @@
 		public $hour;
 		public $minute;
 		public $ch;
+<<<<<<< HEAD
 
 		public function __construct()                                            //  stores the current date and time
 		{
@@ -206,6 +220,35 @@
 		{
 			$con=connectdb();
 
+=======
+
+		public function __construct()                                            //  stores the current date and time
+		{
+			$this->month=date("F");
+			$this->day=date("d");
+			$this->year=date("Y");
+			$this->hour=date("h");
+			$this->minute=date("i");
+			$this->ch=date("A");
+		}
+
+		public function request($u_id,$e_id)									//  sends request to join an event
+		{
+			$con=connectdb();
+
+			$query=mysqli_query($con,"SELECT * FROM `attendance` WHERE `Event_ID`='$e_id' AND `User_ID`='$u_id'");
+			if(mysqli_num_rows($query)==0)                                      // this also prevents string of same data to the database
+			{
+			mysqli_query($con,"INSERT INTO `attendance`(`Event_ID`, `User_ID`, `Status`, `Attendee_Title`, `Hour_Confirmed`, `Minute_Confirmed`, `CH_Confirmed`, `Day_Confirmed`, `Month_Confirmed`, `Year_Confirmed`, `Hour_Requested`, `Minute_Requested`, `CH_Requested`, `Day_Requested`, `Month_Requested`, `Year_Requested`) VALUES ((SELECT `Event_ID` FROM `event` WHERE `Event_ID`='$e_id'),(SELECT `User_ID` FROM `user` WHERE `User_ID`='$u_id'),'Pending','Request','00','00','--','00','00','0000','$this->hour','$this->minute','$this->ch','$this->day','$this->month','$this->year')");
+			}
+			mysqli_close($con);
+		}
+
+		public function invite($u_id,$e_id)										//  invite other users to join an event
+		{
+			$con=connectdb();
+
+>>>>>>> origin/master
 			$query=mysqli_query($con,"SELECT * FROM `attendance` WHERE `Event_ID`='$e_id' AND `User_ID`='$u_id'");
 			if(mysqli_num_rows($query)==0)                                       // this prevents storing of same data to the database
 			{

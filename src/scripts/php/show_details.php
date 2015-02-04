@@ -26,10 +26,14 @@
     {
         header("location:login_form.php");
     }
+<<<<<<< HEAD
     if(!isset($_SESSION['eventobject']))                                    // prevents user from going back after storing the event details
     {
         header("location:my_event.php");
     }
+=======
+    
+>>>>>>> origin/master
     $event=$_SESSION['eventobject'];
     $forms=$_SESSION['formobject'];
     $parts=$_SESSION['participantslist'];
@@ -226,7 +230,11 @@
                        newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' disabled class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
                        break;
                   case 'address':
+<<<<<<< HEAD
                        newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div></div></div>";
+=======
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='State'><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div></div></div>";
+>>>>>>> origin/master
                        break;
                   case 'text':
                        newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled id='"+formElemID+count+"' class='form-control' placeholder='"+labelName+"'></div></div></div>";
@@ -243,7 +251,11 @@
         window.onload = function() {
             for(var i=0;i<formorder.length;i++)
             {
+<<<<<<< HEAD
                 generateForm('form',formorder[i][2],formorder[i][1]);
+=======
+                generateForm('form',formorder[i][2],formorder[i][0]);
+>>>>>>> origin/master
 
             }
         };

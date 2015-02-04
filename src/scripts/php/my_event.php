@@ -847,7 +847,11 @@
 					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
 					   break;
 				  case 'address':
+<<<<<<< HEAD
 					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
+=======
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='State'><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
+>>>>>>> origin/master
 					   break;
 				  case 'text':
 					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div>";
@@ -974,12 +978,15 @@
 			}
 		}
 		
+<<<<<<< HEAD
         function updateResponse(response)
         {
             var id=document.getElementById(response).parentNode.id;
             document.getElementById(id).innerHTML="<p>"+response+"</p>";
         }
 
+=======
+>>>>>>> origin/master
 		function editEvent(data)
 		{
 			var json=data;
@@ -1001,6 +1008,10 @@
 			document.forms["editForm"]["e_ch"].value=editData.Event_EndCH;
 			document.forms["editForm"]["description"].value=editData.Event_Description;
 			document.forms["editForm"]["country"].value=editData.Event_Country;
+<<<<<<< HEAD
+=======
+			document.forms["editForm"]["state"].value=editData.Event_State;
+>>>>>>> origin/master
 			document.forms["editForm"]["city"].value=editData.Event_City;
 			document.forms["editForm"]["street"].value=editData.Event_Street;
 			document.forms["editForm"]["deadline"].value=editData.Event_Deadline;

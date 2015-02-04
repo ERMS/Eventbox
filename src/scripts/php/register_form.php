@@ -18,6 +18,7 @@
 
 
 <?php
+<<<<<<< HEAD
 
 	include "connectdb.php";
 
@@ -32,11 +33,25 @@
 		$v++;
 	}
 
+=======
+include "connectdb.php";
+$con=connectdb();
+$query=mysqli_query($con,"SELECT `User_Email` FROM `user`");
+$v=0;
+while($data=mysqli_fetch_array($query))                           // stores all the currently registered emails
+{
+    $values[$v]=$data['User_Email'];
+    $v++;
+}
+>>>>>>> origin/master
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 	
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,9 +64,59 @@
     <link rel="stylesheet" type="txt/css" href="../../css/style.css">
 	
 </head>
+<<<<<<< HEAD
 
 <body>   
     
+=======
+=======
+    <meta charset="UTF-8">
+	<!--[if lt IE 9]>
+  	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  	<![endif]-->
+	<title>Eventbox</title>
+    <meta charset="utf-8"> 
+    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
+    <link rel="stylesheet" type="txt/css" href="../../css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="../js/function.js"></script>
+</head>
+<script>
+var email='<?php echo json_encode($values); ?>';
+function checkmail(mail)                                        //  checks whether the email is already in use 
+{
+    json=JSON.parse(email);
+    for(var i=0;i<json.length;i++)
+    {
+        if(mail==json[i])
+        {
+            alert("This E-mail is already Registered!!");
+            return false;
+        }
+    }
+}
+function confirmpassword()                                     //  assurance of the password inputed 
+{   
+    var mail = document.forms["register"]["email"].value;
+    var password = document.forms["register"]["password"].value;
+    var password2 = document.forms["register"]["password_confirmation"].value;
+    if(checkmail(mail)==false)
+    {
+        return false;
+    }
+    if(password != password2)
+    {
+        alert("Password Does not match!");
+        return false;
+    }
+}
+</script>
+>>>>>>> origin/master
+<body>
+    
+    
+>>>>>>> origin/master
     <nav class="navbar navbar-inverse navbar-fixed-top" style="height:100px;" role="navigation">
      <div class="navbar-inner">
             <div class="nav-center navbar-fixed-bottom">
@@ -130,6 +195,10 @@
                 </div>
             </div>
         </div> <!-- /.container -->
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 	</section>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -171,5 +240,26 @@
 		}
 		
 	</script>
+<<<<<<< HEAD
+=======
+=======
+</section>
+        <!-- test later 
+    <footer id="footer" class="navbar-fixed-bottom">
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-8">
+                    <p>Copyright © Ateneo de Zamboanga University. All Right Reserve.</p>
+                </div>
+                <div class="col-xs-4">
+                    <p> Home . Privacy . About Us . Company. License . Contact Us</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+      -->  
+>>>>>>> origin/master
+>>>>>>> origin/master
         
 </body>

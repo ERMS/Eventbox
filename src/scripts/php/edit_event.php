@@ -42,6 +42,10 @@
 	$e_ch=$_POST['e_ch'];
 	$description=$_POST['description'];
 	$country=$_POST['country'];
+<<<<<<< HEAD
+=======
+	$state=$_POST['state'];
+>>>>>>> origin/master
 	$city=$_POST['city'];
 	$street=$_POST['street'];
 	$deadline=$_POST['deadline'];
@@ -53,7 +57,11 @@
 
 	$con=connectdb();
 
+<<<<<<< HEAD
 	mysqli_query($con,"UPDATE `event` SET `Event_Title`='$title',`Event_Description`='$description',`Event_ContactNumber`='$contact',`Event_Privacy`='$privacy',`Event_Deadline`='$deadline',`Event_Slot`='$slot',`Event_File`='$file',`Event_Country`='$country',`Event_City`='$city',`Event_Street`='$street',`Event_Logo`='$logo',`Event_Password`='$password',`Event_StartHour`='$s_hour',`Event_StartMinute`='$s_minute',`Event_StartCH`='$s_ch',`Event_EndHour`='$e_hour',`Event_EndMinute`='$e_minute',`Event_EndCH`='$e_ch',`Event_StartDay`='$s_day',`Event_StartMonth`='$s_month',`Event_StartYear`='$s_year',`Event_EndDay`='$e_day',`Event_EndMonth`='$e_month',`Event_EndYear`='$e_year',`Event_Status`='$status' WHERE `Event_ID`='$id' AND `User_ID`='$user'");
+=======
+	mysqli_query($con,"UPDATE `event` SET `Event_Title`='$title',`Event_Description`='$description',`Event_ContactNumber`='$contact',`Event_Privacy`='$privacy',`Event_Deadline`='$deadline',`Event_Slot`='$slot',`Event_File`='$file',`Event_State`='$state',`Event_Country`='$country',`Event_City`='$city',`Event_Street`='$street',`Event_Logo`='$logo',`Event_Password`='$password',`Event_StartHour`='$s_hour',`Event_StartMinute`='$s_minute',`Event_StartCH`='$s_ch',`Event_EndHour`='$e_hour',`Event_EndMinute`='$e_minute',`Event_EndCH`='$e_ch',`Event_StartDay`='$s_day',`Event_StartMonth`='$s_month',`Event_StartYear`='$s_year',`Event_EndDay`='$e_day',`Event_EndMonth`='$e_month',`Event_EndYear`='$e_year',`Event_Status`='$status' WHERE `Event_ID`='$id' AND `User_ID`='$user'");
+>>>>>>> origin/master
 
 	/*
 
