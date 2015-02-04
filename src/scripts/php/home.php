@@ -45,17 +45,6 @@
 
 </head>
 <body>   
-    
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-    
->>>>>>> origin/master
->>>>>>> origin/master
-=======
->>>>>>> 1e681725916b3313e55e07a33daf618dea2ed6b6
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- /navigation -->
         <div class="container">
             <div class="navbar-header">
@@ -134,6 +123,7 @@
             </div> 
         </div>
     </section><!-- /search -->
+    
     <section class="container">
         <div class="row">
             <div class="col-md-5 ">
@@ -185,20 +175,16 @@
                                 $ouser=mysqli_fetch_array($O_user);
                         echo "  <td class='text-center hidden-sm hidden-xs'> ".$ouser['User_FirstName']." ".$ouser['User_LastName']."</td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Description']." </td>
-<<<<<<< HEAD
-<<<<<<< HEAD
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." - ".$data['Event_EndMonth']."/".$data['Event_EndDay']."/".$data['Event_EndYear']." </td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>";
                                 $eventid=$data['Event_ID'];
                                 $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid' AND `Status`='Approved'");
-=======
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_State'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." </td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>";
                                 $eventid=$data['Event_ID'];
                                 $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid'");
->>>>>>> origin/master
                         echo"   <td class='text-center hidden-sm hidden-xs'>".mysqli_num_rows($partsnum)."</td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Slot']." </td>";
                                 $date1 = date("Y")."-".date("m")."-".date("d");
@@ -218,7 +204,6 @@
                                         else
                                         {
                                             echo "<td class='text-center hidden-sm hidden-xs'>".$days."days more to go!</td>";
-=======
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." - ".$data['Event_EndMonth']."/".$data['Event_EndDay']."/".$data['Event_EndYear']." </td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>";
@@ -250,25 +235,18 @@
                                         else
                                         {
                                             echo "<td class='text-center hidden-sm hidden-xs'>".$months."months, ".$days."days more to go!</td>";
->>>>>>> 1e681725916b3313e55e07a33daf618dea2ed6b6
                                         }
                                     }
                                     else
                                     {
-<<<<<<< HEAD
                                         echo "<td class='text-center hidden-sm hidden-xs'>".$months."months, ".$days."days more to go!</td>";
-=======
                                         echo "<td class='text-center hidden-sm hidden-xs'>".$years."years, ".$months."months, ".$days."days more to go!</td>";
->>>>>>> 1e681725916b3313e55e07a33daf618dea2ed6b6
                                     }
                                 }
                                 else
                                 {
-<<<<<<< HEAD
                                     echo "<td class='text-center hidden-sm hidden-xs'>".$years."years, ".$months."months, ".$days."days more to go!</td>";
-=======
                                     echo "<td class='text-center hidden-sm hidden-xs'>Event has Ended!</td>";
->>>>>>> 1e681725916b3313e55e07a33daf618dea2ed6b6
                                 }
                         echo "</tr>";
             }
