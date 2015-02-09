@@ -2,7 +2,7 @@
 
 EventBox is an Open Source Event Registration System(ERS) originally written and designed by Enrique M. Lacambra III and Alkino T. Ko.
 
-There are lots of ERS that is existing now but what EventBox wants to make is to change the perpective in registering people's events and make it more useful, effective, and interactive.
+There are currently a lot of Event Registration Systems existing in the Internet. EventBox tries to stand out from the rest by reinventing people's ways to register their events. By creating a useful, interactive, and understandable Event Registration System like the EventBox, it can effectively help organizations advertise their events throughout the world
 
 EventBox is written in PHP(V 5.3.0), HTML5, CSS3, BOOTSTRAP (V 3.2.0) , JAVASCRIPT and uses MySQL (V 5.6) as query language.
 
@@ -14,8 +14,7 @@ EventBox is written in PHP(V 5.3.0), HTML5, CSS3, BOOTSTRAP (V 3.2.0) , JAVASCRI
 
 #Bugs and Feature Request
 
-Any Bug and Feature request will be entertained in Eventbox 
-issue page: https://github.com/enricksIII/Eventbox/issues
+Any Bug and Feature request will be entertained in the Eventbox issue page: https://github.com/enricksIII/Eventbox/issues
 
 #Documentation
 
@@ -39,18 +38,18 @@ Read more @ https://guides.github.com/features/issues/ about creating issue on p
 Are you able to PATCH A BUG or CREATED NEW FEATURE for the project?
 MAKE A PULL REQUEST!!!
 
-There is none yet any documents that regards in contributing in the project.
-But before sending a pulling request, make sure to include the following:
+There are no available documents with regards to the contribution of the project.
+Please include the following when sending a pulling request:
   - Problem (issue) related to the system.
-  - Your feature or solution to the problem
-  - Indicate How your feature solves the problem
-  - Documentation of the feature
+  - A proposed solution or feature to address the issues
+  - Description of the feature in solving the issues raised
+  - Documentation of the proposed feature or solution
 
 Read more @ https://guides.github.com/activities/contributing-to-open-source/ about contributing on projects.
 
 #Community
 
-Feel free to post questions, suggestions, recommendation and issues regarding to the project.
+Feel free to post questions, suggestions, recommendation and issues regarding the project.
 - Google Group: https://groups.google.com/forum/?hl=en#!forum/eventbox-community
 
 #Creators
