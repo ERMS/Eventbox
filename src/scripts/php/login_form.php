@@ -107,12 +107,12 @@
                                 if(isset($_POST['email'])&&isset($_POST['key']))
                                 {
                                     $email=$_POST['email'];
-                                    $password=$_POST['key'];
+                                    $password=md5($_POST['key']);
                                     $query=mysqli_query ($con, "SELECT * FROM user WHERE User_Email='$email' AND User_Password='$password'");
                                     $id=mysqli_fetch_array($query);
                                     if (mysqli_num_rows($query)>0)
                                     {
-                                        $_SESSION['user']=array('id'=>$id['User_ID'],'name'=>$id['User_FirstName']." ".$id['User_LastName']);
+                                        $_SESSION['user']=array('id'=>$id['User_ID'],'name'=>$id['User_FirstName']." ".$id['User_LastName'],'pic'=>$id['User_ProfilePicture']);
                                         header("location:login_form.php");
                                     }
                                     else
