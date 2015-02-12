@@ -29,8 +29,7 @@
 	$user_name=$u['User_FirstName']." ".$u['User_LastName'];
 	$parts=$_POST['participants'];
 	$Smail=new mail;											// instantiate the object mail
-	$Smail->setMail($e_id,$user_name);	
-							// deffining method setMail that generates the message
+	$Smail->setMail($e_id,$user_name);	                        // deffining method setMail that generates the message
 	foreach($parts as $email)									// selects every mail
 	{
 		$Smail->sendMail($email,$e_id);							// sends the generated mail to every selected emails

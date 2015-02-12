@@ -66,19 +66,20 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../../../index.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
+                <a class="navbar-brand" href="home.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
-                        <img style="padding:5px; margin-top:2px;" class="hidden-xs" src="http://a.deviantart.net/avatars/m/b/mb67.gif?3" width="50px" height="50px">
+                    <?php
+                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                    ?>
                     </li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['name']; ?><b class="caret"></b></a>
                       <ul class="dropdown-menu">
                         <li><a href="home.php">Home</a></li>
                         <li><a href="my_event.php">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="my_event.php?log=out">Log out</a></li>
                       </ul>
@@ -94,7 +95,9 @@
             <div class="row">
 				
                 <div class="col-md-1">
-                    <img src="" width="100px" height="100px">
+                <?php
+                    echo "<img src='data:;base64,".$event['Event_Logo']."' width='100px' height='100px'>";    // displays the logo
+                    ?>
                 </div>
 				
 				<!-- event name -->
@@ -126,28 +129,28 @@
 	                $d=$diff-$diff2;										   // compute the difference till the deadline of registration
 	                if($diff>=0)
 	                {
-						if($years==0)
+	                	echo "<p class='text-center  text-uppercase'> <strong>";
+						if($years!=0)
 		                {
-		                    if($months==0)
-		                    {
-		                        if($days==0)
-		                        {
-		                            echo "<p class='text-center event text-uppercase'> <strong>Event is Going On!</strong> </p>";
-		                    	}
-		                    	else
-		                    	{
-		                        	echo "<p class='text-center event text-uppercase'> <strong>".$days."days Till the Event!</strong> </p>";
-		                    	}
-		                    }
-		                    else
-		                    {
-		                        echo "<p class='text-center event text-uppercase'> <strong>".$months."months, ".$days."days Till the Event!</strong> </p>";
-		                    }
+		                	echo $years."years ";
+		                }
+		                if($months!=0)
+		                {
+		                	echo $months."months ";
+		                }
+		                if($days!=0)
+		                {   
+		                    echo $days." days ";
+		                }
+		                if($years==0 AND $months==0 AND $days==0)
+		                {
+		                	echo "Event is Going On!";
 		                }
 		                else
 		                {
-		                	echo "<p class='text-center event text-uppercase'> <strong>".$years."years, ".$months."months, ".$days."days Till the Event!</strong> </p>";
+		                	echo "More to go";
 		                }
+		                echo "</strong> </p>";
 	                    if($d>=0)
 	                    {
 		                    if($hu==$cu)
@@ -167,11 +170,11 @@
 		                        echo "<button data-toggle='modal' class='btn btn-default btn-lg pull-right' data-target='.bs-example-modal-lg3'>Invite Friends</button>";
 		                        }
 		                    }
-		                    echo "<p><strong>Registration is Open Until: ".$deadline."<strong></p>";
+		                    echo "<p class='text-center'><small>Registration is Open <br> Until: ".$deadline."</small></p>";
 		                }
 		                else
 		                {
-		                	echo "<p><strong>Registration is Now Closed!<strong></p>";
+		                	echo "<p class='text-center event text-uppercase'><small>Registration is already Closed!</small></p>";
 		                }
 		            }
 		            else
@@ -489,7 +492,7 @@
                     <div class="row">
                         <div class="col-md-12">
 							<!-- start event details form -->
-                            <form class="editForm" name="editForm" id="editForm" role="form" method="post" action="edit_event.php"> 
+                            <form class="editForm" name="editForm" id="editForm" role="form" method="post" action="edit_event.php" enctype="multipart/form-data"> 
                                 <input type="hidden" name="id" id="id">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -500,11 +503,12 @@
                                             <div class="form-group">
                                                 <div class="col-sm-8 col-md-6">
                                                     <label for="title" class="" >Event Title</label>
-                                                    <input type="text" name="title" class="form-control" id="title" value="aaa" placeholder="Event Name" required>
+                                                    <input type="text" name="title" class="form-control" id="title" placeholder="Event Name" required>
                                                 </div>
                                                 <div class="col-sm-2 col-md-2">
                                                     <label for="logo">Event Logo</label>
-                                                    <input name="logo" type="file" id="logo">
+                                                    <img id="image" src="#" height="42" width="42">
+                                                    <input type="file" name="logo" id="logo">
                                                 </div>  
                                             </div>
                                         </div> <!--end first row event details -->
@@ -671,7 +675,11 @@
                                                     <div class="col-sm-3 col-md-3">
                                                         <label for="venue">Street</label>
                                                         <input type="text" id="venue" name="street" class="form-control" placeholder="Street" required>
-                                                    </div>   
+                                                    </div>
+                                                    <div class="col-sm-3 col-md-12">
+			                                            <label for="venue">Venue Additional Details</label>
+			                                            <input name="additional" type="text" id="venue" class="form-control" placeholder="Additional Details" required>
+			                                        </div>  
                                                 </div>
                                             </div>
                                         </div>
@@ -784,7 +792,7 @@
 		   </div> <!-- /.modal-content -->
 	   </div>
 	</div>
-	<div id="print" style="display:none">                             <!-- printable Div -->
+	<div id="print" style="display:none"><!-- printable Div -->
     <section for="header" class="container">
 		<div class="paragraphs">
 			<div class="row">
@@ -795,7 +803,7 @@
 				$host=$print['User_ID'];
 				$eventhost=mysqli_query($con,"SELECT * FROM `user` WHERE `User_ID`='$host'");
 				$hprint=mysqli_fetch_array($eventhost);
-			  echo "<img style='float:left; padding-right:10px;'' src='../../images/alkino_ko.jpg' width='125px;'/>
+			  echo "<img style='float:left; padding-right:10px;'' src='data:;base64,".$print['Event_Logo']."' width='125px;'/>
 			  <div class='content-heading'><h2 style='margin:0;'> ".$print['Event_Title']." </h2></div>
 				<h4>by ".$hprint['User_FirstName']." ".$hprint['User_LastName']."</h4>
 			  <p style=''>".$print['Event_StartMonth']." ".$print['Event_StartDay'].", ".$print['Event_StartYear']." - ".$print['Event_EndMonth']." ".$print['Event_EndDay'].", ".$print['Event_EndYear']." @ ".$print['Event_StartHour'].":".$print['Event_StartMinute']." ".$print['Event_StartCH']." - ".$print['Event_EndHour'].":".$print['Event_EndMinute']." ".$print['Event_EndCH']."</p>
@@ -807,6 +815,7 @@
 	</section>
 	<section class="container event">
 		<div class="row">
+		<div class="col-md-12">
 		<table class="table table-bordered text-center" border="1">
 			<?php
 			$attendees=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$id' AND `Status`='Approved'");
@@ -837,6 +846,7 @@
 			?>
 		</table>
 		</div>
+		</div>
 	</section>
 	<section class="container">
 		<div class="row">
@@ -849,7 +859,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../js/boostrap.min.js"></script>
-
+    <!-- md5 function for javascript -->
+    <script src = "http://www.myersdaily.org/joseph/javascript/md5.js"></script>
     <script>
 
 		var count=0;
@@ -857,6 +868,23 @@
 		var json='<?php echo json_encode($event); ?>';
 		var editData=JSON.parse(json);
 		
+		function readURL(input) 
+	    {
+	    	if (input.files && input.files[0]) 
+	    	{
+	        	var reader = new FileReader();
+	            reader.onload = function (e) 
+	            {
+	            	$('#image').attr('src', e.target.result);
+	            }
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+	    $("#logo").change(function(){
+	    	readURL(this);
+	    });
+
+
 		function generateForm(divName,formElemID,labelName){
 			var newdiv = document.createElement('div');
 			count++;
@@ -888,6 +916,7 @@
 		
 		function print()
 	    {
+	    	location.reload();
 	        Popup($('#print').html());
 	    }
 
@@ -998,9 +1027,9 @@
 		
 		function editEvent()
 		{
+			document.getElementById("image").src="data:;base64,"+editData.Event_Logo;
 			document.forms["editForm"]["id"].value=editData.Event_ID;
 			document.forms["editForm"]["title"].value=editData.Event_Title;
-			document.forms["editForm"]["logo"].value=editData.Event_Logo;
 			document.forms["editForm"]["s_month"].value=editData.Event_StartMonth;
 			document.forms["editForm"]["s_day"].value=editData.Event_StartDay;
 			document.forms["editForm"]["s_year"].value=editData.Event_StartYear;
@@ -1017,6 +1046,7 @@
 			document.forms["editForm"]["country"].value=editData.Event_Country;
 			document.forms["editForm"]["city"].value=editData.Event_City;
 			document.forms["editForm"]["street"].value=editData.Event_Street;
+			document.forms["editForm"]["additional"].value=editData.Event_Additional;
 			document.forms["editForm"]["deadline"].value=editData.Event_Deadline;
 			document.forms["editForm"]["number"].value=editData.Event_Slot;
 			document.forms["editForm"]["contact"].value=editData.Event_ContactNumber;
@@ -1111,9 +1141,30 @@
 			var id=document.getElementById(response).parentNode.id;
 			document.getElementById(id).innerHTML="<p>"+response+"</p>";
 		}
-		
+		function registrationCheck()
+		{
+			<?php 
+				$uid=$user['id'];
+				$check=mysqli_query($con,"SELECT * FROM `attendance` WHERE `Event_ID`='$id' AND `User_ID`='$uid'");
+			?>
+			var chk='<?php echo mysqli_num_rows($check); ?>';
+			if(chk==0)
+			{
+				return true;
+			}
+			else
+			{
+				alert("Your Have Already Registered. Please wait for the organizer's Response...");
+				return false;
+			}
+		}
 		function privatePassword(status)
 		{
+
+			if(registrationCheck()==false)
+			{
+				return false;
+			}
 			if(status!='Approved')
 			{
 				if(editData.Event_Privacy!='private')
@@ -1128,13 +1179,15 @@
 			}
 			else
 			{
-				alert("You already have registered!");
+				alert("You are already a Participant for this Event!");
 			}
 		}
 		
 		function checkPass()
 		{
-			if(document.getElementById("privacypass").value!=editData.Event_Password)
+			var pass=document.getElementById("privacypass").value;
+
+			if(md5(pass)!=editData.Event_Password)
 			{
 				alert("invalid Password!");
 			}
@@ -1205,7 +1258,7 @@
 				});
 			});
 		});
-		
+
 		$(document).ready(function () {
 			$("input#submit").click(function(){
 				$.ajax({
@@ -1223,6 +1276,30 @@
 				});
 			});
 		});
+
+		/*$(document).ready(function () {
+			$("input#submit").click(function(){
+				var data = new FormData();
+		        data.append('messageData', $('form#editForm').serialize());
+		        var logo = document.getElementById('logo');	
+		        data.append('file', logo.files);
+				$.ajax({
+					type: "POST",
+					url: "edit_event.php",
+					data: data,
+					processData: false,
+  					contentType: false,
+					success: function(data){
+						$("#full-width").modal('hide');
+						location.reload();
+					},
+					error: function(err){
+						alert("Failed to Edit! Try Again Later..");
+						return;
+					}
+				});
+			});
+		});*/
 	
 	</script>
 

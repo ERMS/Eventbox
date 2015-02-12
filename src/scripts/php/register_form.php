@@ -55,7 +55,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" style="height:100px;" role="navigation">
      <div class="navbar-inner">
             <div class="nav-center navbar-fixed-bottom">
-                <a href="search.php"><img src="../../images/eventbox-logo.png"  width="210px;"/></a>
+                <a href="../../index.php"><img src="../../images/eventbox-logo.png"  width="210px;"/></a>
             </div>
         </div>
     </nav>
@@ -70,44 +70,55 @@
                             <div class="panel-body">
                                 <h1>Sign Up</h1>
 			                    <hr>
-                                    <form name="register" role="form" action="registration.php" method="post" onsubmit="return confirmpassword()">
+                                    <form name="register" role="form" action="registration.php" method="post" onsubmit="return confirmpassword()" enctype="multipart/form-data">
                                         <div class="row">
-                                            <div class="col-xs-12 col-sm-6 col-md-6">
+											<div class="col-md-7">
+												<div class="row">
+												<div class="col-xs-12 col-sm-6 col-md-12">
+													<div class="form-group">
+														<input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name" tabindex="1" required>
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-12">
+													<div class="form-group">
+														<input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name" tabindex="2" required>
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-8 col-md-8">
+													<div class="form-group">
+														<input type="text" name="country" id="address" class="form-control" placeholder="Country" tabindex="3" required>
+													</div>
+												</div>
+												<div class="col-xs-12 col-sm-4 col-md-4">
+													<div class="form-group">
+														<input type="text" name="Address" id="address" class="form-control" placeholder="City" tabindex="3" required>
+													</div>
+												</div>
+													<div class="col-xs-12 col-sm-6 col-md-12">
+														<div class="form-group">
+														<input type="email" name="email" id="email" class="form-control" placeholder="Email Address" tabindex="4" required>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-12 col-sm-6 col-md-3">
                                                 <div class="form-group">
-                                                    <input type="text" name="first_name" id="first_name" class="form-control" placeholder="First Name" tabindex="1" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12 col-sm-6 col-md-6">
-                                                <div class="form-group">
-                                                    <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Last Name" tabindex="2" required>
+                                                    <img src="../../images/user.png" align="center" id="pic" width="150" height="150">
+													<br><br>
+                                                    <input type="file" name="picture" id="picture">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-xs-12 col-sm-8 col-md-8">
-                                                <div class="form-group">
-                                                    <input type="text" name="country" id="address" class="form-control" placeholder="Country" tabindex="3" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12 col-sm-4 col-md-4">
-                                                <div class="form-group">
-                                                    <input type="text" name="Address" id="address" class="form-control" placeholder="City" tabindex="3" required>
-                                                </div>
-                                            </div>
 
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="email" name="email" id="email" class="form-control" placeholder="Email Address" tabindex="4" required>
-                                        </div>
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-6 col-md-6">
                                                 <div class="form-group">
-                                                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" tabindex="5" required>
+                                                    <input type="password" min="6" name="password" id="password" class="form-control" placeholder="Password" tabindex="5" required>
                                                 </div>
                                             </div>
                                             <div class="col-xs-12 col-sm-6 col-md-6">
                                                 <div class="form-group">
-                                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Confirm Password" tabindex="6" required>
+                                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Confirm Password" tabindex="6" min="6" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -141,6 +152,22 @@
 		
 		var email='<?php echo json_encode($values); ?>';
 		
+        function readURL(input) 
+        {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#pic').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#picture").change(function(){
+            readURL(this);
+        });
+
 		function checkmail(mail)                                        //  checks whether the email is already in use 
 		{
 			json=JSON.parse(email);
@@ -163,11 +190,14 @@
 			{
 				return false;
 			}
-			if(password != password2)
-			{
-				alert("Password Does not match!");
-				return false;
-			}
+            else
+            {
+    			if(password != password2)
+    			{
+    				alert("Password Does not match!");
+    				return false;
+    			}
+            }
 		}
 		
 	</script>

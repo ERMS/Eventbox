@@ -34,9 +34,7 @@
 	
 	$events=mysqli_query($con,"SELECT * FROM `event` WHERE `User_ID`='$user_id' ORDER BY `Event_ID` DESC LIMIT 1");
 	$e=mysqli_fetch_array($events);
-	
 	$e_id=$e['Event_ID'];
-
 	$forms->createTableform($user_id,$e_id);		//  stores the generated form
 	$Smail=new mail;	
 	$Smail->setMail($e_id,$user_name);				//  generate the mail to be send

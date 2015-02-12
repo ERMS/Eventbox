@@ -58,19 +58,20 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../../../src/index.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
+                <a class="navbar-brand" href="home.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
-                        <img style="padding:5px; margin-top:2px;" class="hidden-xs" src="http://a.deviantart.net/avatars/m/b/mb67.gif?3" width="50px" height="50px">
+                    <?php
+                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                    ?>
                     </li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['name']; ?><b class="caret"></b></a>
                       <ul class="dropdown-menu">
                         <li><a href="home.php">Home</a></li>
                         <li><a href="my_event.php">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="my_event.php?log=out">Log out</a></li>
                       </ul>

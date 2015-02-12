@@ -93,14 +93,15 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
-                        <img style="padding:5px; margin-top:2px;" class="hidden-xs" src="http://a.deviantart.net/avatars/m/b/mb67.gif?3" width="50px" height="50px">
+                    <?php
+                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                    ?>
                     </li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['name']; ?><b class="caret"></b></a>
                       <ul class="dropdown-menu">
                         <li><a href="home.php">Home</a></li>
                         <li><a href="my_event.php">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="my_event.php?log=out">Log out</a></li>
                       </ul>
@@ -118,12 +119,14 @@
             <div class="row">
 				
                 <div class="col-md-1">
-                    <img src="" width="100px" height="100px">
+                    <?php
+                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='100px' height='100px'>";
+                    ?>
                 </div>
 				
                 <div class="col-md-5">
 					<?php 
-					$query=mysqli_query($con,"SELECT * FROM `attendance` WHERE `User_ID`='$id'");
+					$query=mysqli_query($con,"SELECT * FROM `attendance` WHERE `User_ID`='$id' AND `Status`='Approved'");
 					$query2=mysqli_query($con,"SELECT * FROM `event` WHERE `User_ID`='$id'");
 						echo "<div class='col-md-12'>
 							<h2>".$_SESSION['user']['name']."</h2>

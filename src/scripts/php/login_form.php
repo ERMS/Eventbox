@@ -91,9 +91,9 @@
             </div>
         </div>
     </nav>
-	<!-- end Navigation -->
-	
-	<!-- Login Content -->
+    <!-- end Navigation -->
+    
+    <!-- Login Content -->
     <section id="login">
         <div class="container">
             <div class="form-wrap">
@@ -127,8 +127,8 @@
                                 ?>
                                 <!--  PHP login End  -->
                                 <hr>
-								
-								<!-- Start Login Form -->
+                                
+                                <!-- Start Login Form -->
                                 <form role="form" action="login_form.php" method="post" id="login-form"  autocomplete="off">
                                     <div class="form-group">
                                         <label for="email" class="sr-only">Email</label>
@@ -152,18 +152,18 @@
                                         </div>
                                     </div>
                                 </form>
-								<!-- Start Login Form -->
-								
+                                <!-- Start Login Form -->
+                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div> <!-- end container -->
-	</section>
-	<!-- Login Content -->
+    </section>
+    <!-- Login Content -->
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="scripts/js/boostrap.min.js"></script>

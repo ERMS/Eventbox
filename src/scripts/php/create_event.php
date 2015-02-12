@@ -55,19 +55,20 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../../../index.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
+                <a class="navbar-brand" href="home.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
-                        <img style="padding:5px; margin-top:2px;" class="hidden-xs" src="http://a.deviantart.net/avatars/m/b/mb67.gif?3" width="50px" height="50px">
+                    <?php
+                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                    ?>
                     </li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['name']; ?><b class="caret"></b></a>
                       <ul class="dropdown-menu">
                         <li><a href="home.php">Home</a></li>
                         <li><a href="my_event.php">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="my_event.php?log=out">Log out</a></li>
                       </ul>
@@ -93,7 +94,7 @@
         <div class="row">
             <div class="col-md-12">
 				<!-- start create event form -->
-                <form role="form" action="store_event.php" method="post" onsubmit="return verify()"> 
+                <form role="form" action="store_event.php" method="post" onsubmit="return verify()" enctype="multipart/form-data"> 
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4>Event Details</h4>
@@ -108,7 +109,8 @@
                                     </div>
                                     <div class="col-sm-2 col-md-2">
                                         <label for="logo">Event Logo</label>
-                                        <input type="file" id="logo" name="logo">
+                                        <img id="image" src="../../images/box.jpg" hidden="" height="42" width="42">							
+                                        <input type="file" id="logo" name="logo">                                        
                                     </div>  
                                 </div>
                             </div> <!--end first row event details -->
@@ -329,7 +331,7 @@
                                         </div>
                                         <div class="col-sm-3 col-md-12">
                                             <label for="venue">Venue Additional Details</label>
-                                            <input name="addition" type="text" id="venue" class="form-control" placeholder="Additional Details" required>
+                                            <input name="additional" type="text" id="venue" class="form-control" placeholder="Additional Details">
                                         </div>   
                                     </div>
                                 </div>
@@ -366,16 +368,6 @@
                                 </div>
                             </div>
                             <!--end organizer info-->
-                            <!--start attached file-->
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-sm-2 col-md-2">
-                                        <label for="file">Attached File</label>
-                                        <input type="file" id="file" name="file">
-                                    </div>  
-                                </div>
-                            </div>
-                            <!--end attach file-->
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -438,7 +430,22 @@
     <script src="../js/boostrap.min.js"></script>
          
     <script>
-    
+        function readURL(input) 
+        {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#logo").change(function(){
+            readURL(this);
+        });
+
         function verify()
         {
             var pass = document.getElementById("password").value;
@@ -488,6 +495,8 @@
             }
         }
         window.onload = function() {
+          var logo=document.getElementById("logo").value;
+          //readURL(logo);
           numberofparticipants('Any');
           privacypassword('default');
         };

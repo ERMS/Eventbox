@@ -62,19 +62,20 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../../../index.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
+                <a class="navbar-brand" href="home.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
-                        <img style="padding:5px; margin-top:2px;" class="hidden-xs" src="http://a.deviantart.net/avatars/m/b/mb67.gif?3" width="50px" height="50px">
+                    <?php
+                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                    ?>
                     </li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['name']; ?><b class="caret"></b></a>
                       <ul class="dropdown-menu">
                         <li><a href="home.php">Home</a></li>
                         <li><a href="my_event.php">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="my_event.php?log=out">Log out</a></li>
                       </ul>
@@ -108,8 +109,15 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-2 text-center">
-                                <img src="images/bg1.png" width="150px" height="150px">
-                                <?php
+                            <?php
+                                $date1 = date("Y")."-".date("m")."-".date("d");
+                                $date2 = $event->E_startyear."-".date('m', strtotime($event->E_startmonth))."-".$event->E_startday;
+                                $diff = strtotime($date2) - strtotime($date1);                      // gets the # of seconds till the event
+                                $years = floor($diff / (365*60*60*24));                                           // difference in years
+                                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));                 // difference in months
+                                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24)); // difference in days
+                                $deadline=date('F d, Y',strtotime($date2.'-'.$event->E_deadline.' days'));        //deadline of registration
+                                echo "<img src='data:;base64,".$event->E_logo."' width='150px' height='150px'>";  // previews logo
                                 echo "
                                     <h4> $event->E_title </h4>
                                 </div>
@@ -118,7 +126,7 @@
                                     
                                     <p><strong> Where : </strong> $event->E_country, $event->E_street, $event->E_city</p>
                                     <p><strong> Decription : </strong>$event->E_description</p>
-                                    <p><strong> Deadline of Registration : </strong> {how}</p>
+                                    <p><strong> Deadline of Registration : </strong> $deadline</p>
                                 </div>
                                 <div class='col-md-3'>
                                     <p><strong> Contact Number : </strong> $event->E_contactnumber </p>
@@ -126,15 +134,37 @@
                                         <strong> slots : </strong> $event->E_slot <br>
                                     </p>
                                     <p><strong> Privacy : </strong> $event->E_privacy </p>";
-                                    $date1 = date("Y")."-".date("m")."-".date("d");
-                                    $date2 = $event->E_startyear."-".date('m', strtotime($event->E_startmonth))."-".$event->E_startday;
-                                    $diff = abs(strtotime($date2) - strtotime($date1));
-                                    $years = floor($diff / (365*60*60*24));
-                                    $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                                    $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-                                    echo "
-                                    <p><strong>Event Status: </strong> $years years, $months months, $days days more to go</p>
-                                </div>";
+                            
+                                if($diff>0)
+                                {
+                                    echo "<td class='text-center event text-uppercase'>";
+                                    if($years!=0)
+                                    {
+                                        echo $years."years ";
+                                    }
+                                    if($months!=0)
+                                    {
+                                        echo $months."months ";
+                                    }
+                                    if($days!=0)
+                                    {   
+                                        echo $days." days ";
+                                    }
+                                    if($years==0 AND $months==0 AND $days==0)
+                                    {
+                                        echo "Event is Going On!";
+                                    }
+                                    else
+                                    {
+                                        echo " Till the Event!";
+                                    }
+                                    echo "</td>";
+                                }
+                                else
+                                {
+                                    echo "<td class='text-center hidden-sm hidden-xs'>Event has Ended!</td>";
+                                }
+                                echo "</div>";
                                 ?>
                         </div>
                         

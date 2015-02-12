@@ -45,6 +45,7 @@
 
 </head>
 <body>   
+    
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- /navigation -->
         <div class="container">
             <div class="navbar-header">
@@ -53,9 +54,17 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../../index.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
-            </div>
-
+			<?php
+            if(isset($_SESSION['user']))     // header on home changes depending if a user is logged in or not
+            {
+             	echo "<a class='navbar-brand' href='#'><img src='../../images/eventbox-logo.png' width='175px'/></a>";
+			}
+			else
+			{
+			 	echo "<a class='navbar-brand' href='../../index.php'><img src='../../images/eventbox-logo.png' width='175px'/></a>";
+			}
+				?>
+			</div>
             <?php
             if(isset($_SESSION['user']))                                // header on home changes depending if a user is logged in or not
             {
@@ -63,14 +72,13 @@
              <div class='collapse navbar-collapse'>
                 <ul class='nav navbar-nav navbar-right'>
                     <li class='img-responsive'>
-                        <img style='padding:5px; margin-top:2px;' class='hidden-xs' src='http://a.deviantart.net/avatars/m/b/mb67.gif?3' width='50px' height='50px'>
+                        <img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>
                     </li>
                     <li class='dropdown'>
                       <a href='#' class='dropdown-toggle' data-toggle='dropdown'>".$_SESSION['user']['name']."<b class='caret'></b></a>
                       <ul class='dropdown-menu'>
                         <li><a href='home.php'>Home</a></li>
                         <li><a href='my_event.php'>Profile</a></li>
-                        <li><a href='#'>Settings</a></li>
                         <li class='divider'></li>
                         <li><a href='my_event.php?log=out'>Log out</a></li>
                       </ul>
@@ -123,19 +131,8 @@
             </div> 
         </div>
     </section><!-- /search -->
-    
     <section class="container">
-        <div class="row">
-            <div class="col-md-5 ">
-                <hr>
-            </div>
-            <div class="col-md-2">
-                <h4 class="text-center">Recent Events</h4>  
-            </div>
-            <div class="col-md-5">
-                <hr>
-            </div>
-        </div>
+  
                  
         <?php
         $srchstr="SELECT * FROM `event`";
@@ -180,35 +177,6 @@
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>";
                                 $eventid=$data['Event_ID'];
                                 $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid' AND `Status`='Approved'");
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_State'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." </td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>";
-                                $eventid=$data['Event_ID'];
-                                $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid'");
-                        echo"   <td class='text-center hidden-sm hidden-xs'>".mysqli_num_rows($partsnum)."</td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Slot']." </td>";
-                                $date1 = date("Y")."-".date("m")."-".date("d");
-                                $date2 = $data['Event_StartYear'].date('m', strtotime($data['Event_StartMonth']))."-".$data['Event_StartDay'];
-                                $diff = abs(strtotime($date2) - strtotime($date1));
-                                $years = floor($diff / (365*60*60*24));
-                                $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-                                $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-                                if($years==0)
-                                {
-                                    if($months==0)
-                                    {
-                                        if($days==0)
-                                        {
-                                            echo "<td class='text-center hidden-sm hidden-xs'>Event is Going On!</td>";
-                                        }
-                                        else
-                                        {
-                                            echo "<td class='text-center hidden-sm hidden-xs'>".$days."days more to go!</td>";
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." - ".$data['Event_EndMonth']."/".$data['Event_EndDay']."/".$data['Event_EndYear']." </td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>";
-                                $eventid=$data['Event_ID'];
-                                $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid' AND `Status`='Approved'");
                         echo"   <td class='text-center hidden-sm hidden-xs'>".mysqli_num_rows($partsnum)."</td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Slot']." </td>";
                                 $date1 = date("Y")."-".date("m")."-".date("d");
@@ -219,33 +187,31 @@
                                 $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24)); // difference in days
                                 if($diff>0)
                                 {
-                                    if($years==0)
+                                    echo "<td class='text-center event '>";
+                                    if($years!=0)
                                     {
-                                        if($months==0)
-                                        {
-                                            if($days==0)
-                                            {
-                                                echo "<td class='text-center hidden-sm hidden-xs'>Event is Going On!</td>";
-                                            }
-                                            else
-                                            {
-                                                echo "<td class='text-center hidden-sm hidden-xs'>".$days."days more to go!</td>";
-                                            }
-                                        }
-                                        else
-                                        {
-                                            echo "<td class='text-center hidden-sm hidden-xs'>".$months."months, ".$days."days more to go!</td>";
-                                        }
+                                        echo $years."years ";
+                                    }
+                                    if($months!=0)
+                                    {
+                                        echo $months."months ";
+                                    }
+                                    if($days!=0)
+                                    {   
+                                        echo $days." days ";
+                                    }
+                                    if($years==0 AND $months==0 AND $days==0)
+                                    {
+                                        echo "Event is Going On!";
                                     }
                                     else
                                     {
-                                        echo "<td class='text-center hidden-sm hidden-xs'>".$months."months, ".$days."days more to go!</td>";
-                                        echo "<td class='text-center hidden-sm hidden-xs'>".$years."years, ".$months."months, ".$days."days more to go!</td>";
+                                        echo "Till the Event!";
                                     }
+                                    echo "</td>";
                                 }
                                 else
                                 {
-                                    echo "<td class='text-center hidden-sm hidden-xs'>".$years."years, ".$months."months, ".$days."days more to go!</td>";
                                     echo "<td class='text-center hidden-sm hidden-xs'>Event has Ended!</td>";
                                 }
                         echo "</tr>";
@@ -257,15 +223,9 @@
         }
         else
         {
-            echo "No Data Found!";
+            echo "<h2 class='text-center'> No event ... </h3>";
         }
         ?>
-        <nav>
-          <ul class="pager">
-            <li><a href="#">Previous</a></li>
-            <li><a href="#">Next</a></li>
-          </ul>
-        </nav>
         <hr>
     </section>
 

@@ -36,7 +36,7 @@
 	$query=mysqli_query ($con, "SELECT * FROM `user` WHERE `User_ID`='$id'");
 	$user=mysqli_fetch_array($query);
 
-	$_SESSION['user']=array('id'=>$user['User_ID'],'name'=>$user['User_FirstName']." ".$user['User_LastName']);
+	$_SESSION['user']=array('id'=>$user['User_ID'],'name'=>$user['User_FirstName']." ".$user['User_LastName'],'pic'=>$user['User_ProfilePicture']);
 
 	/*
 

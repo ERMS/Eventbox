@@ -20,13 +20,22 @@
 <?php
 
 	include "connectdb.php";
-
+	$con=connectdb();
 	session_start();
 
 	$user=$_SESSION['user']['id'];
 	$id=$_POST['id'];
 	$title=$_POST['title'];
-	$logo=$_POST['logo'];
+	if(isset($_FILES['logo']))
+	{
+		$logo=base64_encode(file_get_contents($_FILES['logo']['tmp_name']));                 // convert image into binary;
+	}
+	else
+	{
+		$query=mysqli_query($con,"SELECT * FROM `event` WHERE `Event_ID`='$id'");
+		$data=mysqli_fetch_array($query);
+		$logo=$data['Event_Logo'];
+	}
 	$file=$_POST['file'];
 	$s_month=$_POST['s_month'];
 	$s_day=$_POST['s_day'];
@@ -44,6 +53,7 @@
 	$country=$_POST['country'];
 	$city=$_POST['city'];
 	$street=$_POST['street'];
+	$additional=$_POST['additional'];
 	$deadline=$_POST['deadline'];
 	$slot=$_POST['number'];
 	$contact=$_POST['contact'];
@@ -51,9 +61,9 @@
 	$password=$_POST['password'];
 	$status=$_POST['status'];
 
-	$con=connectdb();
 
-	mysqli_query($con,"UPDATE `event` SET `Event_Title`='$title',`Event_Description`='$description',`Event_ContactNumber`='$contact',`Event_Privacy`='$privacy',`Event_Deadline`='$deadline',`Event_Slot`='$slot',`Event_File`='$file',`Event_Country`='$country',`Event_City`='$city',`Event_Street`='$street',`Event_Logo`='$logo',`Event_Password`='$password',`Event_StartHour`='$s_hour',`Event_StartMinute`='$s_minute',`Event_StartCH`='$s_ch',`Event_EndHour`='$e_hour',`Event_EndMinute`='$e_minute',`Event_EndCH`='$e_ch',`Event_StartDay`='$s_day',`Event_StartMonth`='$s_month',`Event_StartYear`='$s_year',`Event_EndDay`='$e_day',`Event_EndMonth`='$e_month',`Event_EndYear`='$e_year',`Event_Status`='$status' WHERE `Event_ID`='$id' AND `User_ID`='$user'");
+
+	mysqli_query($con,"UPDATE `event` SET `Event_Title`='$title',`Event_Description`='$description',`Event_ContactNumber`='$contact',`Event_Privacy`='$privacy',`Event_Deadline`='$deadline',`Event_Slot`='$slot',`Event_File`='$file',`Event_Country`='$country',`Event_City`='$city',`Event_Street`='$street',`Event_Additional`='$additional',`Event_Logo`='$logo',`Event_Password`='$password',`Event_StartHour`='$s_hour',`Event_StartMinute`='$s_minute',`Event_StartCH`='$s_ch',`Event_EndHour`='$e_hour',`Event_EndMinute`='$e_minute',`Event_EndCH`='$e_ch',`Event_StartDay`='$s_day',`Event_StartMonth`='$s_month',`Event_StartYear`='$s_year',`Event_EndDay`='$e_day',`Event_EndMonth`='$e_month',`Event_EndYear`='$e_year',`Event_Status`='$status' WHERE `Event_ID`='$id' AND `User_ID`='$user'");
 
 	/*
 
