@@ -51,6 +51,38 @@
 	    	mysqli_query($con,"INSERT INTO `user`(`User_Password`, `User_ProfilePicture`, `User_Email`, `User_FirstName`, `User_LastName`, `User_Country`, `User_City`)VALUES(md5('$this->U_password'),'$this->U_picture','$this->U_email','$this->U_firstname','$this->U_lastname','$this->U_country','$this->U_city')");
 		    mysqli_close($con);
 		}
+
+		public function VerifyRegistration($email)
+		{
+			$mail = new PHPMailer;
+			//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+			$mail->isSMTP();                                      // Set mailer to use SMTP
+			$mail->Host = 'smtp.gmail.com';  					  // Specify main and backup SMTP servers
+			$mail->SMTPAuth = true;                               // Enable SMTP authentication
+			$mail->Username = 'eventbox2015@gmail.com';           // SMTP username
+			$mail->Password = 'alkinoko';                         // SMTP password
+			$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+			$mail->Port = 465;                                    // TCP port to connect to
+
+			$mail->From = ('eventbox2015@gmail.com');
+			$mail->FromName = 'EventBox';					  // Name of Sender
+			$mail->addAddress($email);     						  // Add a recipient
+			//content
+			$mail->Subject = 'Verify Your Account!!';
+			$mail->Body = "Congratulations!! You have successfully Registered to EventBox. To Activite your account click <a href='http://localhost/Eventbox/src/scripts/php/login_form.php?verify=".$email."'>Here!</a>";
+			$mail->AltBody = "You have successfully Registered to EventBox to Activite your account click <a href='http://localhost/Eventbox/src/scripts/php/login_form.php?verify=".$email."'>Here!</a>";
+			//end-content
+
+			if(!$mail->send()) 									  // checks if the mail was send or not
+			{
+			    echo '<center>There was an error on sending the verification email. Please register again.<br></center>';
+			    echo '<center>Mailer Error: ' . $mail->ErrorInfo . '</center>';
+			} 
+			else 
+			{
+			    echo "<h1><center><strong>A Verification was sent to your email... <br>Please activate your account through your email...</strong><center></h1>";
+			}
+		}
 	}
 
 	class event
@@ -95,14 +127,7 @@
 			$this->E_city = $_POST['city'];
 			$this->E_street = $_POST['street'];
 			$this->E_additional = $_POST['additional'];
-			if(isset($_FILES['logo']))
-			{
-				$this->E_logo = base64_encode(file_get_contents($_FILES['logo']['tmp_name']));                 // convert image into binary
-			}
-			else
-			{
-				$this->E_logo = base64_encode(file_get_contents('../../images/box.jpg'));           // default image 	
-			}
+			$this->E_logo = base64_encode(file_get_contents($_FILES['logo']['tmp_name']));                 // convert image into binary
 			$this->E_password = $_POST['password'];
 			$this->E_starthour = $_POST['starthour'];
 			$this->E_startminute = $_POST['startminute'];
@@ -265,7 +290,16 @@
 			$e_eh=$e['Event_EndHour'];
 			$e_em=$e['Event_EndMinute'];
 			$e_ec=$e['Event_EndCH'];
-			$this->msg="You have been invited by $this->sender to be part of $e_title on $e_sm / $e_sd / $e_sy - $e_em / $e_ed / $e_ey at $e_sh : $e_sm $e_sc - $e_eh : $e_em $e_ec. Login or Create an account Here:";
+			$privacy=$e['Event_Privacy'];
+			$pass=$e['Event_Password'];
+			if($privacy=='private')
+			{
+				$this->msg="You have been invited by $this->sender to be part of $e_title on $e_sm / $e_sd / $e_sy - $e_em / $e_ed / $e_ey at $e_sh : $e_sm $e_sc - $e_eh : $e_em $e_ec. This event is private and requires password authentication. The password is ($pass). Login or Create an account Here:";
+			}
+			else
+			{
+				$this->msg="You have been invited by $this->sender to be part of $e_title on $e_sm / $e_sd / $e_sy - $e_em / $e_ed / $e_ey at $e_sh : $e_sm $e_sc - $e_eh : $e_em $e_ec. Login or Create an account Here:";
+			}
 
 			/*
 				this function generates the message to send to the invited users 
@@ -275,8 +309,6 @@
 
 		public function sendMail($email,$e_id)
 		{
-			
-
 			$mail = new PHPMailer;
 			//$mail->SMTPDebug = 3;                               // Enable verbose debug output
 			$mail->isSMTP();                                      // Set mailer to use SMTP

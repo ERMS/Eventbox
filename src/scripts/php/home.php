@@ -66,14 +66,21 @@
 				?>
 			</div>
             <?php
-            if(isset($_SESSION['user']))                                // header on home changes depending if a user is logged in or not
+            if(isset($_SESSION['user']))                          // header on home changes depending if a user is logged in or not
             {
              echo "
              <div class='collapse navbar-collapse'>
                 <ul class='nav navbar-nav navbar-right'>
-                    <li class='img-responsive'>
-                        <img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>
-                    </li>
+                    <li class='img-responsive'>";
+                        if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='50px' height='50px'>";
+                        }
+                    echo "</li>
                     <li class='dropdown'>
                       <a href='#' class='dropdown-toggle' data-toggle='dropdown'>".$_SESSION['user']['name']."<b class='caret'></b></a>
                       <ul class='dropdown-menu'>
@@ -179,9 +186,11 @@
                                 $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid' AND `Status`='Approved'");
                         echo"   <td class='text-center hidden-sm hidden-xs'>".mysqli_num_rows($partsnum)."</td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Slot']." </td>";
-                                $date1 = date("Y")."-".date("m")."-".date("d");
-                                $date2 = $data['Event_StartYear']."-".date('m', strtotime($data['Event_StartMonth']))."-".$data['Event_StartDay'];
-                                $diff = strtotime($date2) - strtotime($date1);                      // gets the # of seconds till the event
+                                $curD = date("Y")."-".date("m")."-".date("d");
+                                $startD = $data['Event_StartYear']."-".date('m', strtotime($data['Event_StartMonth']))."-".$data['Event_StartDay'];
+                                $endD = $data['Event_EndYear']."-".date('m', strtotime($data['Event_EndMonth']))."-".$data['Event_EndDay'];
+                                $diff = strtotime($startD) - strtotime($curD);                      
+                                $diff2 = strtotime($curD) - strtotime($endD);  
                                 $years = floor($diff / (365*60*60*24));                                           // difference in years
                                 $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));                 // difference in months
                                 $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24)); // difference in days
@@ -212,7 +221,14 @@
                                 }
                                 else
                                 {
-                                    echo "<td class='text-center hidden-sm hidden-xs'>Event has Ended!</td>";
+                                    if($diff2>0)
+                                    {
+                                        echo "<td class='text-center hidden-sm hidden-xs'>Event has Ended!</td>";
+                                    }
+                                    else
+                                    {
+                                        echo "<td class='text-center hidden-sm hidden-xs'>Event is Goin On!</td>";
+                                    }
                                 }
                         echo "</tr>";
             }

@@ -18,7 +18,7 @@
 
 
 <?php
-
+	error_reporting(0);
 	include "connectdb.php";
 	$con=connectdb();
 	session_start();
@@ -26,7 +26,7 @@
 	$user=$_SESSION['user']['id'];
 	$id=$_POST['id'];
 	$title=$_POST['title'];
-	if(isset($_FILES['logo']))
+	if($_FILES['logo']['size']!=0)
 	{
 		$logo=base64_encode(file_get_contents($_FILES['logo']['tmp_name']));                 // convert image into binary;
 	}

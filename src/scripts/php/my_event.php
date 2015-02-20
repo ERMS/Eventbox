@@ -40,7 +40,7 @@
 		{
 			$inv=$_GET['invite'];
 			$u_id=$_SESSION['user']['id'];
-			$e_id=$_SESSION['id'];
+			$e_id=$_SESSION['eid'];
 			$part=new attend;
 			$part->invite($u_id,$e_id);
 
@@ -94,7 +94,14 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
                     <?php
-                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='50px' height='50px'>";
+                        }
                     ?>
                     </li>
                     <li class="dropdown">
@@ -120,7 +127,14 @@
 				
                 <div class="col-md-1">
                     <?php
-                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='100px' height='100px'>";
+                        if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='100px' height='100px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='100px' height='100px'>";
+                        }
                     ?>
                 </div>
 				
@@ -209,11 +223,54 @@
                                           $num=mysqli_query($con,"SELECT * FROM `attendance` WHERE `Event_ID`='$event_id'");
                                           echo" <td class='text-center hidden-sm hidden-xs'>".mysqli_num_rows($num)."</td>";
 
-                                          echo "<td class='text-center hidden-sm hidden-xs'>".$data['Event_Slot']." </td>
-                                                <td class='text-center hidden-sm hidden-xs'>".$data['Event_Status']." </td>
-                                            </tr>
-                                            ";
-                            }
+                                          echo "<td class='text-center hidden-sm hidden-xs'>".$data['Event_Slot']." </td>";
+                                          $curD = date("Y")."-".date("m")."-".date("d");
+                                        $startD = $data['Event_StartYear']."-".date('m', strtotime($data['Event_StartMonth']))."-".$data['Event_StartDay'];
+                                        $endD = $data['Event_EndYear']."-".date('m', strtotime($data['Event_EndMonth']))."-".$data['Event_EndDay'];
+                                        $diff = strtotime($startD) - strtotime($curD);                      
+                                        $diff2 = strtotime($curD) - strtotime($endD);  
+                                        $years = floor($diff / (365*60*60*24));                                           // difference in years
+                                        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));                 // difference in months
+                                        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24)); // difference in days
+                                        if($diff>0)
+                                        {
+                                            echo "<td class='text-center event '>";
+                                            if($years!=0)
+                                            {
+                                                echo $years."years ";
+                                            }
+                                            if($months!=0)
+                                            {
+                                                echo $months."months ";
+                                            }
+                                            if($days!=0)
+                                            {   
+                                                echo $days." days ";
+                                            }
+                                            if($years==0 AND $months==0 AND $days==0)
+                                            {
+                                                echo "Event is Going On!";
+                                            }
+                                            else
+                                            {
+                                                echo "Till the Event!";
+                                            }
+                                            echo "</td>";
+                                        }
+                                        else
+                                        {
+                                            if($diff2>0)
+                                            {
+                                                echo "<td class='text-center hidden-sm hidden-xs'>Event has Ended!</td>";
+                                            }
+                                            else
+                                            {
+                                                echo "<td class='text-center hidden-sm hidden-xs'>Event is Goin On!</td>";
+                                            }
+                                        }
+                                                    echo "</tr>
+                                                    ";
+                                    }
                                             echo"</form>
                                         </tbody>
                                     </table>
@@ -366,7 +423,7 @@
                                         $value=JSON_encode($data);
                                 if($invi['Status']=='Pending')
                                 {
-                                    echo " <td id='respondStatus'><button onclick='privatePassword(this.value)' id='Approve' form='' data-target='.bs-example-modal-lg2' value='".$value."'>Approve</button><button class='button' id='Decline' onclick='updateResponse(this.id)' form='' value='".$invi['Attendee_ID']."'>Decline</button></td>    
+                                    echo " <td id='respondStatus'><button onclick='privatePassword(this.value)' id='Approve' form='' data-target='.bs-example-modal-lg2' value='".$value."' class='btn btn-default btn-block'>Approve</button><button class='btn btn-default btn-block' id='Decline' onclick='updateResponse(this.id)' form='' value='".$invi['Attendee_ID']."'>Decline</button></td>    
                                     </tr>";
                                 }
                                 else

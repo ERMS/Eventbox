@@ -64,7 +64,14 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
                     <?php
-                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='50px' height='50px'>";
+                        }
                     ?>
                     </li>
                     <li class="dropdown">
@@ -91,7 +98,7 @@
                         <h2>Invite Participant <small>Step 3 of 4</small></h2>
                     </div>
                     <div class="col-md-4">
-                        <a href="home.php" class="event btn btn-default pull-right">Cancel</a>                        
+                        <a href="my_event.php" class="event btn btn-default pull-right">Cancel</a>                        
                     </div>
                 </div> <!--end content header-->
                 <hr>

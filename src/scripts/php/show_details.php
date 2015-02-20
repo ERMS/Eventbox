@@ -68,7 +68,14 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
                     <?php
-                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='50px' height='50px'>";
+                        }
                     ?>
                     </li>
                     <li class="dropdown">
@@ -94,7 +101,7 @@
                         <h2>Verify Details <small>Step 4 of 4</small></h2>
                     </div>
                     <div class="col-md-4">
-                        <a href="home.php" class="event btn btn-default pull-right">Cancel</a>                        
+                        <a href="my_event.php" class="event btn btn-default pull-right">Cancel</a>                        
                     </div>
                 </div> <!--end content header-->
                 <hr>
@@ -246,26 +253,26 @@
             count++;
             switch(formElemID) {
                   case 'name':
-                       newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='Last'></div></div></div>";
+                       newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-2 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-4 col-md-offset-2'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='Last'></div></div></div>";
                        break;
 
                   case 'date':
-                       newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' disabled class='form-control' placeholder='mm'></div><div class='col-md-2'><input  id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='dd'></div><div class='col-md-2'><input type='text' disabled class='form-control'  id='"+formElemID+count+"' placeholder='yyyy'></div></div></div>";
+                       newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-2 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-4 col-md-offset-2'><input type='date' disabled class='form-control'  id='"+formElemID+count+"'></div></div></div>";
                        break;
                   case 'email':
-                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' disabled class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-2 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-8 col-md-offset-2'><input type='email' id='"+formElemID+count+"' disabled class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
                        break;
                   case 'address':
-                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div></div></div>";
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-2 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-4 col-md-offset-2' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div></div></div>";
                        break;
                   case 'text':
-                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled id='"+formElemID+count+"' class='form-control' placeholder='"+labelName+"'></div></div></div>";
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-2 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-8 col-md-offset-2'><input type='text' disabled id='"+formElemID+count+"' class='form-control' placeholder='"+labelName+"'></div></div></div>";
                        break;
                   case 'textarea':
-                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'> <textarea disabled id='"+formElemID+count+"' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-2 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-8 col-md-offset-2'> <textarea disabled id='"+formElemID+count+"' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
                        break;
                   case 'link':
-                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled class='form-control' id='"+formElemID+count+"' placeholder='https://'></div></div></div>";
+                       newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-2 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-8 col-md-offset-2'><input type='text' disabled class='form-control' id='"+formElemID+count+"' placeholder='https://'></div></div></div>";
                        break;
             }
             document.getElementById(divName).appendChild(newdiv);

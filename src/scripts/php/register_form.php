@@ -146,11 +146,9 @@
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="src/scripts/js/boostrap.min.js"></script>
+    <script src="../js/boostrap.min.js"></script>
 
 	<script>
-		
-		var email='<?php echo json_encode($values); ?>';
 		
         function readURL(input) 
         {
@@ -170,7 +168,8 @@
 
 		function checkmail(mail)                                        //  checks whether the email is already in use 
 		{
-			json=JSON.parse(email);
+            var email='<?php echo json_encode($values); ?>';
+			var json=JSON.parse(email);
 			for(var i=0;i<json.length;i++)
 			{
 				if(mail==json[i])
@@ -186,6 +185,11 @@
 			var mail = document.forms["register"]["email"].value;
 			var password = document.forms["register"]["password"].value;
 			var password2 = document.forms["register"]["password_confirmation"].value;
+            if(password.length<6)
+            {
+                alert("password must be contain atleast 6 characters!");
+                return false;
+            }
 			if(checkmail(mail)==false)
 			{
 				return false;
@@ -203,3 +207,4 @@
 	</script>
         
 </body>
+</html>

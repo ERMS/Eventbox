@@ -18,43 +18,61 @@
 
 <!--  PHP session  -->
 <?php
-    include "connectdb.php";
+    include "class.php";
 
     $con = connectdb();
 
     session_start();
 
+    if(isset($_GET['verify']))
+    {
+        if(isset($_SESSION['verified']))
+        {   
+            $ver=$_SESSION['verified'];
+            if($_GET['verify']==$ver->U_email)
+            {
+                $dup=mysqli_query($con,"SELECT * FROM `user` WHERE `User_Email`='$ver->U_email'");
+                if(mysqli_num_rows($dup)==0)
+                {
+                    $ver->RegisterAccount();
+                }
+            }
+        }
+    }
+
     if(isset($_GET['data']))
     {
         $_SESSION['mail']=$_GET['data'];
-        $_SESSION['id']=$_GET['id'];
+        $_SESSION['eid']=$_GET['id'];
         $mail=$_SESSION['mail'];
         
         $check=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
         if(mysqli_num_rows($check)<=0)
         {
+            unset($_SESSION['user']);
             header("location:register_form.php");
         }
     }
 
     if (isset($_SESSION['user']))
     {
-        $id=$_SESSION['id'];
         $mail=$_SESSION['mail'];
-
         $query=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
         $data=mysqli_fetch_array($query);
 
-        if(isset($_SESSION['id']))
+        if(isset($_SESSION['eid']))
         {
+            if(mysqli_num_rows($query)<=0)
+            {
+                unset($_SESSION['user']);
+                header("location:register_form.php");
+            }
             if($_SESSION['user']['id']==$data['User_ID'])
             {
                 header("location:my_event.php?invite=invited");
             }
             else
             {
-                unset($_SESSION['mail']);
-                unset($_SESSION['id']);
                 header("location:my_event.php");
             }
         }
@@ -136,7 +154,6 @@
                                     </div>
                                      <div class="row" style="display:block">
                                         <div class="col-xs-12">
-                                     <a href="" class="forget pull-right" data-toggle="modal" data-target=".forget-modal">Forgot your password?</a>
                                          </div>
                                     </div>
                                     <div class="form-group">

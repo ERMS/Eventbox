@@ -18,7 +18,7 @@
 
 
 <?php
-
+	error_reporting(0);
 	include "connectdb.php";
 
 	$con=connectdb();
@@ -72,7 +72,14 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
                     <?php
-                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='50px' height='50px'>";
+                        }
                     ?>
                     </li>
                     <li class="dropdown">
@@ -96,8 +103,15 @@
 				
                 <div class="col-md-1">
                 <?php
-                    echo "<img src='data:;base64,".$event['Event_Logo']."' width='100px' height='100px'>";    // displays the logo
-                    ?>
+                    if($event['Event_Logo']!=NULL)
+                    {
+                    	echo "<img src='data:;base64,".$event['Event_Logo']."' width='100px' height='100px'>";    // displays the logo
+                    }
+                    else
+                    {
+                    	echo "<img src='../../images/box.jpg' width='100px' height='100px'>";    // displays the logo
+                    }
+                ?>
                 </div>
 				
 				<!-- event name -->
@@ -159,7 +173,7 @@
 		                    }
 		                    else
 		                    {
-		                        $s=mysqli_query($con,"SELECT * FROM `attendance` WHERE `User_ID`='$cu'");
+		                        $s=mysqli_query($con,"SELECT * FROM `attendance` WHERE `User_ID`='$cu' AND `Event_ID`='$id'");
 		                        $us=mysqli_fetch_array($s);
 		                        if($us['Status']!='Approved')
 		                        {
@@ -179,7 +193,14 @@
 		            }
 		            else
                     {
-                    	echo "<p class='text-center event text-uppercase'> <strong>Event has Ended!</strong> </p>";
+                        if($diff2>0)
+                        {
+                            echo "<td class='text-center hidden-sm hidden-xs'>Event has Ended!</td>";
+                        }
+                        else
+                        {
+                            echo "<td class='text-center hidden-sm hidden-xs'>Event is Goin On!</td>";
+                    	}
                     }
                     ?>
                     <!----change "Join NOW" into Invite if user is the one hosting the event and if official participant-->
@@ -307,11 +328,11 @@
 									{
 										if($a_rdata['Form_Value']!='')
 										{
-											echo "<td><button data-toggle='modal' data-target='.bs-example-modal-lg2' onclick='viewData(this)' form='' value='".$a_rdata['Form_Value']."'>View</button></td>";
+											echo "<td><button data-toggle='modal' data-target='.bs-example-modal-lg2' onclick='viewData(this)' form='' value='".$a_rdata['Form_Value']."' class='btn btn-default btn-block' >View</button></td>";
 										}
 										else
 										{
-											echo "<td><button disabled>View</button></td>";
+											echo "<td><button disabled  class='btn btn-default btn-block' >View</button></td>";
 										}
 									}
 									echo "<td class='hidden-sm hidden-xs'>".$attendee['User_FirstName']." ".$attendee['User_LastName']."</td>
@@ -332,7 +353,7 @@
 											{
 												if($userdata['Status']=='Pending')
 												{
-													echo "<td id='respondStatus'><button form='' onclick='updateResponse(this.id)' class='button' id='Approve' value='".$userdata['Attendee_ID']."'>Approve</button><button onclick='updateResponse(this.id)' form='' class='button' id='Decline' value='".$userdata['Attendee_ID']."'>Decline</button></td>";
+													echo "<td id='respondStatus'><button form='' onclick='updateResponse(this.id)' class='button' id='Approve' value='".$userdata['Attendee_ID']."' class='btn btn-default btn-block'>Approve</button><button onclick='updateResponse(this.id)' form='' class='btn btn-default btn-block' id='Decline' value='".$userdata['Attendee_ID']."'>Decline</button></td>";
 												}
 												else
 												{
@@ -385,7 +406,7 @@
 										<label for="parts" class="sr-only">Email</label>
 										<input type="text" id="parts" name="participants[]" class="form-control" placeholder="eventbox@eventbox.com">
 										</div> 
-										<button class="btn btn-default" form='' onclick="addparticipants()">Add Participant</button>
+										<a href="#" class="col-md-offset-4" form='' onclick="addparticipants()">Add Participant</a>
 										<input type="hidden" name="e_id" value="<?php echo $id; ?>">
 										<input class="btn btn-default" type="submit">
 								</form>                      
@@ -411,11 +432,12 @@
                 <div class="modal-body">
                     <div class="panel panel-default">                       
                         <div class="panel-body">
-                            <form role="form" id="formDatas" action="participate_event.php" method="GET" name="formDatas" onsubmit="FormEventID()">
+                            <form role="form" id="formDatas" action="participate_event.php" method="GET" name="formDatas" onsubmit="formEventID()">
                                     <div class="panel-body" id="form">
                                     </div> 
                                     <input type="hidden" name="formid">
-                                    <input type="submit">
+									<hr>
+                                    <input class="btn btn-success center-block" type="submit">
                                 </form>                      
                         </div>
                     </div>
@@ -507,7 +529,7 @@
                                                 </div>
                                                 <div class="col-sm-2 col-md-2">
                                                     <label for="logo">Event Logo</label>
-                                                    <img id="image" src="#" height="42" width="42">
+                                                    <img id="image" hidden="" src="#" height="42" width="42">
                                                     <input type="file" name="logo" id="logo">
                                                 </div>  
                                             </div>
@@ -884,36 +906,35 @@
 	    	readURL(this);
 	    });
 
-
 		function generateForm(divName,formElemID,labelName){
 			var newdiv = document.createElement('div');
 			count++;
 			switch(formElemID) {
 				  case 'name':
-					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='Last'></div></div></div>";
+					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-5 col-md-offset-1'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='First'></div><div class='col-md-5'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='Last'></div></div></div><br><br>";
 					   break;
 				  case 'date':
-					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='mm'></div><div class='col-md-2'><input  id='"+formElemID+count+"' type='text' name='value[]' class='form-control' placeholder='dd'></div><div class='col-md-2'><input type='text' class='form-control' name='value[]' id='"+formElemID+count+"' placeholder='yyyy'></div></div></div>";
+					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-5 col-md-1'><input id='"+formElemID+count+"' type='date' name='value[]'></div></div></div><br><br>";
 					   break;
 				  case 'email':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-10 col-md-offset-1'><input type='email' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div><br><br>";
 					   break;
 				  case 'address':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-5 col-md-offset-1' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-5' ><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div><br><br>";
 					   break;
 				  case 'text':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-10 col-md-offset-1'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div><br><br>";
 					   break;
 				  case 'textarea':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'> <textarea id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-10 col-md-offset-1'> <textarea id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
 					   break;
 				  case 'link':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' class='form-control' name='value[]' id='"+formElemID+count+"' placeholder='https://'></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='url' class='form-control' name='value[]' id='"+formElemID+count+"' value='https://'></div></div></div><br><br>";
 					   break;
 			}
 			document.getElementById(divName).appendChild(newdiv);
 		}
-		
+
 		function print()
 	    {
 	    	location.reload();
@@ -940,7 +961,7 @@
 			var formorder=JSON.parse(form);
 			for(var i=0;i<formorder.length;i++)
 			{
-				generateForm('form',formorder[i][2],formorder[i][0]);
+				generateForm('form',formorder[i][2],formorder[i][1]);
 			}
 		}
 		
@@ -949,6 +970,7 @@
 			document.getElementById(buttonID1).disabled=true;
 			document.getElementById(buttonID2).disabled=false;
 		}
+
 		window.onload = function() {
 			hideButton('trash','edit');
 		};
@@ -1014,7 +1036,7 @@
 			}
 		}
 		
-		function FormEventID()
+		function formEventID()
 		{
 			var id=<?php echo $form['Form_ID']; ?>;
 			document.forms['formDatas']['formid'].value=id;
@@ -1115,7 +1137,7 @@
 				{
 					if(formorder[i][1]=='Address')
 					{
-						count=count+4;
+						count=count+3;
 					}
 					else
 					{
@@ -1158,9 +1180,55 @@
 				return false;
 			}
 		}
+		function conflict()
+		{
+			<?php
+			 	$cU=$_SESSION['user']['id'];
+				$conflict=mysqli_query ($con,"SELECT * FROM `attendance` LEFT JOIN `event` ON `attendance`.`Event_ID`=`event`.`Event_ID` WHERE `attendance`.`User_ID`='$cU'");
+				$i=0;
+				while($data=mysqli_fetch_array($conflict))
+				{
+					$conf[$i]=$data;
+					$i++;
+				}
+			?>
+			var conflict='<?php echo json_encode($conf); ?>';
+			var date=JSON.parse(conflict);
+			var sCH=editData.Event_StartHour;
+			var eCH=editData.Event_EndHour;
+			if(editData.Event_StartCH=='PM')
+			{
+				sCH=+12;
+			}
+			if(editData.Event_EndCH=='PM')
+			{
+				eCH=+12;
+			}
+			if(date!=null)
+			{
+				var esdate=new Date(Date.parse(editData.Event_StartMonth+" "+editData.Event_StartDay+", "+editData.Event_StartYear+" "+sCH+":"+editData.Event_StartMinute));
+				var eedate=new Date(Date.parse(editData.Event_EndMonth+" "+editData.Event_EndDay+", "+editData.Event_EndYear+" "+eCH+":"+editData.Event_EndMinute));
+				for(var i=0;i<date.length;i++)
+				{
+					var cesdate=new Date(Date.parse(date[i].Event_StartMonth+" "+date[i].Event_StartDay+", "+date[i].Event_StartYear));
+					var ceedate=new Date(Date.parse(date[i].Event_EndMonth+" "+date[i].Event_EndDay+", "+date[i].Event_EndYear));
+					if(cesdate.getTime()<esdate.getTime() || eedate.getTime()<cesdate.getTime() && ceedate.getTime()<esdate.getTime() || eedate.getTime()<ceedate.getTime())
+					{
+					}
+					else
+					{
+						alert("There seems to be a conflcit with your schedule!");
+						return false;
+					}
+				}
+			}
+		}
 		function privatePassword(status)
 		{
-
+			if(conflict()==false)
+			{
+				return false;
+			}
 			if(registrationCheck()==false)
 			{
 				return false;
@@ -1180,6 +1248,7 @@
 			else
 			{
 				alert("You are already a Participant for this Event!");
+				return false;
 			}
 		}
 		
@@ -1276,30 +1345,6 @@
 				});
 			});
 		});
-
-		/*$(document).ready(function () {
-			$("input#submit").click(function(){
-				var data = new FormData();
-		        data.append('messageData', $('form#editForm').serialize());
-		        var logo = document.getElementById('logo');	
-		        data.append('file', logo.files);
-				$.ajax({
-					type: "POST",
-					url: "edit_event.php",
-					data: data,
-					processData: false,
-  					contentType: false,
-					success: function(data){
-						$("#full-width").modal('hide');
-						location.reload();
-					},
-					error: function(err){
-						alert("Failed to Edit! Try Again Later..");
-						return;
-					}
-				});
-			});
-		});*/
 	
 	</script>
 

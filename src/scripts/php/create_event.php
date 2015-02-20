@@ -61,7 +61,14 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
                     <?php
-                        echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='50px' height='50px'>";
+                        }
                     ?>
                     </li>
                     <li class="dropdown">
@@ -108,8 +115,7 @@
                                         <input type="text" class="form-control" id="title" name="title" placeholder="Event Name" required>
                                     </div>
                                     <div class="col-sm-2 col-md-2">
-                                        <label for="logo">Event Logo</label>
-                                        <img id="image" src="../../images/box.jpg" hidden="" height="42" width="42">							
+                                        <label for="logo">Event Logo</label>							
                                         <input type="file" id="logo" name="logo">                                        
                                     </div>  
                                 </div>
@@ -119,9 +125,9 @@
                                     <div class="col-md-12"> <!-- start event date:From container  -->
                                         <div class="form-group">                                                   
                                             <div class="row">
-                                                <label for="eventdate" class="col-sm-1 col-md-1">From</label>
+                                                <label for="smonth" class="col-sm-1 col-md-1">From</label>
                                                 <div class="col-sm-5 col-md-5">                                                        
-                                                    <select name="startmonth" id="eventdate" class="form-control input-sm">
+                                                    <select name="startmonth" id="smonth" class="form-control input-sm">
                                                         <?php
                                                             for ($i=1; $i <= 12; $i++) 
                                                             { 
@@ -139,7 +145,7 @@
                                                     </select>   
                                                 </div>
                                                 <div class="col-sm-3 col-md-3">
-                                                    <select  name="startday" class="form-control input-sm">
+                                                    <select  name="startday" id="sday" class="form-control input-sm">
                                                         <?php
                                                             for ($i=1; $i <=date("t") ; $i++) 
                                                             {
@@ -157,7 +163,7 @@
                                                     </select>   
                                                 </div>
                                                 <div class="col-sm-3 col-md-3">
-                                                    <select name="startyear" id="eventdate" class="form-control year input-sm">
+                                                    <select name="startyear" id="syear" class="form-control year input-sm">
                                                         <?php
                                                             for ($i=date("Y"); $i <(date("Y")+10); $i++) 
                                                             { 
@@ -178,9 +184,9 @@
                                         </div>
                                         <div class="form-group">   
                                             <div class="row">
-                                                <label for="eventdate" align="center" class="col-sm-1 col-md-1">Until</label>
+                                                <label for="emonth" align="center" class="col-sm-1 col-md-1">Until</label>
                                                 <div class="col-sm-5 col-md-5">                                                        
-                                                    <select name="endmonth" id="eventdate" class="form-control input-sm">
+                                                    <select name="endmonth" id="emonth" class="form-control input-sm">
                                                         <?php
                                                             for ($i=1; $i <= 12; $i++) 
                                                             { 
@@ -198,7 +204,7 @@
                                                     </select>   
                                                 </div>
                                                 <div class="col-sm-3 col-md-3">
-                                                    <select  name="endday" class="form-control input-sm">
+                                                    <select  name="endday" id="eday" class="form-control input-sm">
                                                         <?php
                                                             for ($i=1; $i <=date("t") ; $i++) 
                                                             {
@@ -216,7 +222,7 @@
                                                     </select>   
                                                 </div>
                                                 <div class="col-sm-3 col-md-3">
-                                                    <select name="endyear" id="eventdate" class="form-control year input-sm">
+                                                    <select name="endyear" id="eyear" class="form-control year input-sm">
                                                         <?php
                                                             for ($i=date("Y"); $i <(date("Y")+10); $i++) 
                                                             { 
@@ -455,8 +461,32 @@
                 alert("password does not match!");
                 return false;
             }
+            if(dateCheck()==false)
+            {
+                alert("Invalid Dates!");
+                return false;
+            }
         }
         
+        function dateCheck()
+        {
+            var smonth=document.getElementById("smonth").value;
+            var sday=document.getElementById("sday").value;
+            var syear=document.getElementById("syear").value;
+            var emonth=document.getElementById("emonth").value;
+            var eday=document.getElementById("eday").value;
+            var eyear=document.getElementById("eyear").value;
+            var sdates=Date.parse(smonth+" "+sday+", "+syear);
+            var sdate=new Date(sdates);
+            var edates=Date.parse(emonth+" "+eday+", "+eyear);
+            var edate=new Date(edates);
+            var date=edate.getTime()-sdate.getTime()
+            if(date<0)
+            {
+                return false;
+            }
+        }
+
         function numberofparticipants(num)
         {
             if(num=="Any")
