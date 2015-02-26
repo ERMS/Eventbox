@@ -228,7 +228,7 @@
 				
             <div class="row">
                 <div class="col-md-6">
-                    <button class="btn btn-default btn-lg pull-right">back</button>
+                    <a href="add_participant.php" class="btn btn-default btn-lg pull-right">back</a>
                 </div>
                 <div class="col-md-6">
                     <a href="notify_participant.php" class="btn btn-success btn-lg">Done</a>

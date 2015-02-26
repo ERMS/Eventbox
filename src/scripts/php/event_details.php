@@ -195,7 +195,7 @@
                     {
                         if($diff2>0)
                         {
-                            echo "<td class='text-center hidden-sm hidden-xs'>Event has Ended!</td>";
+                            echo "<td class=''><h4 class='pull-right'>Event has Ended!</h4></td>";
                         }
                         else
                         {
@@ -228,8 +228,9 @@
 						</button>
 						<button class='btn btn-default' onclick='print()'>
 							<span class='glyphicon glyphicon-print'></span>
+							PRINT
 						</button>
-						<input type='button' onclick=tableToExcel('$table','$name') value='Export to Excel'>
+						<input type='button' class='btn btn-default' onclick=tableToExcel('$table','$name') value='Export to Excel'>
 						";
 					}
 					?>
@@ -332,7 +333,7 @@
 									{
 										if($a_rdata['Form_Value']!='')
 										{
-											echo "<td><button data-toggle='modal' data-target='.bs-example-modal-lg2' onclick='viewData(this)' form='' value='".$a_rdata['Form_Value']."'>View</button></td>";
+											echo "<td><button data-toggle='modal' class='btn btn-default btn-block'  data-target='.bs-example-modal-lg2' onclick='viewData(this)' form='' value='".$a_rdata['Form_Value']."'>View</button></td>";
 										}
 										else
 										{
@@ -357,7 +358,7 @@
 											{
 												if($userdata['Status']=='Pending')
 												{
-													echo "<td id='respondStatus'><button form='' onclick='updateResponse(this.id)' class='button' id='Approve' value='".$userdata['Attendee_ID']."'>Accept</button><button onclick='updateResponse(this.id)' form='' class='button' id='Decline' value='".$userdata['Attendee_ID']."'>Reject</button></td>";
+													echo "<td id='respondStatus'><button form='' onclick='updateResponse(this.id)' class='btn btn-default btn-default' id='Approve' value='".$userdata['Attendee_ID']."'>Accept</button><button onclick='updateResponse(this.id)' form='' class='btn btn-default btn-default' id='Decline' value='".$userdata['Attendee_ID']."'>Reject</button></td>";
 												}
 												else
 												{
@@ -424,7 +425,7 @@
 		
 	<!-- registration form modal-->
     <div id="registrationForm" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-md">
+      <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" onclick="clearform('form')">
@@ -440,7 +441,7 @@
                                     <div class="panel-body" id="form">
                                     </div> 
                                     <input type="hidden" name="formid">
-                                    <input type="submit">
+                                    <input class="btn btn-success center-block" type="submit">
                                 </form>                      
                         </div>
                     </div>
@@ -531,8 +532,7 @@
                                                     <input type="text" name="title" class="form-control" id="title" placeholder="Event Name" required>
                                                 </div>
                                                 <div class="col-sm-2 col-md-2">
-                                                    <label for="logo">Event Logo</label>
-                                                    <img id="image" src="#" height="42" width="42">
+                                                    <img id="image" hidden="" src="#">
                                                     <input type="file" name="logo" id="logo">
                                                 </div>  
                                             </div>
@@ -818,6 +818,8 @@
 	   </div>
 	</div>
 	<div id="print" style="display:none"><!-- printable Div -->
+	<!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
     <section for="header" class="container">
 		<div class="paragraphs">
 			<div class="row">
@@ -834,10 +836,11 @@
 			  <p style=''>".$print['Event_StartMonth']." ".$print['Event_StartDay'].", ".$print['Event_StartYear']." - ".$print['Event_EndMonth']." ".$print['Event_EndDay'].", ".$print['Event_EndYear']." @ ".$print['Event_StartHour'].":".$print['Event_StartMinute']." ".$print['Event_StartCH']." - ".$print['Event_EndHour'].":".$print['Event_EndMinute']." ".$print['Event_EndCH']."</p>
 				</div>";
 				?>
-				<div  style="clear:both"></div>
+				<div style="clear:both"></div>
 			</div>
 		</div>
 	</section>
+	<br><br>
 	<section class="container event">
 		<div class="row">
 		<div class="col-md-12">
@@ -845,16 +848,12 @@
 			<?php
 			$attendees=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$id' AND `Status`='Approved'");
 			echo "
-			<caption>".$print['Event_StartMonth']." ".$print['Event_StartDay'].", ".$print['Event_StartYear']." - ".$print['Event_EndMonth']." ".$print['Event_EndDay'].", ".$print['Event_EndYear']." @ ".$print['Event_StartHour'].":".$print['Event_StartMinute']." ".$print['Event_StartCH']." - ".$print['Event_EndHour'].":".$print['Event_EndMinute']." ".$print['Event_EndCH']."</caption>
-			<caption>".$print['Event_Title']." by ".$hprint['User_FirstName']." ".$hprint['User_LastName']."</caption> 
-
 			<thead>
 				<th class='text-center'> Participant ID </th>
 				<th class='text-center'> First Name </th>
 				<th class='text-center'> Last Name </th>
 				<th class='text-center'> Address </th>
 				<th class='text-center'> Email address </th>
-
 			</thead>
 			<tbody>";
 			while($printA=mysqli_fetch_array($attendees))
@@ -918,25 +917,25 @@
 			count++;
 			switch(formElemID) {
 				  case 'name':
-					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='Last'></div></div></div>";
+					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-5 col-md-offset-1'><input required id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='First'></div><div class='col-md-5'><input required id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='Last'></div></div></div><br><br>";
 					   break;
 				  case 'date':
-					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input id='"+formElemID+count+"' type='date' name='value[]'></div></div></div>";
+					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-4 col-md-offset-1'><input class='form-control' id='"+formElemID+count+"' type='date' name='value[]'></div></div></div><br><br>";
 					   break;
 				  case 'email':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-10 col-md-offset-1'><input type='email' required id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div><br><br>";
 					   break;
 				  case 'address':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-5 col-md-offset-1' ><input type='text' required id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'> <input id='"+formElemID+count+"' required name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-5' ><input required type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div><br><br><br><br>";
 					   break;
 				  case 'text':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-10 col-md-offset-1'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div><br><br>";
 					   break;
 				  case 'textarea':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'> <textarea id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-10 col-md-offset-1'> <textarea id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Type Here...'></textarea></div></div></div><br><br>";
 					   break;
 				  case 'link':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='url' class='form-control' name='value[]' id='"+formElemID+count+"' value='https://'></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='url' class='form-control' name='value[]' id='"+formElemID+count+"' value='https://'></div></div></div><br><br>";
 					   break;
 			}
 			document.getElementById(divName).appendChild(newdiv);

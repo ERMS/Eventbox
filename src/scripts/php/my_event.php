@@ -169,11 +169,13 @@
                     <li onclick="tabVal('participated')" role="presentation" id="tabpart"><a href="#participate" aria-controls="profile" role="tab" data-toggle="tab">Participated</a></li>
                     <li onclick="tabVal('invited')" role="presentation" id="tabinvi"><a href="#invite" aria-controls="invitation" role="tab" data-toggle="tab">Invitation</a></li>
                     <li role="presentation " class="pull-right">
-                        <button onclick="deleteEvent()" class="btn btn-default ">
+                        <button onclick="deleteEvent()" class="btn btn-default "> 
                             <span class="glyphicon glyphicon-trash"></span>
+							DELETE
                         </button>
                         <button onclick="checkedCounter()" class="btn btn-default" data-target=".bs-edit-event-modal-lg">
                             <span class="glyphicon glyphicon-edit"></span>
+							EDIT
                         </button>
                     </li>            
                 </ul>
@@ -423,7 +425,7 @@
                                         $value=JSON_encode($data);
                                 if($invi['Status']=='Pending')
                                 {
-                                    echo " <td id='respondStatus'><button onclick='privatePassword(this.value)' id='Approve' form='' data-target='.bs-example-modal-lg2' value='".$value."'>Accept</button><button class='button' id='Decline' onclick='updateResponse(this.id)' form='' value='".$invi['Attendee_ID']."'>Reject</button></td>    
+                                    echo " <td id='respondStatus'><button onclick='privatePassword(this.value)' id='Approve' form='' data-target='.bs-example-modal-lg2' value='".$value."' class='btn btn-default btn-block'>Accept</button><button class='btn btn-default btn-block' id='Decline' onclick='updateResponse(this.id)' form='' value='".$invi['Attendee_ID']."'>Reject</button></td>    
                                     </tr>";
                                 }
                                 else
