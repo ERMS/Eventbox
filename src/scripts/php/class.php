@@ -286,20 +286,20 @@
 			$e_ed=$e['Event_EndDay'];
 			$e_ey=$e['Event_EndYear'];
 			$e_sh=$e['Event_StartHour'];
-			$e_sm=$e['Event_StartMinute'];
+			$e_smm=$e['Event_StartMinute'];
 			$e_sc=$e['Event_StartCH'];
 			$e_eh=$e['Event_EndHour'];
-			$e_em=$e['Event_EndMinute'];
+			$e_emm=$e['Event_EndMinute'];
 			$e_ec=$e['Event_EndCH'];
 			$privacy=$e['Event_Privacy'];
 			$pass=$e['Event_Password'];
 			if($privacy=='private')
 			{
-				$this->msg="You have been invited by $this->sender to be part of $e_title on $e_sm / $e_sd / $e_sy - $e_em / $e_ed / $e_ey at $e_sh : $e_sm $e_sc - $e_eh : $e_em $e_ec. This event is private and requires password authentication. The password is ($pass). Login or Create an account Here:";
+				$this->msg="You have been invited by $this->sender to be part of $e_title on $e_sm / $e_sd / $e_sy - $e_em / $e_ed / $e_ey at $e_sh : $e_smm $e_sc - $e_eh : $e_emm $e_ec. This event is private and requires password authentication. The password is ($pass). Login or Create an account Here:";
 			}
 			else
 			{
-				$this->msg="You have been invited by $this->sender to be part of $e_title on $e_sm / $e_sd / $e_sy - $e_em / $e_ed / $e_ey at $e_sh : $e_sm $e_sc - $e_eh : $e_em $e_ec. Login or Create an account Here:";
+				$this->msg="You have been invited by $this->sender to be part of $e_title on $e_sm / $e_sd / $e_sy - $e_em / $e_ed / $e_ey at $e_sh : $e_smm $e_sc - $e_eh : $e_emm $e_ec. Login or Create an account Here:";
 			}
 
 			/*
