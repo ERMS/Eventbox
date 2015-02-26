@@ -217,16 +217,20 @@
 					<?php
 					if($host['User_ID']==$user['id'])
 					{
+						$table='printable';
+						$name='W3CExampleTable';
 					echo "
 						<button onclick='deleteParticipants()' class='btn btn-default' id='trash'>
 							<span class='glyphicon glyphicon-trash'></span>
 						</button>
-						<button onclick='editEvent()'' class='btn btn-default' id='edit' data-toggle='modal' data-target='.bs-edit-event-modal-lg'>
+						<button onclick='editEvent()' class='btn btn-default' id='edit' data-toggle='modal' data-target='.bs-edit-event-modal-lg'>
 							<span class='glyphicon glyphicon-edit'></span>
 						</button>
 						<button class='btn btn-default' onclick='print()'>
 							<span class='glyphicon glyphicon-print'></span>
-						</button>";
+						</button>
+						<input type='button' onclick=tableToExcel('$table','$name') value='Export to Excel'>
+						";
 					}
 					?>
 					</li>
@@ -328,11 +332,11 @@
 									{
 										if($a_rdata['Form_Value']!='')
 										{
-											echo "<td><button data-toggle='modal' data-target='.bs-example-modal-lg2' onclick='viewData(this)' form='' value='".$a_rdata['Form_Value']."' class='btn btn-default btn-block' >View</button></td>";
+											echo "<td><button data-toggle='modal' data-target='.bs-example-modal-lg2' onclick='viewData(this)' form='' value='".$a_rdata['Form_Value']."'>View</button></td>";
 										}
 										else
 										{
-											echo "<td><button disabled  class='btn btn-default btn-block' >View</button></td>";
+											echo "<td><button disabled>View</button></td>";
 										}
 									}
 									echo "<td class='hidden-sm hidden-xs'>".$attendee['User_FirstName']." ".$attendee['User_LastName']."</td>
@@ -353,7 +357,7 @@
 											{
 												if($userdata['Status']=='Pending')
 												{
-													echo "<td id='respondStatus'><button form='' onclick='updateResponse(this.id)' class='button' id='Approve' value='".$userdata['Attendee_ID']."' class='btn btn-default btn-block'>Approve</button><button onclick='updateResponse(this.id)' form='' class='btn btn-default btn-block' id='Decline' value='".$userdata['Attendee_ID']."'>Decline</button></td>";
+													echo "<td id='respondStatus'><button form='' onclick='updateResponse(this.id)' class='button' id='Approve' value='".$userdata['Attendee_ID']."'>Accept</button><button onclick='updateResponse(this.id)' form='' class='button' id='Decline' value='".$userdata['Attendee_ID']."'>Reject</button></td>";
 												}
 												else
 												{
@@ -406,7 +410,7 @@
 										<label for="parts" class="sr-only">Email</label>
 										<input type="text" id="parts" name="participants[]" class="form-control" placeholder="eventbox@eventbox.com">
 										</div> 
-										<a href="#" class="col-md-offset-4" form='' onclick="addparticipants()">Add Participant</a>
+										<button class="btn btn-default" form='' onclick="addparticipants()">Add Participant</button>
 										<input type="hidden" name="e_id" value="<?php echo $id; ?>">
 										<input class="btn btn-default" type="submit">
 								</form>                      
@@ -436,8 +440,7 @@
                                     <div class="panel-body" id="form">
                                     </div> 
                                     <input type="hidden" name="formid">
-									<hr>
-                                    <input class="btn btn-success center-block" type="submit">
+                                    <input type="submit">
                                 </form>                      
                         </div>
                     </div>
@@ -529,7 +532,7 @@
                                                 </div>
                                                 <div class="col-sm-2 col-md-2">
                                                     <label for="logo">Event Logo</label>
-                                                    <img id="image" hidden="" src="#" height="42" width="42">
+                                                    <img id="image" src="#" height="42" width="42">
                                                     <input type="file" name="logo" id="logo">
                                                 </div>  
                                             </div>
@@ -838,10 +841,14 @@
 	<section class="container event">
 		<div class="row">
 		<div class="col-md-12">
-		<table class="table table-bordered text-center" border="1">
+		<table class="table table-bordered text-center" id="printable" border="1" summary="List of Participants">
 			<?php
 			$attendees=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$id' AND `Status`='Approved'");
-			echo "<thead>
+			echo "
+			<caption>".$print['Event_StartMonth']." ".$print['Event_StartDay'].", ".$print['Event_StartYear']." - ".$print['Event_EndMonth']." ".$print['Event_EndDay'].", ".$print['Event_EndYear']." @ ".$print['Event_StartHour'].":".$print['Event_StartMinute']." ".$print['Event_StartCH']." - ".$print['Event_EndHour'].":".$print['Event_EndMinute']." ".$print['Event_EndCH']."</caption>
+			<caption>".$print['Event_Title']." by ".$hprint['User_FirstName']." ".$hprint['User_LastName']."</caption> 
+
+			<thead>
 				<th class='text-center'> Participant ID </th>
 				<th class='text-center'> First Name </th>
 				<th class='text-center'> Last Name </th>
@@ -911,25 +918,25 @@
 			count++;
 			switch(formElemID) {
 				  case 'name':
-					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-5 col-md-offset-1'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='First'></div><div class='col-md-5'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='Last'></div></div></div><br><br>";
+					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control' placeholder='Last'></div></div></div>";
 					   break;
 				  case 'date':
-					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-5 col-md-1'><input id='"+formElemID+count+"' type='date' name='value[]'></div></div></div><br><br>";
+					   newdiv.innerHTML ="<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4'><input id='"+formElemID+count+"' type='date' name='value[]'></div></div></div>";
 					   break;
 				  case 'email':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-10 col-md-offset-1'><input type='email' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div><br><br>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='eventbox@eventbox.com'></div></div></div>";
 					   break;
 				  case 'address':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-5 col-md-offset-1' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-5' ><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div><br><br>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Country'><input id='"+formElemID+count+"' name='value[]' type='text' class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' name='value[]' id='"+formElemID+count+"' class='form-control event' placeholder='Street'></div></div></div>";
 					   break;
 				  case 'text':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-10 col-md-offset-1'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div><br><br>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='text' id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='"+labelName+"'></div></div></div>";
 					   break;
 				  case 'textarea':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><br><br><div class='col-md-10 col-md-offset-1'> <textarea id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'> <textarea id='"+formElemID+count+"' name='value[]' class='form-control' placeholder='Type Here...'></textarea></div></div></div>";
 					   break;
 				  case 'link':
-					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='url' class='form-control' name='value[]' id='"+formElemID+count+"' value='https://'></div></div></div><br><br>";
+					   newdiv.innerHTML = "<div id='"+divName+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'>"+labelName+"</label><div class='col-md-8'><input type='url' class='form-control' name='value[]' id='"+formElemID+count+"' value='https://'></div></div></div>";
 					   break;
 			}
 			document.getElementById(divName).appendChild(newdiv);
@@ -941,6 +948,18 @@
 	        Popup($('#print').html());
 	    }
 
+	    var tableToExcel = (function() {
+		  var uri = 'data:application/vnd.ms-excel;base64,'
+		    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+		    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+		    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+		  return function(table, name) {
+		    if (!table.nodeType) table = document.getElementById(table)
+		    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+		    window.location.href = uri + base64(format(template, ctx))
+		  }
+		})()
+
 	    function Popup(data) 
 	    {
 	    	var mywindow = window.open('', 'printing');								// opens the printable version on another page
@@ -951,7 +970,7 @@
 	        mywindow.document.close(); 												// necessary for IE >= 10
 	        mywindow.focus(); 														// necessary for IE >= 10
 	        mywindow.print();														// prints the data
-	        mywindow.close();														// closes that page after print or if canceled
+	        mywindow.close();														// closes the page after print or if canceled
 	        return true;
 	    }
 
