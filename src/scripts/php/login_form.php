@@ -122,7 +122,10 @@
                                 <h1>Log in</h1>
                                 <!--  PHP login  -->
                                 <?php
-                                $_SESSION['header'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                                if(!isset($_SESSION['header']))
+                                {
+                                    $_SESSION['header'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                                }
                                 if(isset($_POST['email'])&&isset($_POST['key']))
                                 {
                                     $email=$_POST['email'];
