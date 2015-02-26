@@ -19,6 +19,7 @@
 <?php
 
 	error_reporting(0);
+	session_start();
 	date_default_timezone_set('Asia/Manila');
 	include "connectdb.php"; 													//connect to the database
 	require '../../../phpmailer/PHPMailer-master/PHPMailerAutoload.php';       //Third party mailing php functions
@@ -69,8 +70,8 @@
 			$mail->addAddress($email);     						  // Add a recipient
 			//content
 			$mail->Subject = 'Verify Your Account!!';
-			$mail->Body = "Congratulations!! You have successfully Registered to EventBox. To Activite your account click <a href='http://localhost/Eventbox/src/scripts/php/login_form.php?verify=".$email."'>Here!</a>";
-			$mail->AltBody = "You have successfully Registered to EventBox to Activite your account click <a href='http://localhost/Eventbox/src/scripts/php/login_form.php?verify=".$email."'>Here!</a>";
+			$mail->Body = "Congratulations!! You have successfully Registered to EventBox. To Activite your account click <a href='".$_SESSION['header']."?verify=".$email."'>Here!</a>";
+			$mail->AltBody = "You have successfully Registered to EventBox to Activite your account click <a href='".$_SESSION['header']."?verify=".$email."'>Here!</a>";
 			//end-content
 
 			if(!$mail->send()) 									  // checks if the mail was send or not
@@ -324,8 +325,8 @@
 			$mail->addAddress($email);     						  // Add a recipient
 			//content
 			$mail->Subject = 'You are Invited to attend an Event!';
-			$mail->Body    = $this->msg."<a href='http://localhost/Eventbox/src/scripts/php/login_form.php?data=".$email."&id=".$e_id."'>Link</a>";
-			$mail->AltBody = $this->msg."<a href='http://localhost/Eventbox/src/scripts/php/login_form.php?data=".$email."&id=".$e_id."'>Link</a>";
+			$mail->Body    = $this->msg."<a href='".$_SESSION['header']."?data=".$email."&id=".$e_id."'>Link</a>";
+			$mail->AltBody = $this->msg."<a href='".$_SESSION['header']."?data=".$email."&id=".$e_id."'>Link</a>";
 			//end-content
 
 			if(!$mail->send()) 									  // checks if the mail was send or not
