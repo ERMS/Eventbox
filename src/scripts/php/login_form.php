@@ -122,6 +122,7 @@
                                 <h1>Log in</h1>
                                 <!--  PHP login  -->
                                 <?php
+                                $_SESSION['header'] = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                                 if(isset($_POST['email'])&&isset($_POST['key']))
                                 {
                                     $email=$_POST['email'];
@@ -154,6 +155,7 @@
                                     </div>
                                      <div class="row" style="display:block">
                                         <div class="col-xs-12">
+                                     <a href="" class="forget pull-right" data-toggle="modal" data-target=".forget-modal">Forgot your password?</a>
                                          </div>
                                     </div>
                                     <div class="form-group">
