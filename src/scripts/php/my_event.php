@@ -423,7 +423,7 @@
                                         $value=JSON_encode($data);
                                 if($invi['Status']=='Pending')
                                 {
-                                    echo " <td id='respondStatus'><button onclick='privatePassword(this.value)' id='Approve' form='' data-target='.bs-example-modal-lg2' value='".$value."' class='btn btn-default btn-block'>Approve</button><button class='btn btn-default btn-block' id='Decline' onclick='updateResponse(this.id)' form='' value='".$invi['Attendee_ID']."'>Decline</button></td>    
+                                    echo " <td id='respondStatus'><button onclick='privatePassword(this.value)' id='Approve' form='' data-target='.bs-example-modal-lg2' value='".$value."'>Accept</button><button class='button' id='Decline' onclick='updateResponse(this.id)' form='' value='".$invi['Attendee_ID']."'>Reject</button></td>    
                                     </tr>";
                                 }
                                 else
