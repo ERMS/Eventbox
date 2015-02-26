@@ -177,18 +177,28 @@
                                 $O_ID=$data['User_ID'];
                                 $O_user= mysqli_query($con, "SELECT * FROM `user` WHERE `User_ID`='$O_ID'");
                                 $ouser=mysqli_fetch_array($O_user);
+                                $curD = date("Y")."-".date("m")."-".date("d");
+                                $startD = $data['Event_StartYear']."-".date('m', strtotime($data['Event_StartMonth']))."-".$data['Event_StartDay'];
+                                $endD = $data['Event_EndYear']."-".date('m', strtotime($data['Event_EndMonth']))."-".$data['Event_EndDay'];
                         echo "  <td class='text-center hidden-sm hidden-xs'> ".$ouser['User_FirstName']." ".$ouser['User_LastName']."</td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Description']." </td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>
-                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." - ".$data['Event_EndMonth']."/".$data['Event_EndDay']."/".$data['Event_EndYear']." </td>
+                                <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Country'].", ".$data['Event_City'].", ".$data['Event_Street']." </td>";
+                                $dif = strtotime($startD) - strtotime($endD); 
+                                if($dif==0)
+                                {
+                                    echo "<td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']."</td>";
+                                }
+                                else
+                                {
+                                    echo "<td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartMonth']."/".$data['Event_StartDay']."/".$data['Event_StartYear']." - ".$data['Event_EndMonth']."/".$data['Event_EndDay']."/".$data['Event_EndYear']." </td>"; 
+                                }
+                                echo"
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_StartHour'].":".$data['Event_StartMinute']." ".$data['Event_StartCH']." - ".$data['Event_EndHour'].":".$data['Event_EndMinute']." ".$data['Event_EndCH']." </td>";
                                 $eventid=$data['Event_ID'];
                                 $partsnum=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$eventid' AND `Status`='Approved'");
                         echo"   <td class='text-center hidden-sm hidden-xs'>".mysqli_num_rows($partsnum)."</td>
                                 <td class='text-center hidden-sm hidden-xs'> ".$data['Event_Slot']." </td>";
-                                $curD = date("Y")."-".date("m")."-".date("d");
-                                $startD = $data['Event_StartYear']."-".date('m', strtotime($data['Event_StartMonth']))."-".$data['Event_StartDay'];
-                                $endD = $data['Event_EndYear']."-".date('m', strtotime($data['Event_EndMonth']))."-".$data['Event_EndDay'];
+                                
                                 $diff = strtotime($startD) - strtotime($curD);                      
                                 $diff2 = strtotime($curD) - strtotime($endD);  
                                 $years = floor($diff / (365*60*60*24));                                           // difference in years
