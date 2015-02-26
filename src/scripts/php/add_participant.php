@@ -1,50 +1,54 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <?php
-include "class.php";
-session_start();
-if (!isset($_SESSION['user']))
-{
-    header("location:login_form.php");
-}
-$event=$_SESSION['eventobject'];
-$limit=$event->E_slot;
+
+    include "class.php";
+
+    session_start();
+
+    if (!isset($_SESSION['user']))
+    {
+        header("location:login_form.php");
+    }
+    
+    $event=$_SESSION['eventobject'];
+    $limit=$event->E_slot;
+
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
-	
+<html lang="en">	
 <head>
-    <meta charset="UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Eventbox</title>    
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
+    <title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
     <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../js/function.js"></script>
-</head>
-	
-<script>
-	
-	var counter = 1;
-	var limit = '<?php echo $limit; ?>';
-	
-	function addpart(divName)
-	{
-		if(limit!='')
-		{
-			if (counter == limit)  
-			{
-				alert("You have reached the limit of adding " + counter + " inputs");
-				return;
-			}
-		}
-		var newdiv = document.createElement('div');
-		newdiv.innerHTML = "<br><input type='text' placeholder='eventbox@eventbox.com' class='form-control' name='participants[]'>";
-		document.getElementById(divName).appendChild(newdiv);
-		counter++;
-	}
-</script>
-	
+
+</head>	
 <body>
+
     <!--navigation-->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -54,19 +58,27 @@ $limit=$event->E_slot;
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../../../src/index.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
+                <a class="navbar-brand" href="home.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
-                        <img style="padding:5px; margin-top:2px;" class="hidden-xs" src="http://a.deviantart.net/avatars/m/b/mb67.gif?3" width="50px" height="50px">
+                    <?php
+                        if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='50px' height='50px'>";
+                        }
+                    ?>
                     </li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['name']; ?><b class="caret"></b></a>
                       <ul class="dropdown-menu">
                         <li><a href="home.php">Home</a></li>
                         <li><a href="my_event.php">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="my_event.php?log=out">Log out</a></li>
                       </ul>
@@ -86,7 +98,7 @@ $limit=$event->E_slot;
                         <h2>Invite Participant <small>Step 3 of 4</small></h2>
                     </div>
                     <div class="col-md-4">
-                        <a href="home.php" class="event btn btn-default pull-right">Cancel</a>                        
+                        <a href="my_event.php" class="event btn btn-default pull-right">Cancel</a>                        
                     </div>
                 </div> <!--end content header-->
                 <hr>
@@ -137,6 +149,34 @@ $limit=$event->E_slot;
             <hr>
         </div>
     </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/boostrap.min.js"></script>
+
+    <script>
+    
+        var counter = 1;
+        var limit = '<?php echo $limit; ?>';
+        
+        function addpart(divName)
+        {
+            if(limit!='')
+            {
+                if (counter == limit)  
+                {
+                    alert("You have reached the limit of adding " + counter + " inputs");
+                    return;
+                }
+            }
+            var newdiv = document.createElement('div');
+            newdiv.innerHTML = "<br><input type='text' placeholder='eventbox@eventbox.com' class='form-control' name='participants[]'>";
+            document.getElementById(divName).appendChild(newdiv);
+            counter++;
+        }
+
+    </script>
 
 </body>
 </html>

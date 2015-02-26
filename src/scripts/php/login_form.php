@@ -1,55 +1,103 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <!--  PHP session  -->
 <?php
-include "connectdb.php";
-$con = connectdb();
-session_start();
-if(isset($_GET['data']))
-{
-    $_SESSION['mail']=$_GET['data'];
-    $_SESSION['id']=$_GET['id'];
-    $mail=$_SESSION['mail'];
-    $check=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
-    if(mysqli_num_rows($check)<=0)
+    include "class.php";
+
+    $con = connectdb();
+
+    session_start();
+
+    if(isset($_GET['verify']))
     {
-        header("location:register_form.php");
+        if(isset($_SESSION['verified']))
+        {   
+            $ver=$_SESSION['verified'];
+            if($_GET['verify']==$ver->U_email)
+            {
+                $dup=mysqli_query($con,"SELECT * FROM `user` WHERE `User_Email`='$ver->U_email'");
+                if(mysqli_num_rows($dup)==0)
+                {
+                    $ver->RegisterAccount();
+                }
+            }
+        }
     }
-}
-if (isset($_SESSION['user']))
-{
-    $id=$_SESSION['id'];
-    $mail=$_SESSION['mail'];
-    $query=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
-    $data=mysqli_fetch_array($query);
-    if(isset($_SESSION['id']))
+
+    if(isset($_GET['data']))
     {
-        if($_SESSION['user']['id']==$data['User_ID'])
+        $_SESSION['mail']=$_GET['data'];
+        $_SESSION['eid']=$_GET['id'];
+        $mail=$_SESSION['mail'];
+        
+        $check=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
+        if(mysqli_num_rows($check)<=0)
         {
-            header("location:my_event.php?invite=invited");
+            unset($_SESSION['user']);
+            header("location:register_form.php");
+        }
+    }
+
+    if (isset($_SESSION['user']))
+    {
+        $mail=$_SESSION['mail'];
+        $query=mysqli_query($con,"SELECT `User_ID` FROM `user` WHERE `User_Email`='$mail'");
+        $data=mysqli_fetch_array($query);
+
+        if(isset($_SESSION['eid']))
+        {
+            if(mysqli_num_rows($query)<=0)
+            {
+                unset($_SESSION['user']);
+                header("location:register_form.php");
+            }
+            if($_SESSION['user']['id']==$data['User_ID'])
+            {
+                header("location:my_event.php?invite=invited");
+            }
+            else
+            {
+                header("location:my_event.php");
+            }
         }
         else
         {
-            unset($_SESSION['mail']);
-            unset($_SESSION['id']);
             header("location:my_event.php");
         }
     }
-    else
-    {
-        header("location:my_event.php");
-    }
-}
 ?>
 <!--  PHP session End  -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Eventbox</title>
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
     <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../js/function.js"></script>
+
 </head>
 <body>
     
@@ -61,11 +109,11 @@ if (isset($_SESSION['user']))
             </div>
         </div>
     </nav>
-	<!-- end Navigation -->
-	
-	<!-- Login Content -->
+    <!-- end Navigation -->
+    
+    <!-- Login Content -->
     <section id="login">
-        <div class="container"> <!-- Start Session -->
+        <div class="container">
             <div class="form-wrap">
                 <div class="row">
                     <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
@@ -77,12 +125,12 @@ if (isset($_SESSION['user']))
                                 if(isset($_POST['email'])&&isset($_POST['key']))
                                 {
                                     $email=$_POST['email'];
-                                    $password=$_POST['key'];
+                                    $password=md5($_POST['key']);
                                     $query=mysqli_query ($con, "SELECT * FROM user WHERE User_Email='$email' AND User_Password='$password'");
                                     $id=mysqli_fetch_array($query);
                                     if (mysqli_num_rows($query)>0)
                                     {
-                                        $_SESSION['user']=array('id'=>$id['User_ID'],'name'=>$id['User_FirstName']." ".$id['User_LastName']);
+                                        $_SESSION['user']=array('id'=>$id['User_ID'],'name'=>$id['User_FirstName']." ".$id['User_LastName'],'pic'=>$id['User_ProfilePicture']);
                                         header("location:login_form.php");
                                     }
                                     else
@@ -97,8 +145,8 @@ if (isset($_SESSION['user']))
                                 ?>
                                 <!--  PHP login End  -->
                                 <hr>
-								
-								<!-- Start Login Form -->
+                                
+                                <!-- Start Login Form -->
                                 <form role="form" action="login_form.php" method="post" id="login-form"  autocomplete="off">
                                     <div class="form-group">
                                         <label for="email" class="sr-only">Email</label>
@@ -106,7 +154,6 @@ if (isset($_SESSION['user']))
                                     </div>
                                      <div class="row" style="display:block">
                                         <div class="col-xs-12">
-                                     <a href="" class="forget pull-right" data-toggle="modal" data-target=".forget-modal">Forgot your password?</a>
                                          </div>
                                     </div>
                                     <div class="form-group">
@@ -122,16 +169,21 @@ if (isset($_SESSION['user']))
                                         </div>
                                     </div>
                                 </form>
-								<!-- Start Login Form -->
-								
+                                <!-- Start Login Form -->
+                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div> <!-- end container -->
-	</section>
-	<!-- Login Content -->
-	
+    </section>
+    <!-- Login Content -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="scripts/js/boostrap.min.js"></script>
+
 </body>
 </html>

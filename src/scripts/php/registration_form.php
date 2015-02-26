@@ -1,120 +1,47 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
 <?php
-session_start();
-if (!isset($_SESSION['user']))
-{
-    header("location:login_form.php");
-}
+
+  session_start();
+
+  if (!isset($_SESSION['user']))
+  {
+      header("location:login_form.php");
+  }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Eventbox</title>
-    
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
-    <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../js/function.js"></script>
-</head>
-<script>
-var order=[];
-var count=0;
-function store()
-{
-    var label = document.getElementsByTagName('LABEL');
-    for (var i = 0; i < label.length; i++) 
-    {
-        if (label[i].htmlFor != '') 
-        {
-            var elem = document.getElementById(label[i].htmlFor);
-            order[i]= [label[i].htmlFor,elem.value,elem.getAttribute("name")];   
-            //store by [(id),(labelname),(type)] 
-        }
-    }
-    var ord = JSON.stringify(order);
-    window.location.href = "create_registration_form.php?order="+ord;
-}
-function labelchng(labelId)
-{
-    var label = document.getElementById(labelId).value;
-    document.getElementById('newlbl').value=label;
-    document.getElementById('oldlbl').value=labelId;
-}
-function okchng()
-{
-    var oldlbl = document.getElementById('oldlbl').value;
-    var newlbl = document.getElementById("newlbl").value;
-    document.getElementById(oldlbl).value=newlbl
-}
-function delelem(labelId)
-{
-    var formitem=document.getElementById(labelId).parentNode.parentNode.parentNode;
-    document.getElementById("delt").value=formitem.id;
-}
-function okdel()
-{
-    var fitem=document.getElementById("delt").value;
-    document.getElementById(fitem).remove();
-}
-function addAllInputs(divName,formElemID,labelName){
-    var newdiv = document.createElement('div');
-    count++;
-    switch(formElemID) {
-          case 'name':
-               newdiv.innerHTML ="<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='Last'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' id='down"+count+"' onclick='moveDown(this.id)' class='btn btn-default' value='"+formElemID+count+"'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
-               break;
 
-          case 'date':
-               newdiv.innerHTML ="<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' disabled class='form-control' placeholder='mm'></div><div class='col-md-2'><input  id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='dd'></div><div class='col-md-2'><input type='text' disabled class='form-control'  id='"+formElemID+count+"' placeholder='yyyy'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
-               break;
-          case 'email':
-               newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='email' id='"+formElemID+count+"' disabled class='form-control' placeholder='eventbox@eventbox.com'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
-               break;
-          case 'address':
-               newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='State'><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
-               break;
-          case 'text':
-               newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled id='"+formElemID+count+"' class='form-control' placeholder='"+labelName+"'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default'  value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
-               break;
-          case 'textarea':
-               newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'> <textarea disabled id='"+formElemID+count+"' class='form-control' placeholder='Type Here...'></textarea></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
-               break;
-          case 'link':
-               newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><div class='col-md-8'><input type='text' disabled class='form-control' id='"+formElemID+count+"' placeholder='https://'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
-               break;
-    }
-    document.getElementById(divName).appendChild(newdiv);
-}
-function moveUp(id)
-{
-  var div_id=document.getElementById(id).parentNode.parentNode.parentNode.parentNode.parentNode.id;
-  var div_id2=parseInt(div_id)-1;
-  if(div_id2!=0)
-  {
-    var div1=document.getElementById(div_id);
-    var div2=document.getElementById(div_id2);
-    var div3=div2.innerHTML;
-    div2.innerHTML=div1.innerHTML;
-    div1.innerHTML=div3;
-  }
-  else
-  {
-    document.getElementById(div_id).disabled=true;
-  }
-}
-function moveDown(id)
-{
-  var div_id=document.getElementById(id).parentNode.parentNode.parentNode.parentNode.parentNode.id;
-  var div_id2=parseInt(div_id)+1;
-  var div1=document.getElementById(div_id);
-  var div2=document.getElementById(div_id2);
-  var div3=div2.innerHTML;
-  div2.innerHTML=div1.innerHTML;
-  div1.innerHTML=div3;
-}
-</script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
+    <link rel="stylesheet" type="txt/css" href="../../css/style.css">
+
+</head>
 <body>
     
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- /navigation -->
@@ -125,19 +52,27 @@ function moveDown(id)
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../../../index.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
+                <a class="navbar-brand" href="home.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
-                        <img style="padding:5px; margin-top:2px;" class="hidden-xs" src="http://a.deviantart.net/avatars/m/b/mb67.gif?3" width="50px" height="50px">
+                    <?php
+                       if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='50px' height='50px'>";
+                        }
+                    ?>
                     </li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['name']; ?><b class="caret"></b></a>
                       <ul class="dropdown-menu">
                         <li><a href="home.php">Home</a></li>
                         <li><a href="my_event.php">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="my_event.php?log=out">Log out</a></li>
                       </ul>
@@ -155,7 +90,7 @@ function moveDown(id)
                         <h2>Create Registration Form <small>Step 2 of 4</small></h2>
                     </div>
                     <div class="col-md-4">
-                        <a href="create_event.php"class="event btn btn-default pull-right">Cancel</a>                        
+                        <a href="my_event.php"class="event btn btn-default pull-right">Cancel</a>                        
                     </div>
                 </div> <!--end content header-->
                 <hr>
@@ -220,7 +155,6 @@ function moveDown(id)
 												</label>
 													<div class="col-md-4">
 														<input type='text' id='address' disabled class='form-control' placeholder='Country'>
-                                                		<input type='text' id='address' disabled class='form-control event' placeholder='State'>
 													</div>
 													<div class="col-md-4">
 														<input type='text' id='address' disabled class='form-control' placeholder='City'>
@@ -275,6 +209,118 @@ function moveDown(id)
       </div>
     </div>
 
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/boostrap.min.js"></script>
+
+    <script>
+
+      var order=[];
+      var count=0;
+
+      function store()
+      {
+          var label = document.getElementsByTagName('LABEL');
+          for (var i = 0; i < label.length; i++) 
+          {
+              if (label[i].htmlFor != '') 
+              {
+                  var elem = document.getElementById(label[i].htmlFor);
+                  order[i]= [label[i].htmlFor,elem.value,elem.getAttribute("name")];   
+                  //store by [(id),(labelname),(type)] 
+              }
+          }
+          var ord = JSON.stringify(order);
+          window.location.href = "create_registration_form.php?order="+ord;
+      }
+
+      function labelchng(labelId)
+      {
+          var label = document.getElementById(labelId).value;
+          document.getElementById('newlbl').value=label;
+          document.getElementById('oldlbl').value=labelId;
+      }
+
+      function okchng()
+      {
+          var oldlbl = document.getElementById('oldlbl').value;
+          var newlbl = document.getElementById("newlbl").value;
+          document.getElementById(oldlbl).value=newlbl
+      }
+
+      function delelem(labelId)
+      {
+          var formitem=document.getElementById(labelId).parentNode.parentNode.parentNode;
+          document.getElementById("delt").value=formitem.id;
+      }
+
+      function okdel()
+      {
+          var fitem=document.getElementById("delt").value;
+          document.getElementById(fitem).remove();
+      }
+
+      function addAllInputs(divName,formElemID,labelName){
+          var newdiv = document.createElement('div');
+          count++;
+          switch(formElemID) {
+                case 'name':
+                     newdiv.innerHTML ="<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' style='float:left' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-4 col-md-offset-1'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='First'></div><div class='col-md-4'><input id='"+formElemID+count+"' type='text' disabled class='form-control' placeholder='Last'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' id='down"+count+"' onclick='moveDown(this.id)' class='btn btn-default' value='"+formElemID+count+"'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
+                     break;
+
+                case 'date':
+                     newdiv.innerHTML ="<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-4 col-md-offset-1'><input type='date' disabled class='form-control'  id='"+formElemID+count+"'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
+                     break;
+                case 'email':
+                     newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-8 col-md-offset-1'><input type='email' id='"+formElemID+count+"' disabled class='form-control' placeholder='eventbox@eventbox.com'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
+                     break;
+                case 'address':
+                     newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-2 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-4 col-md-offset-1' ><input type='text' id='"+formElemID+count+"' disabled class='form-control' placeholder='Country'><input id='"+formElemID+count+"' type='text' disabled class='form-control event' placeholder='City'></div><div class='col-md-4' ><input type='text' id='"+formElemID+count+"' disabled class='form-control event' placeholder='Street'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
+                     break;
+                case 'text':
+                     newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 col-md-offset-1' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-8 col-md-offset-1'><input type='text' disabled id='"+formElemID+count+"' class='form-control' placeholder='"+labelName+"'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default'  value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
+                     break;
+                case 'textarea':
+                     newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-8 col-md-offset-1'> <textarea disabled id='"+formElemID+count+"' class='form-control' placeholder='Type Here...'></textarea></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
+                     break;
+                case 'link':
+                     newdiv.innerHTML = "<div style='border-top:1px solid rgba(16, 16, 16, 0.12); padding-top:15px;' id='"+count+"'><div class='form-group'><label class='col-md-1 col-md-offset-1 control-label' for='"+formElemID+count+"'><input type='text' id='"+formElemID+count+"' name='"+formElemID+"' style='border:none;background-color:#fff' value='"+labelName+"' disabled></label><br><br><div class='col-md-8 col-md-offset-1'><input type='text' disabled class='form-control' id='"+formElemID+count+"' placeholder='https://'></div><div class='col-md-2'><div class='row'><div class='col-md-3'><button form='' class='btn btn-default' data-toggle='modal' data-target='.bs-edit-field' value='"+formElemID+count+"' onclick='labelchng(this.value)'><span class='glyphicon glyphicon-edit'></span></button></div><div class='col-md-3'><button class='btn btn-default' data-toggle='modal' form='' data-target='.bs-trash-field' value='"+formElemID+count+"' onclick='delelem(this.value)'><span class='glyphicon glyphicon-trash'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='up"+count+"' onclick='moveUp(this.id)'><span class='glyphicon glyphicon-arrow-up'></span></button></div><div class='col-md-3'><button form='' class='btn btn-default' value='"+formElemID+count+"' id='down"+count+"' onclick='moveDown(this.id)'><span class='glyphicon glyphicon-arrow-down'></span></button></div></div></div></div></div>";
+                     break;
+          }
+          document.getElementById(divName).appendChild(newdiv);
+      }
+
+      function moveUp(id)
+      {
+        var div_id=document.getElementById(id).parentNode.parentNode.parentNode.parentNode.parentNode.id;
+        var div_id2=parseInt(div_id)-1;
+        if(div_id2!=0)
+        {
+          var div1=document.getElementById(div_id);
+          var div2=document.getElementById(div_id2);
+          var div3=div2.innerHTML;
+          div2.innerHTML=div1.innerHTML;
+          div1.innerHTML=div3;
+        }
+        else
+        {
+          document.getElementById(div_id).disabled=true;
+        }
+      }
+
+      function moveDown(id)
+      {
+        var div_id=document.getElementById(id).parentNode.parentNode.parentNode.parentNode.parentNode.id;
+        var div_id2=parseInt(div_id)+1;
+        var div1=document.getElementById(div_id);
+        var div2=document.getElementById(div_id2);
+        var div3=div2.innerHTML;
+        div2.innerHTML=div1.innerHTML;
+        div1.innerHTML=div3;
+      }
+
+    </script>
 
 
 </body>

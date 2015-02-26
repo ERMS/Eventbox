@@ -1,14 +1,34 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Eventbox Documentation</title>    
-    <link rel="stylesheet" type="txt/css" href="../src/bootstrap/css/bootstrap.min.css">   
+    <title>Eventbox Documentation</title>   
+     
+     <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../src/boostrap/css/boostrap.min.css">
+    <!-- Customize css -->
     <link rel="stylesheet" type="txt/css" href="../src/css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../src/scripts/js/function.js"></script>
+
 </head>
 <body>
     
@@ -57,5 +77,11 @@
             </div>
         </div>
     </section>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../src/scripts/js/boostrap.min.js"></script>
+
 </body>
 </html>

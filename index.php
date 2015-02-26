@@ -1,23 +1,40 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-	<!--[if lt IE 9]>
-  	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  	<![endif]-->
-	<title>Eventbox</title>
+    
     <meta charset="utf-8">
-    <link href="css\bootstrap.css" rel="stylesheet">
-    <link href="css\bootstrap-responsive.css" rel="stylesheet">
-    <link rel="stylesheet" type="txt/css" href="bootstrap/css/bootstrap.css"></link>
-    <link rel="stylesheet" type="txt/css" href="bootstrap/css/bootstrap.min.css">   
-    <link rel="stylesheet" type="txt/css" href="css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="src/boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
+    <link rel="stylesheet" type="txt/css" href="src/css/style.css">
+
 </head>
 <body>
     
-    
+    <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
@@ -26,21 +43,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php"><img src="images/eventbox-logo.png" width="150px"/></a>
+                <a class="navbar-brand" href="index.php"><img src="src/images/eventbox-logo.png" width="150px"/></a>
             </div>
             <div class="collapse navbar-collapse navbar-right">
                 <ul class="nav navbar-nav">                    
                     <li class="text-center">
-                        <p class="navbar-text"><a href="scripts/php/login_form.php" class="navbar-link" >Sign In</a> </p>
+                        <p class="navbar-text"><a href="src/scripts/php/login_form.php" class="navbar-link" >Sign In</a> </p>
                     </li>
                     <li align="center"> 
-                        <p class="navbar-text"><a href="scripts/php/register_form.php" class="navbar-link">Sign Up For Free!</a></p>
+                        <p class="navbar-text"><a href="src/scripts/php/register_form.php" class="navbar-link">Sign Up For Free!</a></p>
                     </li>
                 </ul>
-            </div><!--/.nav-collapse -->
+            </div>
         </div>
     </nav>
-    
+    <!-- End Navigation -->
     
     <section role="content">
         <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="4000" id="bs-carousel">
@@ -62,8 +79,10 @@
                         <h1>Fuel up your passion</h1>        
                         <h4> & let it burn within </h4>
                     </hgroup>
-                    <a href="scripts/php/home.php" class="btn btn-hero btn-lg" role="button">Search Events!</a>
+                    <a href="src/scripts/php/home.php" class="btn btn-hero btn-lg" role="button">Search Events!</a>
                 </div>
+
+                <!-- slide images -->
                 <div class="item slides active">
                     <div class="slide-1">
 
@@ -82,5 +101,11 @@
            </div> 
         </div>
     </section>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="src/scripts/js/boostrap.min.js"></script>
+
 </body>
 </html>

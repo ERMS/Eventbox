@@ -1,80 +1,51 @@
+
+<!--   
+    This file is part of Eventbox.
+
+    Eventbox is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Eventbox is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Eventbox. If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <?php
-session_start();
-date_default_timezone_set('Asia/Manila');
-if (!isset($_SESSION['user']))
-{
-    header("location:login_form.php");
-}
+
+	session_start();
+
+	date_default_timezone_set('Asia/Manila');
+
+	if (!isset($_SESSION['user']))
+	{
+		header("location:login_form.php");
+	}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Eventbox</title>
-    <meta charset="utf-8"> 
-    <link rel="stylesheet" type="txt/css" href="../../bootstrap/css/bootstrap.min.css">   
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eventbox</title>
+
+    <!-- Boostrap css -->
+    <link rel="stylesheet" type="txt/css" href="../../boostrap/css/boostrap.min.css"> 
+    <!-- Customize css -->
     <link rel="stylesheet" type="txt/css" href="../../css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="../js/function.js"></script>
-</head>
-	
-<script>
-	
-	function verify()
-	{
-		var pass = document.getElementById("password").value;
-		var vpass = document.getElementById("vpassword").value;
-		if(pass!=vpass)
-		{
-			alert("password does not match!");
-			return false;
-		}
-	}
-	
-	function numberofparticipants(num)
-	{
-		if(num=="Any")
-		{
-			document.getElementById("number").style.visibility="Hidden";
-			document.getElementById("lnum").style.visibility="Hidden";
-			document.getElementById("number").disabled=true;
-		}
-		else
-		{
-			document.getElementById("number").style.visibility="Visible"; 
-			document.getElementById("lnum").style.visibility="Visible";   
-			document.getElementById("number").disabled=false;
-		}
-	}
-	
-	function privacypassword(privacy)
-	{
-		if(privacy=="private")
-		{
-			document.getElementById("password").style.visibility="Visible";
-			document.getElementById("lpassword").style.visibility="Visible";
-			document.getElementById("vpassword").style.visibility="Visible";
-			document.getElementById("lvpassword").style.visibility="Visible";
-			document.getElementById("password").disabled=false;
-			document.getElementById("vpassword").disabled=false;
-		}
-		else
-		{
-			document.getElementById("password").style.visibility="Hidden";
-			document.getElementById("lpassword").style.visibility="Hidden";
-			document.getElementById("vpassword").style.visibility="Hidden";
-			document.getElementById("lvpassword").style.visibility="Hidden"; 
-			document.getElementById("password").disabled=true;
-			document.getElementById("vpassword").disabled=true;
-		}
-	}
-	window.onload = function() {
-	  numberofparticipants('Any');
-	  privacypassword('default');
-	};
-</script>
-	
+
+</head>	
 <body>
+
     <!-- start navigation -->
       <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"><!-- /navigation -->
         <div class="container">
@@ -84,28 +55,36 @@ if (!isset($_SESSION['user']))
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../../../index.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
+                <a class="navbar-brand" href="home.php"><img src="../../images/eventbox-logo.png" width="175px"/></a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="img-responsive">
-                        <img style="padding:5px; margin-top:2px;" class="hidden-xs" src="http://a.deviantart.net/avatars/m/b/mb67.gif?3" width="50px" height="50px">
+                    <?php
+                        if($_SESSION['user']['pic']!=NULL)
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='data:;base64,".$_SESSION['user']['pic']."' width='50px' height='50px'>";
+                        }
+                        else
+                        {
+                            echo "<img style='padding:5px; margin-top:2px;' class='hidden-xs' src='../../images/user.png' width='50px' height='50px'>";
+                        }
+                    ?>
                     </li>
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $_SESSION['user']['name']; ?><b class="caret"></b></a>
                       <ul class="dropdown-menu">
                         <li><a href="home.php">Home</a></li>
                         <li><a href="my_event.php">Profile</a></li>
-                        <li><a href="#">Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="my_event.php?log=out">Log out</a></li>
                       </ul>
                     </li>
                   </ul>
-            </div><!--/.nav-collapse -->
+            </div>
         </div>
     </nav>
-  <!-- /navigation-->  
+    <!-- /navigation-->  
   
 	<section id="create">
     <div class="container">
@@ -121,27 +100,23 @@ if (!isset($_SESSION['user']))
         <!-- content body row -->
         <div class="row">
             <div class="col-md-12">
-                <div class="alert alert-danger" role="alert">
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <span class="sr-only">Error:</span>
-                  Check Your Inputs
-                </div>
 				<!-- start create event form -->
-                <form role="form" action="store_event.php" method="post" onsubmit="return verify()"> 
+                <form role="form" action="store_event.php" method="post" onsubmit="return verify()" enctype="multipart/form-data"> 
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4>Event Details</h4>
                         </div>
                         <div class="panel-body">
-                            <div class="row"> <!-- first row event details -->
+                            <div class="row"> 
+                                <!-- first row event details -->
                                 <div class="form-group">
                                     <div class="col-sm-8 col-md-6">
                                         <label for="title" class="" >Event Title</label>
                                         <input type="text" class="form-control" id="title" name="title" placeholder="Event Name" required>
                                     </div>
                                     <div class="col-sm-2 col-md-2">
-                                        <label for="logo">Event Logo</label>
-                                        <input type="file" id="logo" name="logo">
+                                        <label for="logo">Event Logo</label>							
+                                        <input type="file" id="logo" name="logo">                                        
                                     </div>  
                                 </div>
                             </div> <!--end first row event details -->
@@ -150,9 +125,9 @@ if (!isset($_SESSION['user']))
                                     <div class="col-md-12"> <!-- start event date:From container  -->
                                         <div class="form-group">                                                   
                                             <div class="row">
-                                                <label for="eventdate" class="col-sm-1 col-md-1">From</label>
+                                                <label for="smonth" class="col-sm-1 col-md-1">From</label>
                                                 <div class="col-sm-5 col-md-5">                                                        
-                                                    <select name="startmonth" id="eventdate" class="form-control input-sm">
+                                                    <select name="startmonth" id="smonth" class="form-control input-sm">
                                                         <?php
                                                             for ($i=1; $i <= 12; $i++) 
                                                             { 
@@ -170,7 +145,7 @@ if (!isset($_SESSION['user']))
                                                     </select>   
                                                 </div>
                                                 <div class="col-sm-3 col-md-3">
-                                                    <select  name="startday" class="form-control input-sm">
+                                                    <select  name="startday" id="sday" class="form-control input-sm">
                                                         <?php
                                                             for ($i=1; $i <=date("t") ; $i++) 
                                                             {
@@ -188,7 +163,7 @@ if (!isset($_SESSION['user']))
                                                     </select>   
                                                 </div>
                                                 <div class="col-sm-3 col-md-3">
-                                                    <select name="startyear" id="eventdate" class="form-control year input-sm">
+                                                    <select name="startyear" id="syear" class="form-control year input-sm">
                                                         <?php
                                                             for ($i=date("Y"); $i <(date("Y")+10); $i++) 
                                                             { 
@@ -209,9 +184,9 @@ if (!isset($_SESSION['user']))
                                         </div>
                                         <div class="form-group">   
                                             <div class="row">
-                                                <label for="eventdate" align="center" class="col-sm-1 col-md-1">Until</label>
+                                                <label for="emonth" align="center" class="col-sm-1 col-md-1">Until</label>
                                                 <div class="col-sm-5 col-md-5">                                                        
-                                                    <select name="endmonth" id="eventdate" class="form-control input-sm">
+                                                    <select name="endmonth" id="emonth" class="form-control input-sm">
                                                         <?php
                                                             for ($i=1; $i <= 12; $i++) 
                                                             { 
@@ -229,7 +204,7 @@ if (!isset($_SESSION['user']))
                                                     </select>   
                                                 </div>
                                                 <div class="col-sm-3 col-md-3">
-                                                    <select  name="endday" class="form-control input-sm">
+                                                    <select  name="endday" id="eday" class="form-control input-sm">
                                                         <?php
                                                             for ($i=1; $i <=date("t") ; $i++) 
                                                             {
@@ -247,7 +222,7 @@ if (!isset($_SESSION['user']))
                                                     </select>   
                                                 </div>
                                                 <div class="col-sm-3 col-md-3">
-                                                    <select name="endyear" id="eventdate" class="form-control year input-sm">
+                                                    <select name="endyear" id="eyear" class="form-control year input-sm">
                                                         <?php
                                                             for ($i=date("Y"); $i <(date("Y")+10); $i++) 
                                                             { 
@@ -351,11 +326,7 @@ if (!isset($_SESSION['user']))
                                         <div class="col-sm-3 col-md-3">
                                             <label for="venue">Country</label>
                                             <input name="country" type="text" id="venue" class="form-control" placeholder="Country" required>
-                                        </div>
-                                        <div class="col-sm-3 col-md-3">
-                                            <label for="venue">State</label>
-                                            <input name="state" type="text" id="venue" class="form-control" placeholder="State" required>
-                                        </div>   
+                                        </div>  
                                         <div class="col-sm-3 col-md-3">
                                             <label for="venue">City</label>
                                             <input name="city" type="text" id="venue" class="form-control" placeholder="City" required>
@@ -364,9 +335,9 @@ if (!isset($_SESSION['user']))
                                             <label for="venue">Street</label>
                                             <input name="street" type="text" id="venue" class="form-control" placeholder="Street" required>
                                         </div>
-                                        <div class="col-sm-3 col-md-3">
-                                            <label for="venue">Additional Details</label>
-                                            <input name="addition" type="text" id="venue" class="form-control" placeholder="Additional Details" required>
+                                        <div class="col-sm-3 col-md-12">
+                                            <label for="venue">Venue Additional Details</label>
+                                            <input name="additional" type="text" id="venue" class="form-control" placeholder="Additional Details">
                                         </div>   
                                     </div>
                                 </div>
@@ -403,16 +374,6 @@ if (!isset($_SESSION['user']))
                                 </div>
                             </div>
                             <!--end organizer info-->
-                            <!--start attached file-->
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-sm-2 col-md-2">
-                                        <label for="file">Attached File</label>
-                                        <input type="file" id="file" name="file">
-                                    </div>  
-                                </div>
-                            </div>
-                            <!--end attach file-->
                         </div>
                     </div>
                     <div class="panel panel-default">
@@ -468,8 +429,109 @@ if (!isset($_SESSION['user']))
         </div><!--end content row -->                  
     </div>
     </section>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/boostrap.min.js"></script>
          
-    
+    <script>
+        function readURL(input) 
+        {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#logo").change(function(){
+            readURL(this);
+        });
+
+        function verify()
+        {
+            var pass = document.getElementById("password").value;
+            var vpass = document.getElementById("vpassword").value;
+            if(pass!=vpass)
+            {
+                alert("password does not match!");
+                return false;
+            }
+            if(dateCheck()==false)
+            {
+                alert("Invalid Dates!");
+                return false;
+            }
+        }
+        
+        function dateCheck()
+        {
+            var smonth=document.getElementById("smonth").value;
+            var sday=document.getElementById("sday").value;
+            var syear=document.getElementById("syear").value;
+            var emonth=document.getElementById("emonth").value;
+            var eday=document.getElementById("eday").value;
+            var eyear=document.getElementById("eyear").value;
+            var sdates=Date.parse(smonth+" "+sday+", "+syear);
+            var sdate=new Date(sdates);
+            var edates=Date.parse(emonth+" "+eday+", "+eyear);
+            var edate=new Date(edates);
+            var date=edate.getTime()-sdate.getTime()
+            if(date<0)
+            {
+                return false;
+            }
+        }
+
+        function numberofparticipants(num)
+        {
+            if(num=="Any")
+            {
+                document.getElementById("number").style.visibility="Hidden";
+                document.getElementById("lnum").style.visibility="Hidden";
+                document.getElementById("number").disabled=true;
+            }
+            else
+            {
+                document.getElementById("number").style.visibility="Visible"; 
+                document.getElementById("lnum").style.visibility="Visible";   
+                document.getElementById("number").disabled=false;
+            }
+        }
+        
+        function privacypassword(privacy)
+        {
+            if(privacy=="private")
+            {
+                document.getElementById("password").style.visibility="Visible";
+                document.getElementById("lpassword").style.visibility="Visible";
+                document.getElementById("vpassword").style.visibility="Visible";
+                document.getElementById("lvpassword").style.visibility="Visible";
+                document.getElementById("password").disabled=false;
+                document.getElementById("vpassword").disabled=false;
+            }
+            else
+            {
+                document.getElementById("password").style.visibility="Hidden";
+                document.getElementById("lpassword").style.visibility="Hidden";
+                document.getElementById("vpassword").style.visibility="Hidden";
+                document.getElementById("lvpassword").style.visibility="Hidden"; 
+                document.getElementById("password").disabled=true;
+                document.getElementById("vpassword").disabled=true;
+            }
+        }
+        window.onload = function() {
+          var logo=document.getElementById("logo").value;
+          //readURL(logo);
+          numberofparticipants('Any');
+          privacypassword('default');
+        };
+
+    </script>
     
 </body>
 </html>
