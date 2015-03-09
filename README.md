@@ -1,6 +1,6 @@
 #Eventbox
 
-EventBox is an Open Source Event Registration System(ERS) originally written and designed by Enrique M. Lacambra III and Alkino T. Ko.
+EventBox is an Open Source Event Registration Mangament System(ERMS) originally written and designed by Enrique M. Lacambra III and Alkino T. Ko.
 
 There are currently a lot of Event Registration Systems existing in the Internet. EventBox tries to stand out from the rest by reinventing people's ways to register their events. By creating a useful, interactive, and understandable Event Registration System like the EventBox, it can effectively help organizations advertise their events throughout the world
 
