@@ -140,7 +140,7 @@
 				
                 <div class="col-md-5">
 					<?php 
-					$query=mysqli_query($con,"SELECT * FROM `attendance` WHERE `User_ID`='$id' AND `Status`='Approved'");
+					$query=mysqli_query($con,"SELECT * FROM `attendance` WHERE `User_ID`='$id' AND `Status`='Accepted'");
 					$query2=mysqli_query($con,"SELECT * FROM `event` WHERE `User_ID`='$id'");
 						echo "<div class='col-md-12'>
 							<h2>".$_SESSION['user']['name']."</h2>
@@ -288,7 +288,7 @@
                         <div class="event table-responsive">
                         <?php                                   // displays the participated events
                         $puser=$_SESSION['user']['id'];
-                        $parts=mysqli_query ($con,"SELECT * FROM `attendance` WHERE `User_ID`='$puser' AND `Status`='Approved'");
+                        $parts=mysqli_query ($con,"SELECT * FROM `attendance` WHERE `User_ID`='$puser' AND `Status`='Accepted'");
                         if (mysqli_num_rows($parts)>0)
                         {
                             echo "
@@ -425,7 +425,7 @@
                                         $value=JSON_encode($data);
                                 if($invi['Status']=='Pending')
                                 {
-                                    echo " <td id='respondStatus'><button onclick='privatePassword(this.value)' id='Approve' form='' data-target='.bs-example-modal-lg2' value='".$value."' class='btn btn-default btn-block'>Accept</button><button class='btn btn-default btn-block' id='Decline' onclick='updateResponse(this.id)' form='' value='".$invi['Attendee_ID']."'>Reject</button></td>    
+                                    echo " <td id='respondStatus'><button onclick='privatePassword(this.value)' id='Accepted' form='' data-target='.bs-example-modal-lg2' value='".$value."' class='btn btn-default btn-block'>Accept</button><button class='btn btn-default btn-block' id='Rejected' onclick='updateResponse(this.id)' form='' value='".$invi['Attendee_ID']."'>Reject</button></td>    
                                     </tr>";
                                 }
                                 else
@@ -530,6 +530,20 @@
                                                     <label for="logo">Event Logo</label>
                                                     <input name="logo" type="file" id="logo">
                                                 </div>  
+                                                <div class="col-sm-2 col-md-2">
+                                                    <label for="type" class="" >Event Type</label>
+                                                    <select name="type" id="type" class="form-control" onchange="specif(this.value)">
+                                                        <option value="fiesta">Fiesta</option>
+                                                        <option value="seminar">Seminar</option>
+                                                        <option value="orientation">Orientation</option>
+                                                        <option value="meeting">Meeting</option>
+                                                        <option value="Others">Others</option>
+                                                    </select>  
+                                                </div>  
+                                                <div class="col-sm-2 col-md-2">
+                                                    <label for="spec" class="" id="lspec">Specify</label>                            
+                                                    <input type="text" class="form-control" name="spec" id="spec"/>                                      
+                                                </div>
                                             </div>
                                         </div> <!--end first row event details -->
                                         <br>
@@ -695,7 +709,11 @@
                                                     <div class="col-sm-3 col-md-3">
                                                         <label for="venue">Street</label>
                                                         <input type="text" id="venue" name="street" class="form-control" placeholder="Street" required>
-                                                    </div>   
+                                                    </div>
+                                                    <div class="col-sm-3 col-md-12">
+                                                        <label for="venue">Venue Additional Details</label>
+                                                        <input name="additional" type="text" id="venue" class="form-control" placeholder="Additional Details" required>
+                                                    </div>  
                                                 </div>
                                             </div>
                                         </div>
@@ -733,16 +751,6 @@
                                             </div>
                                         </div>
                                         <!--end organizer info-->
-                                        <!--start attached file-->
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="col-sm-2 col-md-2">
-                                                    <label for="file">attached details</label>
-                                                    <input type="file" id="file" name="file">
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <!--end attach file-->
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
@@ -949,7 +957,7 @@
 			var json=JSON.parse(data);
 			form=json[2];
 			events=json[1];
-			if(json[0]!='Approved')
+			if(json[0]!='Accepted')
 			{
 				if(events['Event_Privacy']!='private')
 				{
@@ -1039,43 +1047,70 @@
             document.getElementById(id).innerHTML="<p>"+response+"</p>";
         }
 
+        function specif(type)
+        {
+            if(type!="Others")
+            {
+                document.getElementById("spec").style.visibility="Hidden";
+                document.getElementById("lspec").style.visibility="Hidden";
+                document.getElementById("spec").disabled=true;
+            }
+            else
+            {
+                document.getElementById("spec").style.visibility="Visible"; 
+                document.getElementById("lspec").style.visibility="Visible";   
+                document.getElementById("spec").disabled=false;
+            }
+        }
+
 		function editEvent(data)
 		{
 			var json=data;
 			var editData=JSON.parse(json);
-			document.forms["editForm"]["id"].value=editData.Event_ID;
-			document.forms["editForm"]["title"].value=editData.Event_Title;
-			document.forms["editForm"]["logo"].value=editData.Event_Logo;
-			document.forms["editForm"]["s_month"].value=editData.Event_StartMonth;
-			document.forms["editForm"]["s_day"].value=editData.Event_StartDay;
-			document.forms["editForm"]["s_year"].value=editData.Event_StartYear;
-			document.forms["editForm"]["e_month"].value=editData.Event_EndMonth;
-			document.forms["editForm"]["e_day"].value=editData.Event_EndDay;
-			document.forms["editForm"]["e_year"].value=editData.Event_EndYear;
-			document.forms["editForm"]["s_hour"].value=editData.Event_StartHour;
-			document.forms["editForm"]["s_minute"].value=editData.Event_StartMinute;
-			document.forms["editForm"]["s_ch"].value=editData.Event_StartCH;
-			document.forms["editForm"]["e_hour"].value=editData.Event_EndHour;
-			document.forms["editForm"]["e_minute"].value=editData.Event_EndMinute;
-			document.forms["editForm"]["e_ch"].value=editData.Event_EndCH;
-			document.forms["editForm"]["description"].value=editData.Event_Description;
-			document.forms["editForm"]["country"].value=editData.Event_Country;
-			document.forms["editForm"]["city"].value=editData.Event_City;
-			document.forms["editForm"]["street"].value=editData.Event_Street;
-			document.forms["editForm"]["deadline"].value=editData.Event_Deadline;
-			document.forms["editForm"]["number"].value=editData.Event_Slot;
-			document.forms["editForm"]["contact"].value=editData.Event_ContactNumber;
-			document.forms["editForm"]["file"].value=editData.Event_File;
-			document.forms["editForm"]["privacy"].value=editData.Event_Privacy;
-			document.forms["editForm"]["password"].value=editData.Event_Password;
-			document.forms["editForm"]["status"].value=editData.Event_Status;
-			var num='a';
-			if(editData.Event_Slot==0)
-			{
-				num='Any';
-			}
-			numberofparticipants(num);
-			privacypassword(editData.Event_Privacy);
+            document.forms["editForm"]["id"].value=editData.Event_ID;
+            document.forms["editForm"]["title"].value=editData.Event_Title;
+            document.forms["editForm"]["s_month"].value=editData.Event_StartMonth;
+            document.forms["editForm"]["s_day"].value=editData.Event_StartDay;
+            document.forms["editForm"]["s_year"].value=editData.Event_StartYear;
+            document.forms["editForm"]["e_month"].value=editData.Event_EndMonth;
+            document.forms["editForm"]["e_day"].value=editData.Event_EndDay;
+            document.forms["editForm"]["e_year"].value=editData.Event_EndYear;
+            document.forms["editForm"]["s_hour"].value=editData.Event_StartHour;
+            document.forms["editForm"]["s_minute"].value=editData.Event_StartMinute;
+            document.forms["editForm"]["s_ch"].value=editData.Event_StartCH;
+            document.forms["editForm"]["e_hour"].value=editData.Event_EndHour;
+            document.forms["editForm"]["e_minute"].value=editData.Event_EndMinute;
+            document.forms["editForm"]["e_ch"].value=editData.Event_EndCH;
+            document.forms["editForm"]["description"].value=editData.Event_Description;
+            document.forms["editForm"]["country"].value=editData.Event_Country;
+            document.forms["editForm"]["city"].value=editData.Event_City;
+            document.forms["editForm"]["street"].value=editData.Event_Street;
+            document.forms["editForm"]["additional"].value=editData.Event_Additional;
+            document.forms["editForm"]["deadline"].value=editData.Event_Deadline;
+            document.forms["editForm"]["number"].value=editData.Event_Slot;
+            document.forms["editForm"]["contact"].value=editData.Event_ContactNumber;
+            document.forms["editForm"]["file"].value=editData.Event_File;
+            document.forms["editForm"]["privacy"].value=editData.Event_Privacy;
+            document.forms["editForm"]["password"].value=editData.Event_Password;
+            document.forms["editForm"]["status"].value=editData.Event_Status;
+            var type=document.forms["editForm"]["type"].value;
+            if(type!='seminar' && type!='meeting' && type!='orientation' && type!='fiesta')
+            {
+                document.forms["editForm"]["spec"].value=editData.Event_Type;
+                document.forms["editForm"]["type"].value='Others';
+            }
+            else
+            {
+                document.forms["editForm"]["type"].value=editData.Event_Type;
+            }
+            var num='a';
+            if(editData.Event_Slot==0)
+            {
+                num='Any';
+            }
+            numberofparticipants(num);
+            privacypassword(editData.Event_Privacy);
+            specif(type);
 		}
 		
 		function checkAll(element,form) 
@@ -1161,7 +1196,7 @@
 			});
 		});
 	$(document).ready(function () {
-		$(".button").click(function(){
+		$(".btn").click(function(){
 			var t=this.id;
 			var v=this.value;
 			$.ajax({

@@ -25,7 +25,7 @@
 	$status=$_POST['status'];
 	$ap=new attend;									// instantiate the attend object
 	
-	if($_POST['respond']=='Approve') 				// depends on the user whether to approve or decline an join request
+	if($_POST['respond']=='Accepted') 				// depends on the user whether to approve or decline an join request
 	{
 		$ap->approved($status);						// approve the join request/invitation
 	}

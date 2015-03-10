@@ -146,7 +146,7 @@
         if(isset($_GET['search']))               //  search event by event's title or the event host's name
         {
             $srch=$_GET['search'];
-            $srchstr="SELECT * FROM `event` WHERE `Event_Title`='$srch' OR `User_ID`=(SELECT `User_ID` FROM `user` WHERE `User_FirstName`='$srch' OR `User_LastName`='$srch' OR CONCAT(`User_FirstName`,' ',`User_LastName`)='$srch')";
+            $srchstr="SELECT * FROM `event` WHERE `Event_Title`='$srch' OR `Event_Type`='$srch' OR `User_ID`=(SELECT `User_ID` FROM `user` WHERE `User_FirstName`='$srch' OR `User_LastName`='$srch' OR CONCAT(`User_FirstName`,' ',`User_LastName`)='$srch')";
         }
         $search=mysqli_query ($con,$srchstr);
         if (mysqli_num_rows($search)>0)          //  displays all the available events 

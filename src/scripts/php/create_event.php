@@ -118,6 +118,20 @@
                                         <label for="logo">Event Logo</label>							
                                         <input type="file" id="logo" name="logo">                                        
                                     </div>  
+                                    <div class="col-sm-2 col-md-2">
+                                        <label for="type" class="" >Event Type</label>
+                                        <select name="type" id="type" class="form-control" onchange="specif(this.value)">
+                                            <option value="fiesta">Fiesta</option>
+                                            <option value="seminar">Seminar</option>
+                                            <option value="orientation">Orientation</option>
+                                            <option value="meeting">Meeting</option>
+                                            <option value="Others">Others</option>
+                                        </select>  
+                                    </div>  
+                                    <div class="col-sm-2 col-md-2">
+                                        <label for="spec" class="" id="lspec">Specify</label>                            
+                                        <input type="text" class="form-control" name="spec" id="spec"/>                                      
+                                    </div>
                                 </div>
                             </div> <!--end first row event details -->
                             <div class="row"> <!-- start event date&time row -->
@@ -487,6 +501,22 @@
             }
         }
 
+        function specif(type)
+        {
+            if(type!="Others")
+            {
+                document.getElementById("spec").style.visibility="Hidden";
+                document.getElementById("lspec").style.visibility="Hidden";
+                document.getElementById("spec").disabled=true;
+            }
+            else
+            {
+                document.getElementById("spec").style.visibility="Visible"; 
+                document.getElementById("lspec").style.visibility="Visible";   
+                document.getElementById("spec").disabled=false;
+            }
+        }
+
         function numberofparticipants(num)
         {
             if(num=="Any")
@@ -529,6 +559,7 @@
           //readURL(logo);
           numberofparticipants('Any');
           privacypassword('default');
+          specif('default');
         };
 
     </script>

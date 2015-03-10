@@ -175,7 +175,7 @@
 		                    {
 		                        $s=mysqli_query($con,"SELECT * FROM `attendance` WHERE `User_ID`='$cu' AND `Event_ID`='$id'");
 		                        $us=mysqli_fetch_array($s);
-		                        if($us['Status']!='Approved')
+		                        if($us['Status']!='Accepted')
 		                        {
 		                        echo "<button onclick='privatePassword(this.value)' href='#' class='btn btn-default btn-lg pull-right' data-target='.bs-example-modal-lg' value='".$us['Status']."'> Join NOW</button>";
 		                        }
@@ -281,7 +281,7 @@
 						}
 						else
 						{
-							$string="SELECT * FROM `attendance` WHERE `Event_ID`='$id' AND `Status`='Approved'";
+							$string="SELECT * FROM `attendance` WHERE `Event_ID`='$id' AND `Status`='Accepted'";
 						}
 						$data1=mysqli_query($con,$string);
 						if(mysqli_num_rows($data1)>0)
@@ -343,7 +343,7 @@
 									echo "<td class='hidden-sm hidden-xs'>".$attendee['User_FirstName']." ".$attendee['User_LastName']."</td>
 										  <td class='hidden-sm hidden-xs'>".$attendee['User_Country'].", ".$attendee['User_City']."</td>
 										  <td class='hidden-sm hidden-xs'>".$attendee['User_Email']."</td>";
-									if($userdata['Status']=='Approved')
+									if($userdata['Status']=='Accepted')
 									{
 										if($hu==$cu)
 										{
@@ -358,7 +358,7 @@
 											{
 												if($userdata['Status']=='Pending')
 												{
-													echo "<td id='respondStatus'><button form='' onclick='updateResponse(this.id)' class='btn btn-default btn-default' id='Approve' value='".$userdata['Attendee_ID']."'>Accept</button><button onclick='updateResponse(this.id)' form='' class='btn btn-default btn-default' id='Decline' value='".$userdata['Attendee_ID']."'>Reject</button></td>";
+													echo "<td id='respondStatus'><button form='' onclick='updateResponse(this.id)' class='btn btn-default btn-default' id='Accepted' value='".$userdata['Attendee_ID']."'>Accept</button><button form='' onclick='updateResponse(this.id)' form='' class='btn btn-default btn-default' id='Rejected' value='".$userdata['Attendee_ID']."'>Reject</button></td>";
 												}
 												else
 												{
@@ -518,7 +518,7 @@
                     <div class="row">
                         <div class="col-md-12">
 							<!-- start event details form -->
-                            <form class="editForm" name="editForm" id="editForm" role="form" method="post" action="edit_event.php" enctype="multipart/form-data"> 
+                            <form class="editForm" name="editForm" id="editForm" role="form" method="post" action="edit_event.php" enctype="multipart/form-data" novalidate> 
                                 <input type="hidden" name="id" id="id">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -532,9 +532,24 @@
                                                     <input type="text" name="title" class="form-control" id="title" placeholder="Event Name" required>
                                                 </div>
                                                 <div class="col-sm-2 col-md-2">
-                                                    <img id="image" hidden="" src="#">
+                                                	<label for="logo" class="" >Event Logo</label>
+                                                    <img id="image" src="#" width="25px" height="25px">
                                                     <input type="file" name="logo" id="logo">
                                                 </div>  
+                                                <div class="col-sm-2 col-md-2">
+			                                        <label for="type" class="" >Event Type</label>
+			                                        <select name="type" id="type" class="form-control" onchange="specif(this.value)">
+			                                            <option value="fiesta">Fiesta</option>
+			                                            <option value="seminar">Seminar</option>
+			                                            <option value="orientation">Orientation</option>
+			                                            <option value="meeting">Meeting</option>
+			                                            <option value="Others">Others</option>
+			                                        </select>  
+			                                    </div>  
+			                                    <div class="col-sm-2 col-md-2">
+			                                        <label for="spec" class="" id="lspec">Specify</label>                            
+			                                        <input type="text" class="form-control" name="spec" id="spec"/>                                      
+			                                    </div>
                                             </div>
                                         </div> <!--end first row event details -->
                                         <br>
@@ -742,16 +757,6 @@
                                             </div>
                                         </div>
                                         <!--end organizer info-->
-                                        <!--start attached file-->
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="col-sm-2 col-md-2">
-                                                    <label for="file">attached details</label>
-                                                    <input type="file" id="file" name="file">
-                                                </div>  
-                                            </div>
-                                        </div>
-                                        <!--end attach file-->
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
@@ -802,10 +807,10 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-default btn-lg pull-right" data-dismiss="modal">Cancel</button>
+                                        <a class="btn btn-default btn-lg pull-right" data-dismiss="modal">Cancel</a>
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="submit" class="btn btn-success btn-lg btn-primary" name="submit" value="Done" id="submit">
+                                        <input type="submit" form="editForm" class="btn btn-success btn-lg btn-primary" name="submit" value="Done" id="submit">
                                     </div>
                                 </div>
                             </form>
@@ -844,9 +849,10 @@
 	<section class="container event">
 		<div class="row">
 		<div class="col-md-12">
+		<p><center><h1><strong>Participants List</strong></h1></center></p>
 		<table class="table table-bordered text-center" id="printable" border="1" summary="List of Participants">
 			<?php
-			$attendees=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$id' AND `Status`='Approved'");
+			$attendees=mysqli_query($con, "SELECT * FROM `attendance` WHERE `Event_ID`='$id' AND `Status`='Accepted'");
 			echo "
 			<thead>
 				<th class='text-center'> Participant ID </th>
@@ -885,10 +891,10 @@
 	</div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../js/boostrap.min.js"></script>
-    <!-- md5 function for javascript -->
-    <script src = "http://www.myersdaily.org/joseph/javascript/md5.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
     <script>
 
 		var count=0;
@@ -896,6 +902,13 @@
 		var json='<?php echo json_encode($event); ?>';
 		var editData=JSON.parse(json);
 		
+		$(document).ready(function() { 
+            $('#editForm').ajaxForm(function() {
+            	{$('#full-width').modal('hide');
+            	location.reload();}
+            }); 
+        }); 
+
 		function readURL(input) 
 	    {
 	    	if (input.files && input.files[0]) 
@@ -1094,6 +1107,16 @@
 			document.forms["editForm"]["privacy"].value=editData.Event_Privacy;
 			document.forms["editForm"]["password"].value=editData.Event_Password;
 			document.forms["editForm"]["status"].value=editData.Event_Status;
+			var type=document.forms["editForm"]["type"].value;
+			if(type!='seminar' && type!='meeting' && type!='orientation' && type!='fiesta')
+			{
+				document.forms["editForm"]["spec"].value=editData.Event_Type;
+				document.forms["editForm"]["type"].value='Others';
+			}
+			else
+			{
+				document.forms["editForm"]["type"].value=editData.Event_Type;
+			}
 			var num='a';
 			if(editData.Event_Slot==0)
 			{
@@ -1101,6 +1124,7 @@
 			}
 			numberofparticipants(num);
 			privacypassword(editData.Event_Privacy);
+			specif(type);
 		}
 		
 		function deleteParticipants()
@@ -1251,7 +1275,7 @@
 			{
 				return false;
 			}
-			if(status!='Approved')
+			if(status!='Accepted')
 			{
 				if(editData.Event_Privacy!='private')
 				{
@@ -1270,11 +1294,26 @@
 			}
 		}
 		
+		function specif(type)
+        {
+            if(type!="Others")
+            {
+                document.getElementById("spec").style.visibility="Hidden";
+                document.getElementById("lspec").style.visibility="Hidden";
+                document.getElementById("spec").disabled=true;
+            }
+            else
+            {
+                document.getElementById("spec").style.visibility="Visible"; 
+                document.getElementById("lspec").style.visibility="Visible";   
+                document.getElementById("spec").disabled=false;
+            }
+        }
+
 		function checkPass()
 		{
 			var pass=document.getElementById("privacypass").value;
-
-			if(md5(pass)!=editData.Event_Password)
+			if(pass!=editData.Event_Password)
 			{
 				alert("invalid Password!");
 			}
@@ -1329,7 +1368,7 @@
 		}
 		
 		$(document).ready(function () {
-			$(".button").click(function(){
+			$(".btn").click(function(){
 				var t=this.id;
 				var v=this.value;
 				$.ajax({
@@ -1337,7 +1376,6 @@
 					url: "status_update.php",
 					data: {status:v,respond:t},
 					success: function(){
-
 					},
 					error: function(){
 						alert("Failed to Edit! Try Again Later..");
@@ -1346,24 +1384,7 @@
 			});
 		});
 
-		$(document).ready(function () {
-			$("input#submit").click(function(){
-				$.ajax({
-					type: "POST",
-					url: "edit_event.php",
-					data: $('form.editForm').serialize(),
-					success: function(){
-						$("#full-width").modal('hide');
-						location.reload();
-					},
-					error: function(){
-						alert("Failed to Edit! Try Again Later..");
-						return;
-					}
-				});
-			});
-		});
-	
+		
 	</script>
 
 
